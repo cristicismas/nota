@@ -1,4 +1,5 @@
 import { type Component } from 'solid-js';
+import { A } from '@solidjs/router'
 import styles from './styles.module.css';
 
 const Sidebar: Component = () => {
@@ -6,9 +7,9 @@ const Sidebar: Component = () => {
     <h1 class={styles.title}>Nota</h1>
 
     <div class={styles.links}>
-      <a href="/project-1">Project 1</a>
-      <a href="/project-2">Project 2</a>
-      <a href="/project-3">Project 3</a>
+      <A href="/project-1">Project 1</A>
+      <A href="/project-2">Project 2</A>
+      <A href="/project-3">Project 3</A>
     </div>
   </aside>;
 };
