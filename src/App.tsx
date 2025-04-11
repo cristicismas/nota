@@ -1,13 +1,16 @@
-import { createSignal, type Component } from 'solid-js';
+import { type Component } from 'solid-js';
+
+import Sidebar from './components/Sidebar'
+import PageContent from './components/PageContent'
 
 import styles from './App.module.css';
 
 const App: Component = () => {
-  const [count, setCount] = createSignal(10)
-
   return (
     <div class={styles.app}>
-      {count()}
+      <Sidebar />
+
+      <PageContent />
     </div>
   );
 };

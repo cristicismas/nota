@@ -1,0 +1,15 @@
+.sidebar {
+  border-right: 1px solid #202233;
+  box-shadow: 1px 2px 5px #202233;
+  padding: 0 24px;
+}
+
+.title {
+  margin-bottom: 32px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
