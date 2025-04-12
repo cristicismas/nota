@@ -1,3 +1,9 @@
 .container {
   padding: 24px;
 }
+
+.innerPage {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}

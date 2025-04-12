@@ -1,0 +1,22 @@
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.markdown {
+  zoom: 70%;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6,
+.markdown p {
+  margin-bottom: .5em;
+}
+
+.markdown p {
+  font-size: 1.5rem;
+}

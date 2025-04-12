@@ -1,0 +1,38 @@
+"use client";
+
+import { useEffect, useState } from "react";
+// components
+import Tabs from "../Tabs";
+import TabContent from "../TabContent";
+// styles
+import styles from "./styles.module.css";
+
+const PageContent = ({ data }) => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    if (activeTab >= data?.tabs?.length) {
+      setActiveTab(data?.tabs?.length - 1);
+    }
+  }, [activeTab]);
+
+  return (
+    <div className={styles.container}>
+      {data ? (
+        <div className={styles.innerPage}>
+          <Tabs
+            tabs={data?.tabs}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+
+          <TabContent data={data?.tabs?.[activeTab]} />
+        </div>
+      ) : (
+        <h1>Not found</h1>
+      )}
+    </div>
+  );
+};
+
+export default PageContent;

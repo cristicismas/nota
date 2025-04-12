@@ -1,0 +1,19 @@
+.tabs {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tabButton {
+  padding: 4px 6px;
+  color: #777;
+  border-bottom: 1px solid #777;
+  transition: all .3s;
+}
+
+
+.tabButton.active,
+.tabButton:hover {
+  color: var(--text-color);
+  border-color: var(--text-color);
+}
