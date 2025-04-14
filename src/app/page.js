@@ -1,11 +1,13 @@
 import Sidebar from "@/components/Sidebar";
-import PageContent from "@/components/PageContent";
+import HomepageContent from "@/components/HomepageContent";
+import styles from "./styles.module.css";
 
 export default function Home() {
   return (
-    <div>
+    <div className={styles.page}>
       <Sidebar />
-      <PageContent />
+
+      <HomepageContent />
     </div>
   );
 }

@@ -1,0 +1,26 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 36px;
+}
+
+.title {
+  font-size: 48px;
+  text-align: center;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  min-width: 500px;
+  max-width: 500px;
+}
+
+.pages {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 22px;
+}

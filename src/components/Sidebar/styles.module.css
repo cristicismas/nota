@@ -8,10 +8,12 @@
 
 .title {
   margin-bottom: 32px;
+  margin-left: 8px;
 }
 
 .links {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  font-size: 18px;
 }

@@ -22,11 +22,11 @@ const fetchPage = async (slug) => {
 export default async function Page({ params }) {
   const { page } = await params;
   const pageData = await fetchPage(page);
-  console.log(pageData);
 
   return (
     <div className={styles.page}>
       <Sidebar />
+
       <PageContent data={pageData} />
     </div>
   );
