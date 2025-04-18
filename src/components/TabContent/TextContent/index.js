@@ -8,13 +8,12 @@ import styles from "./styles.module.css";
 const TextContent = ({ data }) => {
   const editor = useCreateBlockNote({});
 
-  console.log(editor.document);
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{data?.title}</h1>
 
       <div className={styles.markdown}>
-        <BlockNoteView editor={editor} />
+        <BlockNoteView data-custom-theme editor={editor} />
       </div>
     </div>
   );

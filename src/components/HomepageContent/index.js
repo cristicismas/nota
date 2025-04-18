@@ -1,28 +1,7 @@
 import StyledLink from "../StyledLink";
 import styles from "./styles.module.css";
 
-const fetchPages = async () => {
-  try {
-    const serverUrl = process.env.SERVER_URL;
-    const response = await fetch(`${serverUrl}/pages`).then((res) => {
-      if (res.status !== 200) {
-        return null;
-      } else {
-        return res.json();
-      }
-    });
-
-    return response;
-  } catch (err) {
-    console.error("Error fetching from server: ", err);
-    return null;
-  }
-};
-
-const HomepageContent = async () => {
-  const pages = await fetchPages();
-  console.log(pages);
-
+const HomepageContent = ({ pages }) => {
   return (
     <div className={styles.container}>
       {pages === null ? (

@@ -1,0 +1,60 @@
+.page {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+.form {
+  background-color: var(--background-alt);
+  display: flex;
+  padding: 32px;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 500px;
+  margin-top: min(300px, 10vh);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form label {
+  font-size: 22px;
+}
+
+.form input {
+  background-color: var(--hover);
+  border: none;
+  padding: 8px;
+  font-size: 22px;
+  color: #eee;
+}
+
+.form input:focus {
+  background-color: var(--background);
+}
+
+.form button {
+  background-color: var(--background);
+  padding: 8px;
+  font-size: 22px;
+  transition: all .2s;
+}
+
+.form button:focus,
+.form button:hover {
+  background-color: var(--hover);
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+}
