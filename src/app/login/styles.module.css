@@ -3,6 +3,7 @@
   justify-content: center;
   min-height: 100vh;
   align-items: flex-start;
+  padding: 32px;
 }
 
 .form {
@@ -11,7 +12,7 @@
   padding: 32px;
   flex-direction: column;
   gap: 32px;
-  min-width: 500px;
+  width: 500px;
   margin-top: min(300px, 10vh);
 }
 
@@ -31,6 +32,7 @@
 }
 
 .form input {
+  width: 100%;
   background-color: var(--hover);
   border: none;
   padding: 8px;
@@ -57,4 +59,10 @@
 .loaderContainer {
   display: flex;
   justify-content: center;
+}
+
+.error {
+  text-align: center;
+  font-size: 18px;
+  color: #e24a4a;
 }

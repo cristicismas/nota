@@ -42,7 +42,7 @@ export default function Home() {
     <div className={styles.page}>
       <Sidebar />
 
-      <HomepageContent pages={pages} />
+      <HomepageContent pages={pages} loading={isLoading} />
     </div>
   );
 }

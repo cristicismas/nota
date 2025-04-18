@@ -13,11 +13,14 @@ export default function Page() {
   useCookieValidation();
 
   const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const params = useParams();
   const { page } = params;
 
   const fetchPage = async (slug) => {
+    setLoading(true);
+
     try {
       const serverUrl = process.env.SERVER_URL;
       const res = await fetch(`${serverUrl}/pages/${slug}`, {
@@ -30,6 +33,8 @@ export default function Page() {
       }
     } catch (err) {
       console.error("Error fetching from server: ", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,7 +46,7 @@ export default function Page() {
     <div className={styles.page}>
       <Sidebar />
 
-      <PageContent data={pageData} />
+      <PageContent data={pageData} loading={loading} />
     </div>
   );
 }

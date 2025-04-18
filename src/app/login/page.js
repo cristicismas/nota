@@ -1,11 +1,14 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./styles.module.css";
+// components
 import SpinningLoader from "@/components/SpinningLoader";
+// styles
+import styles from "./styles.module.css";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -26,7 +29,13 @@ export default function LoginPage() {
       });
 
       if (!response.ok) {
-        // TODO: handle unauthorized errors
+        if (response.status === 401) {
+          setError("Username or password is wrong");
+        } else if (response.status === 500) {
+          setError("Internal server error");
+        } else {
+          setError("Something unexpected happened");
+        }
       } else {
         router.push("/");
       }
@@ -53,6 +62,8 @@ export default function LoginPage() {
           <label htmlFor="password">Password</label>
           <input required id="password" type="password" />
         </div>
+
+        {error && <div className={styles.error}>{error}</div>}
 
         {isLoading ? (
           <div className={styles.loaderContainer}>

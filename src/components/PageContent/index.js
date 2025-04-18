@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 // components
 import Tabs from "../Tabs";
 import TabContent from "../TabContent";
+import SpinningLoaderPage from "../SpinningLoaderPage";
 // styles
 import styles from "./styles.module.css";
 
-const PageContent = ({ data }) => {
+const PageContent = ({ data, loading }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
@@ -15,6 +16,8 @@ const PageContent = ({ data }) => {
       setActiveTab(data?.tabs?.length - 1);
     }
   }, [activeTab]);
+
+  if (loading && !data) return <SpinningLoaderPage />;
 
   return (
     <div className={styles.container}>
