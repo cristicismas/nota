@@ -5,12 +5,11 @@ import KanbanContent from "./KanbanContent";
 import styles from "./styles.module.css";
 
 const PAGE_TYPE = {
-  TEXT: 0,
-  KANBAN: 1,
+  TEXT: "text",
+  KANBAN: "kanban",
 };
 
 const TabContent = ({ data }) => {
-  console.log(data);
   if (data?.type === PAGE_TYPE.TEXT) {
     return <TextContent data={data} />;
   } else if (data?.type === PAGE_TYPE.KANBAN) {

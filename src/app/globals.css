@@ -69,3 +69,8 @@ h5 {
 h6 {
   font-size: 1.5rem;
 }
+
+/* BlockNote styles */
+body .bn-container[data-custom-theme] {
+  --bn-colors-editor-background: var(--background);
+}
