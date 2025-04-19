@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
 // components
 import Link from "next/link";
-import StyledLink from "../StyledLink";
+import StyledButton from "../StyledButton";
 import SimpleImage from "../SimpleImage";
 // styles
 import styles from "./styles.module.css";
@@ -9,6 +10,9 @@ import fetcher from "@/helpers/swrFetcher";
 
 const Sidebar = () => {
   const router = useRouter();
+
+  const { data: pages, mutate } = useSWR("pages");
+
   const logOut = async () => {
     try {
       await fetcher("logout", { method: "POST" });
@@ -18,6 +22,15 @@ const Sidebar = () => {
     }
   };
 
+  const addPage = async () => {
+    const newPage = await fetcher("page", {
+      method: "POST",
+      body: JSON.stringify({ pageTitle: "Test Page" }),
+    });
+
+    mutate([...pages, newPage]);
+  };
+
   return (
     <aside className={styles.sidebar}>
       <h1 className={styles.title}>
@@ -25,10 +38,24 @@ const Sidebar = () => {
       </h1>
 
       <div className={styles.links}>
-        <StyledLink href="/project-1">Project 1</StyledLink>
-        <StyledLink href="/project-2">Project 2</StyledLink>
-        <StyledLink href="/project-3">Project 3</StyledLink>
+        {pages &&
+          pages.map((page) => (
+            <StyledButton key={page.slug} href={`/${page.slug}`}>
+              {page.page_title}
+            </StyledButton>
+          ))}
+
+        <StyledButton className={styles.addPage} onClick={addPage}>
+          <SimpleImage
+            disableLazyLoad
+            src={"/icons/plus.svg"}
+            width={18}
+            height={18}
+          />
+          <span>Add page</span>
+        </StyledButton>
       </div>
+
       <div className={styles.stickyBar}>
         <button onClick={logOut} className={styles.logOut}>
           <SimpleImage

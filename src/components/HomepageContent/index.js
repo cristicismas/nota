@@ -1,8 +1,8 @@
 import SpinningLoaderPage from "../SpinningLoaderPage";
-import StyledLink from "../StyledLink";
+import StyledButton from "../StyledButton";
 import styles from "./styles.module.css";
 
-const HomepageContent = ({ pages, loading }) => {
+const HomepageContent = ({ pages = [], loading }) => {
   if (loading) {
     return <SpinningLoaderPage />;
   }
@@ -13,10 +13,10 @@ const HomepageContent = ({ pages, loading }) => {
         <div className={styles.title}>My Pages:</div>
 
         <div className={styles.pages}>
-          {pages?.map((page, index) => (
-            <StyledLink key={index} href={page?.slug} className={styles.link}>
-              {page?.title}
-            </StyledLink>
+          {pages.map((page, index) => (
+            <StyledButton key={index} href={page.slug} className={styles.link}>
+              {page.page_title}
+            </StyledButton>
           ))}
         </div>
       </div>
