@@ -1,12 +1,23 @@
 const fetcher = async (url, options) => {
-  const response = await fetch(`${process.env.SERVER_URL}/${url}`, {
+  const fetchOptions = {
     ...options,
     credentials: "include",
-  });
+  };
+
+  if (options?.body) {
+    fetchOptions.headers = {
+      "Content-Type": "application/json",
+    };
+  }
+
+  const response = await fetch(
+    `${process.env.SERVER_URL}/${url}`,
+    fetchOptions,
+  );
 
   if (!response.ok) {
     const error = await response.json();
-    throw error;
+    throw { ...error, status: response.status };
   }
 
   return response.json();

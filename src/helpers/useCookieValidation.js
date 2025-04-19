@@ -1,19 +1,14 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import fetcher from "./swrFetcher";
 
 const useCookieValidation = async () => {
   const router = useRouter();
 
   useEffect(() => {
     try {
-      const serverUrl = process.env.SERVER_URL;
-      fetch(`${serverUrl}/validate`, {
-        credentials: "include",
-        cache: "no-store",
-      }).then((res) => {
-        if (!res.ok) {
-          router.push("/login");
-        }
+      fetcher("validate", { method: "POST", cache: "no-store" }).catch(() => {
+        router.push("/login");
       });
     } catch (err) {
       console.error(err);

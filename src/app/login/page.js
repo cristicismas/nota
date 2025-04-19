@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import fetcher from "@/helpers/swrFetcher";
 // components
 import SpinningLoader from "@/components/SpinningLoader";
 // styles
@@ -14,35 +15,26 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     try {
       const username = e.target.querySelector("#username").value;
       const password = e.target.querySelector("#password").value;
 
-      const response = await fetch(`${process.env.SERVER_URL}/login`, {
+      await fetcher("login", {
         method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ username, password }),
       });
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          setError("Username or password is wrong");
-        } else if (response.status === 500) {
-          setError("Internal server error");
-        } else {
-          setError("Something unexpected happened");
-        }
-      } else {
-        router.push("/");
-      }
-
-      console.log(response);
+      router.push("/");
     } catch (err) {
-      console.error(err);
+      if (err.status === 401) {
+        setError("Username or password is wrong");
+      } else if (err.status === 500) {
+        setError("Internal server error");
+      } else {
+        setError("Something unexpected happened");
+      }
     } finally {
       setIsLoading(false);
     }
