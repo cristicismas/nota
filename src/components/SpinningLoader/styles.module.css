@@ -5,7 +5,7 @@
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s ease-in-out infinite;
-  border-color: #eee;
+  border-color: var(--text-color);
   border-bottom-color: transparent;
   border-width: 3px;
   border-style: solid;

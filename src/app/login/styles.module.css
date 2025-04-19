@@ -37,7 +37,7 @@
   border: none;
   padding: 8px;
   font-size: 22px;
-  color: #eee;
+  color: var(--text-color);
 }
 
 .form input:focus {

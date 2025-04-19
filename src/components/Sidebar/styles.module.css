@@ -12,12 +12,6 @@
   margin-left: 8px;
 }
 
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  font-size: 18px;
-}
 
 .stickyBar {
   display: flex;
@@ -38,22 +32,8 @@
   gap: 8px;
   font-size: 18px;
   padding: 8px 16px;
-  border-radius: 6px;
 }
 
 .logOut img {
-  margin-bottom: 4px;
-}
-
-.addPage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  gap: 4px;
-  margin-top: 16px;
-}
-
-.addPage img {
   margin-bottom: 4px;
 }
