@@ -10,7 +10,8 @@ const PAGE_TYPE = {
 };
 
 const TabContent = ({ data }) => {
-  if (data?.type === PAGE_TYPE.TEXT) {
+  console.log(data);
+  if (data?.tab_type === PAGE_TYPE.TEXT) {
     return <TextContent data={data} />;
   } else if (data?.type === PAGE_TYPE.KANBAN) {
     return <KanbanContent data={data} />;

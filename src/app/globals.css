@@ -4,6 +4,7 @@
   --hover: #232538;
   --border-active: #ddd;
   --text-color: #eee;
+  --error: #e24a4a;
 }
 
 a {
@@ -24,6 +25,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+}
+
+body.overflow-hidden {
+  overflow: hidden;
 }
 
 * {

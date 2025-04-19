@@ -64,5 +64,5 @@
 .error {
   text-align: center;
   font-size: 18px;
-  color: #e24a4a;
+  color: var(--error);
 }

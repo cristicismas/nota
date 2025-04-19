@@ -8,35 +8,79 @@ import styles from "./styles.module.css";
 import StyledButton from "@/components/StyledButton";
 import SimpleImage from "@/components/SimpleImage";
 import PageCreationInput from "./PageCreationInput";
+import Modal from "@/components/Modal";
 
 const PagesList = () => {
   const [isCreatingPage, setIsCreatingPage] = useState(false);
+  const [pageToDelete, setPageToDelete] = useState(null);
 
   const { data: pages, mutate } = useSWR("pages");
 
-  const addPage = async (pageTitle) => {
-    const newPage = await fetcher("page", {
-      method: "POST",
-      body: JSON.stringify({ pageTitle }),
-    });
-
-    mutate([...pages, newPage]);
-    setIsCreatingPage(false);
+  const deletePage = async (pageId) => {
+    await fetcher(`pages/${pageId}`, { method: "DELETE" });
+    setPageToDelete(null);
+    mutate();
   };
 
   return (
     <div className={styles.links}>
       {pages &&
         pages.map((page) => (
-          <StyledButton key={page.slug} href={`/${page.slug}`}>
-            {page.page_title}
-          </StyledButton>
+          <div className={styles.pageLinkContainer} key={page.slug}>
+            <StyledButton className={styles.pageLink} href={`/${page.slug}`}>
+              {page.page_title}
+            </StyledButton>
+
+            <button
+              onClick={() => setPageToDelete(page)}
+              className={styles.deletePageButton}
+            >
+              <SimpleImage
+                disableLazyLoad
+                src={"/icons/close.svg"}
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
         ))}
+
+      {pageToDelete && (
+        <Modal
+          isOpen={pageToDelete}
+          setIsOpen={() => setPageToDelete(null)}
+          overlayClassName={styles.overlay}
+          className={styles.innerOverlay}
+          shouldCloseOnEsc
+          disableScroll
+          container="modal-container"
+        >
+          <div className={styles.deletePageContainer}>
+            <div className={styles.modalTitle}>
+              Are you sure you want to delete "{pageToDelete.page_title}" ?
+            </div>
+            <div className={styles.buttons}>
+              <button
+                className={styles.abort}
+                onClick={() => setPageToDelete(null)}
+              >
+                Abort
+              </button>
+              <button
+                className={styles.delete}
+                onClick={() => deletePage(pageToDelete.page_id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
 
       {isCreatingPage && (
         <PageCreationInput
-          addPage={addPage}
           abort={() => setIsCreatingPage(false)}
+          onFinished={() => setIsCreatingPage(false)}
         />
       )}
 

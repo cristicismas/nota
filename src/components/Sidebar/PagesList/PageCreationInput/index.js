@@ -1,14 +1,28 @@
+import { useSWRConfig } from "swr";
 import { useEffect, useRef } from "react";
 import useOutsideClick from "@/helpers/useOutsideClick";
-import styles from "./styles.module.css";
+import fetcher from "@/helpers/swrFetcher";
 import SimpleImage from "@/components/SimpleImage";
+import styles from "./styles.module.css";
 
-const PageCreationInput = ({ addPage, abort }) => {
+const PageCreationInput = ({ abort, onFinished }) => {
+  const { mutate } = useSWRConfig();
   const inputRef = useRef();
   const formRef = useRef();
 
+  const addPage = async (pageTitle) => {
+    const newPage = await fetcher("page", {
+      method: "POST",
+      body: JSON.stringify({ pageTitle }),
+    });
+
+    await mutate("pages");
+    onFinished(newPage);
+  };
+
   const handleSubmit = (formData) => {
     const pageTitle = formData.get("page-title-input");
+    inputRef.current.blur();
     addPage(pageTitle);
   };
 
@@ -20,6 +34,7 @@ const PageCreationInput = ({ addPage, abort }) => {
 
   useOutsideClick(formRef, () => {
     if (inputRef?.current?.value) {
+      inputRef.current.blur();
       addPage(inputRef.current.value);
     }
   }, []);

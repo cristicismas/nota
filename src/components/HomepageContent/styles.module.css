@@ -24,3 +24,10 @@
   gap: 16px;
   font-size: 22px;
 }
+
+.createPageButton {
+  font-size: 22px;
+  background-color: var(--background-alt);
+  margin: 0 auto;
+  padding: 8px 22px;
+}

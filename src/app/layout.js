@@ -23,7 +23,10 @@ export default function RootLayout({ children }) {
         />
       </Head>
 
-      <body style={{ background: "var(--background)" }}>{children}</body>
+      <body style={{ background: "var(--background)" }}>
+        {children}
+        <div id="modal-container" />
+      </body>
     </html>
   );
 }
