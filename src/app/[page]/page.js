@@ -1,52 +1,21 @@
 "use client";
-import { useState, useEffect } from "react";
+import { SWRConfig } from "swr";
 // helpers
 import useCookieValidation from "@/helpers/useCookieValidation";
-import { useParams } from "next/navigation";
+import fetcher from "@/helpers/swrFetcher";
 // components
-import Sidebar from "@/components/Sidebar";
-import PageContent from "@/components/PageContent";
-// styles
-import styles from "./styles.module.css";
+import DynamicPage from "@/page-components/DynamicPage";
 
 export default function Page() {
   useCookieValidation();
 
-  const [pageData, setPageData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const params = useParams();
-  const { page } = params;
-
-  const fetchPage = async (slug) => {
-    setLoading(true);
-
-    try {
-      const serverUrl = process.env.SERVER_URL;
-      const res = await fetch(`${serverUrl}/pages/${slug}`, {
-        credentials: "include",
-      });
-
-      if (res.ok) {
-        const pageData = await res.json();
-        setPageData(pageData);
-      }
-    } catch (err) {
-      console.error("Error fetching from server: ", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPage(page);
-  }, []);
-
   return (
-    <div className={styles.page}>
-      <Sidebar />
-
-      <PageContent data={pageData} loading={loading} />
-    </div>
+    <SWRConfig
+      value={{
+        fetcher,
+      }}
+    >
+      <DynamicPage />
+    </SWRConfig>
   );
 }
