@@ -10,11 +10,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@blocknote/mantine": "^0.28.0",
-    "@blocknote/react": "^0.28.0",
     "next": "15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "slate": "^0.112.0",
+    "slate-history": "^0.113.1",
+    "slate-react": "^0.112.1",
     "swr": "^2.3.3"
   },
   "devDependencies": {
