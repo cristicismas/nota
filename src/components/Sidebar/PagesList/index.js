@@ -1,6 +1,7 @@
 import { useState } from "react";
 // helpers
 import useSWR from "swr";
+import { useSWRConfig } from "swr";
 import fetcher from "@/helpers/swrFetcher";
 // styles
 import styles from "./styles.module.css";
@@ -14,12 +15,20 @@ const PagesList = () => {
   const [isCreatingPage, setIsCreatingPage] = useState(false);
   const [pageToDelete, setPageToDelete] = useState(null);
 
-  const { data: pages, mutate } = useSWR("pages");
+  const { mutate } = useSWRConfig();
+
+  const { data: pages } = useSWR("pages");
 
   const deletePage = async (pageId) => {
     await fetcher(`pages/${pageId}`, { method: "DELETE" });
     setPageToDelete(null);
-    mutate();
+
+    mutate((key) => {
+      if (key === "pages") return true;
+      if (key.startsWith("pages/")) return true;
+
+      return false;
+    });
   };
 
   return (
