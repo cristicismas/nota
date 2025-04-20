@@ -8,7 +8,7 @@ import SpinningLoaderPage from "../SpinningLoaderPage";
 // styles
 import styles from "./styles.module.css";
 
-const PageContent = ({ data, loading }) => {
+const PageContent = ({ data, loading, onContentUpdate }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
@@ -29,7 +29,10 @@ const PageContent = ({ data, loading }) => {
             setActiveTab={setActiveTab}
           />
 
-          <TabContent data={data?.tabs?.[activeTab]} />
+          <TabContent
+            data={data?.tabs?.[activeTab]}
+            onContentUpdate={onContentUpdate}
+          />
         </div>
       ) : (
         <h1>Not found</h1>

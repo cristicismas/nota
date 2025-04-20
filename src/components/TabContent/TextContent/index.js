@@ -20,10 +20,12 @@ import { Slate, ReactEditor, Editable, withReact } from "slate-react";
 import ElementRenderer from "./ElementRenderer";
 import fetcher from "@/helpers/swrFetcher";
 
-const TextContent = ({ data }) => {
+const TextContent = ({ data, onContentUpdate }) => {
+  const initialEditorValue = useRef(data?.text_content);
+  const upToDateEditorValue = useRef(data?.text_content);
   const [editorValue, setEditorValue] = useState(data?.text_content);
   const [_isPending, startTransition] = useTransition();
-  // Keep count of the latest generation and set it to the server, in case it
+  // Keep count of the latest generation and send it to the server, in case it
   // receives the requests out-of-order, it can know which was the last change
   const editGeneration = useRef(data.generation || 0);
 
@@ -69,19 +71,38 @@ const TextContent = ({ data }) => {
     [editor],
   );
 
+  const updateTabContent = async () => {
+    await fetcher(`tabs/${data?.tab_id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        tab_type: data.tab_type,
+        text_content: upToDateEditorValue.current,
+        generation: editGeneration.current,
+      }),
+    });
+    onContentUpdate({
+      tab_id: data.tab_id,
+      text_content: JSON.parse(upToDateEditorValue.current),
+    });
+  };
+
+  useEffect(() => {
+    if (data.generation >= editGeneration.current) {
+      editGeneration.current = data.generation;
+    }
+
+    setEditorValue(data.text_content);
+
+    return async () => {
+      await updateTabContent();
+    };
+  }, []);
+
   useEffect(() => {
     const debounce = setTimeout(() => {
-      console.log("debounced editor value: ");
-      console.log("generation value: ", editGeneration.current);
-
-      fetcher(`tabs/${data?.tab_id}`, {
-        method: "PUT",
-        body: JSON.stringify({
-          tab_type: data.tab_type,
-          text_content: editorValue,
-          generation: editGeneration.current,
-        }),
-      });
+      if (initialEditorValue.current !== editorValue) {
+        updateTabContent();
+      }
     }, 500);
 
     return () => clearTimeout(debounce);
@@ -111,9 +132,8 @@ const TextContent = ({ data }) => {
               startTransition(() => {
                 editGeneration.current += 1;
                 setEditorValue(content);
+                upToDateEditorValue.current = content;
               });
-              // TODO: send to db
-              // debounce first
             }
           }}
           editor={editor}

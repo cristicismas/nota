@@ -2,17 +2,15 @@
 
 import TextContent from "./TextContent";
 import KanbanContent from "./KanbanContent";
-import styles from "./styles.module.css";
 
 const PAGE_TYPE = {
   TEXT: "text",
   KANBAN: "kanban",
 };
 
-const TabContent = ({ data }) => {
-  console.log(data);
+const TabContent = ({ data, onContentUpdate }) => {
   if (data?.tab_type === PAGE_TYPE.TEXT) {
-    return <TextContent data={data} />;
+    return <TextContent data={data} onContentUpdate={onContentUpdate} />;
   } else if (data?.type === PAGE_TYPE.KANBAN) {
     return <KanbanContent data={data} />;
   } else {

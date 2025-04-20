@@ -16,13 +16,34 @@ const DynamicPage = () => {
   const router = useRouter();
   const { page } = params;
 
-  const { data: pageData, isLoading, error } = useSWR(`pages/${page}`);
+  const {
+    data: pageData,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(`pages/${page}`, { optimisticData: true });
 
   useEffect(() => {
     if (error?.status === 404) {
       router.push("/");
     }
   }, [error]);
+
+  const onContentUpdate = (newContent) => {
+    if (newContent.text_content) {
+      const newTabs = pageData.tabs.map((tab) => {
+        if (newContent.tab_id === tab.tab_id) {
+          return {
+            ...tab,
+            text_content: JSON.stringify(newContent.text_content),
+          };
+        } else {
+          return tab;
+        }
+      });
+      mutate({ ...pageData, tabs: newTabs });
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -33,7 +54,11 @@ const DynamicPage = () => {
       {error ? (
         <ErrorContent error={error} />
       ) : (
-        <PageContent data={pageData} loading={isLoading} />
+        <PageContent
+          data={pageData}
+          loading={isLoading}
+          onContentUpdate={onContentUpdate}
+        />
       )}
     </div>
   );
