@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 import StyledButton from "@/components/StyledButton";
 import SimpleImage from "@/components/SimpleImage";
 import PageCreationInput from "./PageCreationInput";
-import Modal from "@/components/Modal";
+import DeletePageModal from "./DeletePageModal";
 
 const PagesList = () => {
   const [isCreatingPage, setIsCreatingPage] = useState(false);
@@ -18,6 +18,8 @@ const PagesList = () => {
   const { mutate } = useSWRConfig();
 
   const { data: pages } = useSWR("pages");
+
+  console.log("DATA IN PAGELIST: ", pages);
 
   const deletePage = async (pageId) => {
     await fetcher(`pages/${pageId}`, { method: "DELETE" });
@@ -55,42 +57,18 @@ const PagesList = () => {
           </div>
         ))}
 
-      {pageToDelete && (
-        <Modal
-          isOpen={pageToDelete}
-          setIsOpen={() => setPageToDelete(null)}
-          overlayClassName={styles.overlay}
-          className={styles.innerOverlay}
-          shouldCloseOnEsc
-          disableScroll
-          container="modal-container"
-        >
-          <div className={styles.deletePageContainer}>
-            <div className={styles.modalTitle}>
-              Are you sure you want to delete "{pageToDelete.page_title}" ?
-            </div>
-            <div className={styles.buttons}>
-              <button
-                className={styles.abort}
-                onClick={() => setPageToDelete(null)}
-              >
-                Abort
-              </button>
-              <button
-                className={styles.delete}
-                onClick={() => deletePage(pageToDelete.page_id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
+      <DeletePageModal
+        isOpen={pageToDelete}
+        handleClose={() => setPageToDelete(null)}
+        handleDelete={() => deletePage(pageToDelete.page_id)}
+        pageTitle={pageToDelete?.page_title}
+      />
 
       {isCreatingPage && (
         <PageCreationInput
           abort={() => setIsCreatingPage(false)}
           onFinished={() => setIsCreatingPage(false)}
+          currentPages={pages}
         />
       )}
 

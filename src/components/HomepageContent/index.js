@@ -54,6 +54,7 @@ const HomepageContent = ({ pages = [], loading }) => {
               setIsCreatingPage(false);
               router.push(newPage.slug);
             }}
+            currentPages={pages}
           />
         )}
       </div>

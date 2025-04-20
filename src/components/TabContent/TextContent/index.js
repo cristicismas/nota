@@ -80,10 +80,13 @@ const TextContent = ({ data, onContentUpdate }) => {
         generation: editGeneration.current,
       }),
     });
-    onContentUpdate({
-      tab_id: data.tab_id,
-      text_content: JSON.parse(upToDateEditorValue.current),
-    });
+
+    if (upToDateEditorValue.current !== data?.text_content) {
+      onContentUpdate({
+        tab_id: data.tab_id,
+        text_content: JSON.parse(upToDateEditorValue.current),
+      });
+    }
   };
 
   useEffect(() => {

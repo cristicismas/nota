@@ -5,7 +5,7 @@ import fetcher from "@/helpers/swrFetcher";
 import SimpleImage from "@/components/SimpleImage";
 import styles from "./styles.module.css";
 
-const PageCreationInput = ({ abort, onFinished }) => {
+const PageCreationInput = ({ abort, onFinished, currentPages }) => {
   const { mutate } = useSWRConfig();
   const inputRef = useRef();
   const formRef = useRef();
@@ -16,12 +16,11 @@ const PageCreationInput = ({ abort, onFinished }) => {
       body: JSON.stringify({ pageTitle }),
     });
 
-    await mutate((key) => {
-      if (key === "pages") return true;
-      if (key.startsWith("pages/")) return true;
-
-      return false;
+    await mutate("pages", currentPages, {
+      revalidate: true,
+      optimisticData: false,
     });
+
     onFinished(newPage);
   };
 

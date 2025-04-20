@@ -49,16 +49,20 @@ const DynamicPage = () => {
     <div className={styles.page}>
       <Sidebar />
 
-      {error?.status === 404 && <SpinningLoaderPage />}
-
-      {error ? (
-        <ErrorContent error={error} />
+      {error?.status === 404 ? (
+        <SpinningLoaderPage />
       ) : (
-        <PageContent
-          data={pageData}
-          loading={isLoading}
-          onContentUpdate={onContentUpdate}
-        />
+        <>
+          {error && <ErrorContent error={error} />}
+
+          {!error && pageData && (
+            <PageContent
+              data={pageData}
+              loading={isLoading}
+              onContentUpdate={onContentUpdate}
+            />
+          )}
+        </>
       )}
     </div>
   );
