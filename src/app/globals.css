@@ -7,6 +7,11 @@
   --error: #e24a4a;
 }
 
+*:focus-visible {
+  outline: none;
+  border: none;
+}
+
 a {
   text-decoration: none;
 }

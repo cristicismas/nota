@@ -119,7 +119,7 @@ const TextContent = ({ data, onContentUpdate }) => {
     <div className={styles.container}>
       <h1 className={styles.title}>{data?.title}</h1>
 
-      <div className={styles.markdown}>
+      <div className={`${styles.markdown} markdown`}>
         <Slate
           onChange={(value) => {
             const isAstChange = editor.operations.some(
@@ -143,7 +143,6 @@ const TextContent = ({ data, onContentUpdate }) => {
             onBeforeInput={handleDOMBeforeInput}
             renderElement={renderElement}
             placeholder="Write your text here..."
-            autoFocus
           />
         </Slate>
       </div>
