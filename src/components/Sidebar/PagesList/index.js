@@ -19,8 +19,6 @@ const PagesList = () => {
 
   const { data: pages } = useSWR("pages");
 
-  console.log("DATA IN PAGELIST: ", pages);
-
   const deletePage = async (pageId) => {
     await fetcher(`pages/${pageId}`, { method: "DELETE" });
     setPageToDelete(null);

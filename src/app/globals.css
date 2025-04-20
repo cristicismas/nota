@@ -7,9 +7,13 @@
   --error: #e24a4a;
 }
 
-*:focus-visible {
+.markdown *:focus-visible {
   outline: none;
   border: none;
+}
+
+.markdown h1:first-child {
+  text-align: center;
 }
 
 a {
