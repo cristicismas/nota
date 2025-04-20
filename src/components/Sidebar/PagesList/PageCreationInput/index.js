@@ -16,7 +16,12 @@ const PageCreationInput = ({ abort, onFinished }) => {
       body: JSON.stringify({ pageTitle }),
     });
 
-    await mutate("pages");
+    await mutate((key) => {
+      if (key === "pages") return true;
+      if (key.startsWith("pages/")) return true;
+
+      return false;
+    });
     onFinished(newPage);
   };
 

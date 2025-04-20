@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
 // helpers
 import { useRouter, useParams } from "next/navigation";
@@ -16,13 +16,10 @@ const DynamicPage = () => {
   const router = useRouter();
   const { page } = params;
 
-  const [isRedirecting, setIsRedirecting] = useState(false);
-
   const { data: pageData, isLoading, error } = useSWR(`pages/${page}`);
 
   useEffect(() => {
     if (error?.status === 404) {
-      setIsRedirecting(true);
       router.push("/");
     }
   }, [error]);
@@ -31,7 +28,7 @@ const DynamicPage = () => {
     <div className={styles.page}>
       <Sidebar />
 
-      {isRedirecting && <SpinningLoaderPage />}
+      {error?.status === 404 && <SpinningLoaderPage />}
 
       {error ? (
         <ErrorContent error={error} />
