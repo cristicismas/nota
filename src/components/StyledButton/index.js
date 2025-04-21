@@ -6,6 +6,7 @@ const StyledButton = ({
   className = "",
   href,
   onClick,
+  type,
   ...props
 }) => {
   if (href) {
@@ -14,11 +15,12 @@ const StyledButton = ({
         {children}
       </Link>
     );
-  } else if (onClick) {
+  } else if (onClick || type) {
     return (
       <button
         className={`${styles.button} ${className}`}
         onClick={onClick}
+        type={type}
         {...props}
       >
         {children}

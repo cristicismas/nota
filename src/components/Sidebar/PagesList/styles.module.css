@@ -12,41 +12,9 @@
   font-size: 18px;
   gap: 4px;
   margin-top: 16px;
+  cursor: pointer;
 }
 
 .addPage img {
   margin-bottom: 4px;
-}
-
-.pageLinkContainer {
-  position: relative;
-  width: 100%;
-  display: flex;
-}
-
-.pageLink {
-  width: 100%;
-}
-
-.pageLinkContainer:hover {
-  background-color: var(--hover);
-  transition: background-color .2s;
-
-  & .deletePageButton {
-    opacity: 1;
-  }
-}
-
-.deletePageButton {
-  opacity: 0;
-  transition: opacity .2s, background-color .2s;
-  display: flex;
-  padding: 7px;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-
-  &:hover {
-    background-color: var(--background);
-  }
 }

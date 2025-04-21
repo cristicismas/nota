@@ -10,6 +10,7 @@ import StyledButton from "@/components/StyledButton";
 import SimpleImage from "@/components/SimpleImage";
 import PageCreationInput from "./PageCreationInput";
 import DeletePageModal from "./DeletePageModal";
+import PageLink from "./PageLink";
 
 const PagesList = () => {
   const [isCreatingPage, setIsCreatingPage] = useState(false);
@@ -17,7 +18,7 @@ const PagesList = () => {
 
   const { mutate } = useSWRConfig();
 
-  const { data: pages } = useSWR("pages");
+  const { data: pages, mutate: mutatePages } = useSWR("pages");
 
   const deletePage = async (pageId) => {
     await fetcher(`pages/${pageId}`, { method: "DELETE" });
@@ -32,27 +33,27 @@ const PagesList = () => {
     });
   };
 
+  const handlePageRename = async (pageId, newTitle, newSlug) => {
+    const updatedPages = pages.map((page) => {
+      if (page.page_id === pageId) {
+        return { ...page, page_title: newTitle, slug: newSlug };
+      }
+      return page;
+    });
+
+    await mutatePages(updatedPages, { optimisticData: updatedPages });
+  };
+
   return (
     <div className={styles.links}>
       {pages &&
         pages.map((page) => (
-          <div className={styles.pageLinkContainer} key={page.slug}>
-            <StyledButton className={styles.pageLink} href={`/${page.slug}`}>
-              {page.page_title}
-            </StyledButton>
-
-            <button
-              onClick={() => setPageToDelete(page)}
-              className={styles.deletePageButton}
-            >
-              <SimpleImage
-                disableLazyLoad
-                src={"/icons/close.svg"}
-                width={24}
-                height={24}
-              />
-            </button>
-          </div>
+          <PageLink
+            page={page}
+            key={page.page_id}
+            onDelete={setPageToDelete}
+            onRename={handlePageRename}
+          />
         ))}
 
       <DeletePageModal
@@ -62,26 +63,28 @@ const PagesList = () => {
         pageTitle={pageToDelete?.page_title}
       />
 
-      {isCreatingPage && (
+      {isCreatingPage ? (
         <PageCreationInput
           abort={() => setIsCreatingPage(false)}
           onFinished={() => setIsCreatingPage(false)}
           currentPages={pages}
         />
+      ) : (
+        <StyledButton
+          className={styles.addPage}
+          onClick={() => {
+            setIsCreatingPage(true);
+          }}
+        >
+          <SimpleImage
+            disableLazyLoad
+            src={"/icons/plus.svg"}
+            width={18}
+            height={18}
+          />
+          <span>Add page</span>
+        </StyledButton>
       )}
-
-      <StyledButton
-        className={styles.addPage}
-        onClick={() => setIsCreatingPage(true)}
-      >
-        <SimpleImage
-          disableLazyLoad
-          src={"/icons/plus.svg"}
-          width={18}
-          height={18}
-        />
-        <span>Add page</span>
-      </StyledButton>
     </div>
   );
 };

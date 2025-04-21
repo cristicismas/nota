@@ -44,7 +44,3 @@
 .delete:hover {
   background-color: var(--error);
 }
-
-.noWrap {
-  text-wrap: nowrap;
-}

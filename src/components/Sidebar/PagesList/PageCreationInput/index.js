@@ -1,8 +1,10 @@
 import { useSWRConfig } from "swr";
 import { useEffect, useRef } from "react";
-import useOutsideClick from "@/helpers/useOutsideClick";
 import fetcher from "@/helpers/swrFetcher";
+// components
 import SimpleImage from "@/components/SimpleImage";
+import StyledButton from "@/components/StyledButton";
+// styles
 import styles from "./styles.module.css";
 
 const PageCreationInput = ({ abort, onFinished, currentPages }) => {
@@ -36,33 +38,42 @@ const PageCreationInput = ({ abort, onFinished, currentPages }) => {
     }
   }, []);
 
-  useOutsideClick(formRef, () => {
-    if (inputRef?.current?.value) {
-      inputRef.current.blur();
-      addPage(inputRef.current.value);
-    }
-  }, []);
-
   return (
     <form ref={formRef} className={styles.form} action={handleSubmit}>
-      <input
-        ref={inputRef}
-        className={styles.input}
-        name="page-title-input"
-        type="text"
-        minLength={1}
-        maxLength={100}
-        defaultValue={"New Page"}
-      />
+      <div className={styles.inputContainer}>
+        <input
+          ref={inputRef}
+          className={styles.input}
+          name="page-title-input"
+          type="text"
+          title="Empty strings are not allowed in this input"
+          autoComplete="off"
+          pattern="^(?!\s*$).+"
+          required
+          minLength={1}
+          maxLength={100}
+          defaultValue="New Page"
+        />
 
-      <button type="button" className={styles.closeButton} onClick={abort}>
+        <button type="button" className={styles.closeButton} onClick={abort}>
+          <SimpleImage
+            disableLazyLoad
+            src={"/icons/close.svg"}
+            width={24}
+            height={24}
+          />
+        </button>
+      </div>
+
+      <StyledButton type="submit" className={styles.addPage}>
         <SimpleImage
           disableLazyLoad
-          src={"/icons/close.svg"}
-          width={24}
-          height={24}
+          src={"/icons/plus.svg"}
+          width={18}
+          height={18}
         />
-      </button>
+        <span>Add page</span>
+      </StyledButton>
     </form>
   );
 };

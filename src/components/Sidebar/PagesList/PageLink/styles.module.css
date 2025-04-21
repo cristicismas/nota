@@ -1,0 +1,73 @@
+.pageLinkContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.pageLink {
+  width: 100%;
+  padding-right: 76px;
+}
+
+.pageLinkContainer:hover {
+  background-color: var(--hover);
+  transition: background-color .2s;
+
+  & .deletePageButton {
+    opacity: 1;
+  }
+}
+
+.buttons {
+  opacity: 0;
+  transition: opacity .2s;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  display: flex;
+}
+
+.button {
+  transition: background-color .2s;
+  display: flex;
+  padding: 7px;
+
+  &:hover {
+    background-color: var(--background);
+  }
+}
+
+.pageLinkContainer:hover {
+  .buttons {
+    opacity: 1;
+  }
+}
+
+.input {
+  width: 100%;
+  display: flex;
+  background-color: var(--background);
+  border: none;
+  padding: 8px 38px 8px 12px;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.input,
+.input:focus {
+  outline: 2px solid var(--hover);
+}
+
+.form {
+  position: relative;
+}
+
+.abortButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    background-color: var(--background-alt);
+  }
+}

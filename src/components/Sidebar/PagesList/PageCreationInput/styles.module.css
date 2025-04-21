@@ -1,5 +1,10 @@
 .form {
   display: flex;
+  flex-direction: column;
+}
+
+.inputContainer {
+  display: flex;
   position: relative;
 }
 
@@ -10,15 +15,17 @@
   color: var(--text-color);
   border: 1px solid var(--hover);
   padding: 8px;
+  padding-right: 42px;
+  width: 100%;
+  display: flex;
+
   font-size: 18px;
-  text-align: center;
   border-radius: 0;
 
   &:focus {
     box-shadow: none;
     background-image: none;
     margin: 0;
-    padding: 8px;
   }
 }
 
@@ -38,4 +45,17 @@
 .closeButton img {
   height: 24px;
   width: 24px;
+}
+
+.addPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.addPage img {
+  margin-bottom: 4px;
 }

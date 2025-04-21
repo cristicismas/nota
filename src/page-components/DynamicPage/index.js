@@ -16,12 +16,7 @@ const DynamicPage = () => {
   const router = useRouter();
   const { page } = params;
 
-  const {
-    data: pageData,
-    isLoading,
-    error,
-    mutate,
-  } = useSWR(`pages/${page}`, { optimisticData: true });
+  const { data: pageData, isLoading, error, mutate } = useSWR(`pages/${page}`);
 
   useEffect(() => {
     if (error?.status === 404) {

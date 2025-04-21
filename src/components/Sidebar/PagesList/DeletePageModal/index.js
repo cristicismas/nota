@@ -15,8 +15,7 @@ const DeletePageModal = ({ isOpen, handleClose, handleDelete, pageTitle }) => {
     >
       <div className={styles.deletePageContainer}>
         <div className={styles.modalTitle}>
-          Are you sure you want to delete{" "}
-          <span className={styles.noWrap}>"{pageTitle}" ?</span>
+          Are you sure you want to delete <br />"{pageTitle}"?
         </div>
         <div className={styles.buttons}>
           <button className={styles.abort} onClick={handleClose}>
