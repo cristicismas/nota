@@ -5,6 +5,7 @@
   --border-active: #ddd;
   --text-color: #eee;
   --error: #e24a4a;
+  --accent: #16E6C3;
 }
 
 .markdown *:focus-visible {

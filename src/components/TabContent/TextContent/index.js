@@ -23,6 +23,7 @@ import fetcher from "@/helpers/swrFetcher";
 const TextContent = ({ data, onContentUpdate }) => {
   const initialEditorValue = useRef(data?.text_content);
   const upToDateEditorValue = useRef(data?.text_content);
+  // TODO: remove editorValue state and see what happens
   const [editorValue, setEditorValue] = useState(data?.text_content);
   const [_isPending, startTransition] = useTransition();
   // Keep count of the latest generation and send it to the server, in case it

@@ -10,6 +10,7 @@ const PAGE_TYPE = {
 
 const TabContent = ({ data, onContentUpdate }) => {
   if (data?.tab_type === PAGE_TYPE.TEXT) {
+    return <KanbanContent />;
     return <TextContent data={data} onContentUpdate={onContentUpdate} />;
   } else if (data?.type === PAGE_TYPE.KANBAN) {
     return <KanbanContent data={data} />;
