@@ -20,23 +20,25 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
   if (loading && !data) return <SpinningLoaderPage />;
 
   return (
-    <div className={styles.container}>
-      {data ? (
-        <div className={styles.innerPage}>
-          <Tabs
-            tabs={data?.tabs}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
+    <div className={styles.scrollContainer}>
+      <div className={styles.container}>
+        {data ? (
+          <div className={styles.innerPage}>
+            <Tabs
+              tabs={data?.tabs}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
 
-          <TabContent
-            data={data?.tabs?.[activeTab]}
-            onContentUpdate={onContentUpdate}
-          />
-        </div>
-      ) : (
-        <h1>Not found</h1>
-      )}
+            <TabContent
+              data={data?.tabs?.[activeTab]}
+              onContentUpdate={onContentUpdate}
+            />
+          </div>
+        ) : (
+          <h1>Not found</h1>
+        )}
+      </div>
     </div>
   );
 };

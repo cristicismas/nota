@@ -1,21 +1,40 @@
-import { useSortable } from "@dnd-kit/sortable";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { useMemo } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import styles from "./styles.module.css";
+import StyledButton from "@/components/StyledButton";
+import Card from "../Card";
 
-const Column = ({ data, isDragging, className }) => {
-  const { setNodeRef, attributes, listeners, transform, transition } =
-    useSortable({
-      id: data.id,
-      data: {
-        type: "column",
-        column: data,
-      },
-    });
+const Column = ({
+  columnData,
+  cards = [],
+  renameColumn,
+  deleteColumn,
+  addCard,
+  deleteCard,
+  className,
+}) => {
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: columnData?.id,
+    data: {
+      type: "column",
+      column: columnData,
+    },
+  });
 
   const sortableStyle = {
     transition,
     transform: CSS.Transform.toString(transform),
   };
+
+  const cardIds = useMemo(() => cards.map((card) => card.id), [cards]);
 
   if (isDragging)
     return (
@@ -23,7 +42,7 @@ const Column = ({ data, isDragging, className }) => {
         ref={setNodeRef}
         style={sortableStyle}
         className={`${styles.draggingPlaceholder} ${className}`}
-      ></div>
+      />
     );
 
   return (
@@ -33,14 +52,21 @@ const Column = ({ data, isDragging, className }) => {
       className={`${styles.contentColumn} ${className}`}
     >
       <div {...attributes} {...listeners} className={styles.columnTitle}>
-        {data.title}
+        {columnData.title}
       </div>
+
       <div className={styles.cards}>
-        {data.cards.map((card, index) => (
-          <div className={styles.card} key={index}>
-            <div className={styles.cardTitle}>{card.title}</div>
-          </div>
-        ))}
+        <SortableContext items={cardIds}>
+          {cards.map((card) => (
+            <Card cardData={card} deleteCard={deleteCard} key={card.id} />
+          ))}
+        </SortableContext>
+      </div>
+
+      <div className={styles.actions}>
+        <StyledButton onClick={addCard} className={styles.addCardButton}>
+          Add card
+        </StyledButton>
       </div>
     </div>
   );

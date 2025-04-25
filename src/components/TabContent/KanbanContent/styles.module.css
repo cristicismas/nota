@@ -1,7 +1,3 @@
-.container {
-  overflow-x: auto;
-}
-
 .columns {
   display: flex;
   gap: 32px;

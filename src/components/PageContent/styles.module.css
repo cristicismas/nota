@@ -1,3 +1,7 @@
+.scrollContainer {
+  overflow-x: auto;
+}
+
 .container {
   padding: 24px;
 }

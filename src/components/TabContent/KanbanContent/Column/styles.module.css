@@ -17,14 +17,19 @@
 .draggingPlaceholder {
   background-color: transparent;
   border: 2px solid var(--accent);
-
 }
 
-.card {
-  cursor: grab;
-  padding: 12px 16px;
-  font-size: 18px;
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.addCardButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  min-width: 100%;
   border: 1px solid var(--hover);
-  background-color: var(--background);
   border-radius: 12px;
 }
