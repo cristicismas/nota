@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import {
   DndContext,
@@ -6,6 +6,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  pointerWithin,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import styles from "./styles.module.css";
@@ -104,11 +105,14 @@ const KanbanContent = () => {
 
     const { active, over } = e;
 
-    if (!over) {
+    if (!over || !active) {
       return;
     }
 
-    if (over.data.current?.type === "column") {
+    if (
+      over.data.current?.type !== "column" &&
+      active.data.current?.type !== "column"
+    ) {
       return;
     }
 
@@ -119,20 +123,23 @@ const KanbanContent = () => {
       return;
     }
 
-    setColumns((columns) => {
-      const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeColumnId,
-      );
-      const overColumnIndex = columns.findIndex(
-        (column) => column.id === overColumnId,
-      );
+    const activeColumnIndex = columns.findIndex(
+      (column) => column.id === activeColumnId,
+    );
 
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
-    });
+    const overColumnIndex = columns.findIndex(
+      (column) => column.id === overColumnId,
+    );
+
+    if (activeColumnIndex < 0 || overColumnIndex < 0) return;
+
+    const newColumns = arrayMove(columns, activeColumnIndex, overColumnIndex);
+
+    setColumns(newColumns);
   };
 
   const onDragOver = (e) => {
-    // Dirty hack to fix infinite recursion issue with react-dnd...
+    // Stupid workaround to avoid a bug with dnd kit that causes infinite recursion
     setTimeout(() => {
       const { active, over } = e;
 
@@ -154,17 +161,20 @@ const KanbanContent = () => {
 
       // If dropping a card over another card
       if (isActiveCard && isOverCard) {
-        setCards(() => {
-          const activeIndex = cards.findIndex((c) => c.id === activeId);
-          const overIndex = cards.findIndex((c) => c.id === overId);
+        const cardsCopy = structuredClone(cards);
+        const activeIndex = cardsCopy.findIndex((c) => c.id === activeId);
+        const overIndex = cardsCopy.findIndex((c) => c.id === overId);
 
-          if (cards[activeIndex].categoryId !== cards[overIndex].categoryId) {
-            cards[activeIndex].categoryId = cards[overIndex].categoryId;
-          }
+        if (
+          cardsCopy[activeIndex].categoryId !== cardsCopy[overIndex].categoryId
+        ) {
+          cardsCopy[activeIndex].categoryId = cardsCopy[overIndex].categoryId;
+        }
 
-          return arrayMove(cards, activeIndex, overIndex);
-        });
+        const newCards = arrayMove(cardsCopy, activeIndex, overIndex);
+        setCards(newCards);
       }
+
       if (isOverCard) console.log("over card: ", over.id, over.data.current);
 
       // If dropping a card over a column
@@ -172,16 +182,14 @@ const KanbanContent = () => {
       if (isOverColumn) console.log("over column");
 
       if (isActiveCard && isOverColumn) {
-        setCards(() => {
-          const activeIndex = cards.findIndex((c) => c.id === activeId);
+        const activeIndex = cards.findIndex((c) => c.id === activeId);
 
-          if (cards[activeIndex].categoryId !== overId) {
-            cards[activeIndex].categoryId = overId;
-          }
+        const cardsCopy = structuredClone(cards);
 
-          // Switches indexes in the same place, we use this to trigger a re-render
-          return arrayMove(cards, activeIndex, activeIndex);
-        });
+        if (cardsCopy[activeIndex].categoryId !== overId) {
+          cardsCopy[activeIndex].categoryId = overId;
+          setCards(cardsCopy);
+        }
       }
     }, 0);
   };
@@ -200,11 +208,17 @@ const KanbanContent = () => {
 
   const deleteCard = () => {};
 
+  const getCategoryCards = useCallback(
+    (category) => cards.filter((card) => card.categoryId === category.id),
+    [cards],
+  );
+
   return (
     <div className={styles.container}>
       <h1>KANBAN BOARD</h1>
 
       <DndContext
+        collisionDetection={pointerWithin}
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
@@ -212,16 +226,18 @@ const KanbanContent = () => {
       >
         <div className={styles.columns}>
           <SortableContext items={categoryIds}>
-            {columns.map((category) => (
-              <Column
-                columnData={category}
-                key={category.id}
-                className={styles.column}
-                addCard={addCard}
-                deleteCard={deleteCard}
-                cards={cards.filter((card) => card.categoryId === category.id)}
-              />
-            ))}
+            {columns.map((category) => {
+              return (
+                <Column
+                  columnData={category}
+                  key={category.id}
+                  className={styles.column}
+                  addCard={addCard}
+                  deleteCard={deleteCard}
+                  cards={getCategoryCards(category)}
+                />
+              );
+            })}
           </SortableContext>
 
           <div className={styles.column}>

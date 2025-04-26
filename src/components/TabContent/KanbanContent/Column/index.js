@@ -1,5 +1,5 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import styles from "./styles.module.css";
 import StyledButton from "@/components/StyledButton";
@@ -72,4 +72,4 @@ const Column = ({
   );
 };
 
-export default Column;
+export default memo(Column);

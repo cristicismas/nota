@@ -1,3 +1,4 @@
+import { memo } from "react";
 import styles from "./styles.module.css";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -47,4 +48,4 @@ const Card = ({ cardData, deleteCard }) => {
   );
 };
 
-export default Card;
+export default memo(Card);
