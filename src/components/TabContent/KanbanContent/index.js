@@ -108,6 +108,10 @@ const KanbanContent = () => {
       return;
     }
 
+    if (over.data.current?.type === "column") {
+      return;
+    }
+
     const activeColumnId = active.id;
     const overColumnId = over.id;
 
@@ -150,7 +154,7 @@ const KanbanContent = () => {
 
       // If dropping a card over another card
       if (isActiveCard && isOverCard) {
-        setCards((cards) => {
+        setCards(() => {
           const activeIndex = cards.findIndex((c) => c.id === activeId);
           const overIndex = cards.findIndex((c) => c.id === overId);
 
@@ -161,12 +165,14 @@ const KanbanContent = () => {
           return arrayMove(cards, activeIndex, overIndex);
         });
       }
+      if (isOverCard) console.log("over card: ", over.id, over.data.current);
 
       // If dropping a card over a column
       const isOverColumn = over.data.current.type === "column";
+      if (isOverColumn) console.log("over column");
 
       if (isActiveCard && isOverColumn) {
-        setCards((cards) => {
+        setCards(() => {
           const activeIndex = cards.findIndex((c) => c.id === activeId);
 
           if (cards[activeIndex].categoryId !== overId) {
