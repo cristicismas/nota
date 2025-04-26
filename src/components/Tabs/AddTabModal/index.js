@@ -3,6 +3,7 @@ import fetcher from "@/helpers/swrFetcher";
 import styles from "./styles.module.css";
 import { useState, useRef, useEffect } from "react";
 import SpinningLoader from "@/components/SpinningLoader";
+import Overlay from "@/components/Overlay";
 
 const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
   const [activeType, setActiveType] = useState("text");
@@ -35,16 +36,7 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      setIsOpen={handleClose}
-      overlayClassName={styles.overlay}
-      className={styles.innerOverlay}
-      shouldCloseOnEsc
-      shouldCloseOnOverlayClick
-      disableScroll
-      container="modal-container"
-    >
+    <Overlay isOpen={isOpen} handleClose={handleClose}>
       <div className={styles.addTabContainer}>
         {isLoading ? (
           <SpinningLoader className={styles.loader} />
@@ -107,7 +99,7 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
           </form>
         )}
       </div>
-    </Modal>
+    </Overlay>
   );
 };
 

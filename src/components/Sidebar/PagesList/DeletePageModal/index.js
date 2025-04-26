@@ -1,18 +1,9 @@
-import Modal from "@/components/Modal";
+import Overlay from "@/components/Overlay";
 import styles from "./styles.module.css";
 
 const DeletePageModal = ({ isOpen, handleClose, handleDelete, pageTitle }) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      setIsOpen={handleClose}
-      overlayClassName={styles.overlay}
-      className={styles.innerOverlay}
-      shouldCloseOnEsc
-      shouldCloseOnOverlayClick
-      disableScroll
-      container="modal-container"
-    >
+    <Overlay isOpen={isOpen} handleClose={handleClose}>
       <div className={styles.deletePageContainer}>
         <div className={styles.modalTitle}>
           Are you sure you want to delete <br />"{pageTitle}"?
@@ -26,7 +17,7 @@ const DeletePageModal = ({ isOpen, handleClose, handleDelete, pageTitle }) => {
           </button>
         </div>
       </div>
-    </Modal>
+    </Overlay>
   );
 };
 

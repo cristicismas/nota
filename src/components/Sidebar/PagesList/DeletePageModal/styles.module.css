@@ -1,15 +1,3 @@
-.overlay {
-  background-color: rgba(0, 0, 0, .3);
-  backdrop-filter: blur(8px);
-  padding: 36px;
-}
-
-.innerOverlay {
-  padding: 36px;
-  background-color: var(--background);
-  max-width: 580px;
-}
-
 .modalTitle {
   font-size: 24px;
   text-align: center;

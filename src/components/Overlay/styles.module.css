@@ -1,0 +1,17 @@
+.overlay {
+  background-color: rgba(0, 0, 0, .3);
+  backdrop-filter: blur(8px);
+  padding: 36px;
+}
+
+.innerOverlay {
+  background-color: var(--background);
+}
+
+.mainContainer {
+  padding: 32px;
+  width: 404px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
