@@ -3,19 +3,13 @@
 import TextContent from "./TextContent";
 import KanbanContent from "./KanbanContent";
 
-const PAGE_TYPE = {
-  TEXT: "text",
-  KANBAN: "kanban",
-};
-
 const TabContent = ({ data, onContentUpdate }) => {
-  if (data?.tab_type === PAGE_TYPE.TEXT) {
-    return <KanbanContent />;
+  if (data?.tab_type === "text") {
     return <TextContent data={data} onContentUpdate={onContentUpdate} />;
-  } else if (data?.type === PAGE_TYPE.KANBAN) {
+  } else if (data?.tab_type === "kanban") {
     return <KanbanContent data={data} />;
   } else {
-    console.error("Unknown content type: ", data?.type);
+    console.error("Unknown content type: ", data?.tab_type);
     return null;
   }
 };

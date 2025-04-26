@@ -175,11 +175,8 @@ const KanbanContent = () => {
         setCards(newCards);
       }
 
-      if (isOverCard) console.log("over card: ", over.id, over.data.current);
-
       // If dropping a card over a column
       const isOverColumn = over.data.current.type === "column";
-      if (isOverColumn) console.log("over column");
 
       if (isActiveCard && isOverColumn) {
         const activeIndex = cards.findIndex((c) => c.id === activeId);
@@ -215,8 +212,6 @@ const KanbanContent = () => {
 
   return (
     <div className={styles.container}>
-      <h1>KANBAN BOARD</h1>
-
       <DndContext
         collisionDetection={pointerWithin}
         sensors={sensors}

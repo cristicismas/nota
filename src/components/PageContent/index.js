@@ -25,6 +25,8 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
         {data ? (
           <div className={styles.innerPage}>
             <Tabs
+              page_id={data?.page_id}
+              page_slug={data?.slug}
               tabs={data?.tabs}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
