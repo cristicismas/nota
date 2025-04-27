@@ -1,0 +1,14 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.contextMenu {
+  position: absolute;
+  background-color: var(--background-alt);
+  border-radius: 8px;
+  padding: 16px;
+  z-index: 3;
+  min-width: 220px;
+}

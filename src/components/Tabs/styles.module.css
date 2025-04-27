@@ -22,3 +22,11 @@
   color: var(--text-color);
   border-color: var(--text-color);
 }
+
+.deleteTabButton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 18px;
+  width: 100%;
+}

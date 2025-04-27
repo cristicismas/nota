@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
       <body style={{ background: "var(--background)" }}>
         {children}
         <div id="modal-container" />
+        <div id="context-menu" />
       </body>
     </html>
   );
