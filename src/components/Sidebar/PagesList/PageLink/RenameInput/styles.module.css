@@ -1,0 +1,41 @@
+.form {
+  position: relative;
+}
+
+.buttons {
+  opacity: 1;
+  transition: opacity .2s;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  display: flex;
+}
+
+.button {
+  transition: background-color .2s;
+  display: flex;
+  padding: 7px;
+
+  &:hover {
+    background-color: var(--background);
+  }
+}
+
+.button:hover {
+  background-color: var(--background-alt);
+}
+
+.input {
+  width: 100%;
+  display: flex;
+  background-color: var(--background);
+  border: none;
+  padding: 8px 76px 8px 12px;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.input,
+.input:focus {
+  outline: 2px solid var(--hover);
+}

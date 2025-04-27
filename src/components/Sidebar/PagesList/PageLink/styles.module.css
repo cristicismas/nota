@@ -10,7 +10,6 @@
 }
 
 .pageLinkContainer:hover {
-  background-color: var(--hover);
   transition: background-color .2s;
 
   & .deletePageButton {
@@ -38,36 +37,13 @@
 }
 
 .pageLinkContainer:hover {
+  background-color: var(--hover);
+
   .buttons {
     opacity: 1;
   }
 }
 
-.input {
-  width: 100%;
-  display: flex;
-  background-color: var(--background);
-  border: none;
-  padding: 8px 38px 8px 12px;
-  font-size: 18px;
-  color: var(--text-color);
-}
-
-.input,
-.input:focus {
-  outline: 2px solid var(--hover);
-}
-
-.form {
-  position: relative;
-}
-
-.abortButton {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  &:hover {
-    background-color: var(--background-alt);
-  }
+.button:hover {
+  background-color: var(--background-alt);
 }
