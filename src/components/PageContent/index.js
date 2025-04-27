@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // components
 import Tabs from "../Tabs";
 import TabContent from "../TabContent";
@@ -10,12 +10,6 @@ import styles from "./styles.module.css";
 
 const PageContent = ({ data, loading, onContentUpdate }) => {
   const [activeTab, setActiveTab] = useState(0);
-
-  useEffect(() => {
-    if (activeTab >= data?.tabs?.length) {
-      setActiveTab(data?.tabs?.length - 1);
-    }
-  }, [activeTab]);
 
   if (loading && !data) return <SpinningLoaderPage />;
 

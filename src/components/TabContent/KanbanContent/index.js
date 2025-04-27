@@ -1,5 +1,7 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import useSWR from "swr";
 import { createPortal } from "react-dom";
+// dnd
 import {
   DndContext,
   DragOverlay,
@@ -9,10 +11,13 @@ import {
   pointerWithin,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
-import styles from "./styles.module.css";
+// components
 import StyledButton from "@/components/StyledButton";
 import Column from "./Column";
 import Card from "./Card";
+// styles
+import styles from "./styles.module.css";
+import SpinningLoaderPage from "@/components/SpinningLoaderPage";
 
 const data = {
   title: "Dev Kanban",
@@ -70,9 +75,11 @@ const data = {
   order: 1,
 };
 
-const KanbanContent = () => {
-  const [columns, setColumns] = useState(data.categories);
-  const [cards, setCards] = useState(data.cards);
+const KanbanContent = ({ tab_id }) => {
+  const { data, isLoading, error, mutate } = useSWR(`tabs/${tab_id}`);
+
+  const [columns, setColumns] = useState(data?.categories);
+  const [cards, setCards] = useState(data?.cards);
   const [activeDraggingColumn, setDraggingColumn] = useState(null);
   const [activeDraggingCard, setDraggingCard] = useState(null);
 
@@ -85,7 +92,15 @@ const KanbanContent = () => {
     }),
   );
 
-  const categoryIds = useMemo(() => columns.map((c) => c.id), [columns]);
+  useEffect(() => {
+    setColumns(data?.categories);
+    setCards(data?.cards);
+  }, [data]);
+
+  const categoryIds = useMemo(
+    () => (columns ? columns.map((c) => c.category_id) : []),
+    [columns],
+  );
 
   const onDragStart = (e) => {
     if (e.active.data.current?.type === "column") {
@@ -210,6 +225,10 @@ const KanbanContent = () => {
     [cards],
   );
 
+  if (isLoading) {
+    return <SpinningLoaderPage />;
+  }
+
   return (
     <div className={styles.container}>
       <DndContext
@@ -221,11 +240,11 @@ const KanbanContent = () => {
       >
         <div className={styles.columns}>
           <SortableContext items={categoryIds}>
-            {columns.map((category) => {
+            {columns?.map((category) => {
               return (
                 <Column
                   columnData={category}
-                  key={category.id}
+                  key={category.category_id}
                   className={styles.column}
                   addCard={addCard}
                   deleteCard={deleteCard}

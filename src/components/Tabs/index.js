@@ -35,11 +35,11 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
     try {
       await fetcher(`tabs/${tab.tab_id}`, { method: "DELETE" });
 
-      if (tab.tab_order === activeTab && tabs?.length > 0) {
-        setActiveTab(tab?.tab_order - 1);
-      }
-
       await mutate(`pages/${page_slug}`);
+
+      if (tabs?.length > 0) {
+        setActiveTab(Math.max(0, tab?.tab_order - 1));
+      }
     } catch (err) {
       console.error(err);
     }
@@ -59,8 +59,6 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
     await mutate(`pages/${page_slug}`);
     setTabToEdit(null);
   };
-
-  console.log(tabs);
 
   if (!tabs || tabs?.length < 1) {
     return (

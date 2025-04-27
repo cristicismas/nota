@@ -22,7 +22,7 @@ const Column = ({
     transition,
     isDragging,
   } = useSortable({
-    id: columnData?.id,
+    id: columnData?.category_id,
     data: {
       type: "column",
       column: columnData,
@@ -34,7 +34,7 @@ const Column = ({
     transform: CSS.Transform.toString(transform),
   };
 
-  const cardIds = useMemo(() => cards.map((card) => card.id), [cards]);
+  const cardIds = useMemo(() => cards.map((card) => card.card_id), [cards]);
 
   if (isDragging)
     return (
