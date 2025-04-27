@@ -13,4 +13,7 @@
   border: 1px solid var(--hover);
   padding: 10px 20px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }

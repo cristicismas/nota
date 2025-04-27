@@ -15,9 +15,12 @@ import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import StyledButton from "@/components/StyledButton";
 import Column from "./Column";
 import Card from "./Card";
+import SpinningLoaderPage from "@/components/SpinningLoaderPage";
+import SimpleImage from "@/components/SimpleImage";
 // styles
 import styles from "./styles.module.css";
-import SpinningLoaderPage from "@/components/SpinningLoaderPage";
+import fetcher from "@/helpers/swrFetcher";
+import ErrorContent from "@/components/ErrorContent";
 
 const data = {
   title: "Dev Kanban",
@@ -139,16 +142,18 @@ const KanbanContent = ({ tab_id }) => {
     }
 
     const activeColumnIndex = columns.findIndex(
-      (column) => column.id === activeColumnId,
+      (column) => column.category_id === activeColumnId,
     );
 
     const overColumnIndex = columns.findIndex(
-      (column) => column.id === overColumnId,
+      (column) => column.category_id === overColumnId,
     );
 
     if (activeColumnIndex < 0 || overColumnIndex < 0) return;
 
     const newColumns = arrayMove(columns, activeColumnIndex, overColumnIndex);
+
+    // TODO: update db order of categories here
 
     setColumns(newColumns);
   };
@@ -177,8 +182,8 @@ const KanbanContent = ({ tab_id }) => {
       // If dropping a card over another card
       if (isActiveCard && isOverCard) {
         const cardsCopy = structuredClone(cards);
-        const activeIndex = cardsCopy.findIndex((c) => c.id === activeId);
-        const overIndex = cardsCopy.findIndex((c) => c.id === overId);
+        const activeIndex = cardsCopy.findIndex((c) => c.card_id === activeId);
+        const overIndex = cardsCopy.findIndex((c) => c.card_id === overId);
 
         if (
           cardsCopy[activeIndex].categoryId !== cardsCopy[overIndex].categoryId
@@ -194,7 +199,7 @@ const KanbanContent = ({ tab_id }) => {
       const isOverColumn = over.data.current.type === "column";
 
       if (isActiveCard && isOverColumn) {
-        const activeIndex = cards.findIndex((c) => c.id === activeId);
+        const activeIndex = cards.findIndex((c) => c.card_id === activeId);
 
         const cardsCopy = structuredClone(cards);
 
@@ -224,6 +229,28 @@ const KanbanContent = ({ tab_id }) => {
     (category) => cards.filter((card) => card.categoryId === category.id),
     [cards],
   );
+
+  const handleAddCategory = async () => {
+    const newCategory = {
+      tab_id,
+      title: "Category Title",
+    };
+
+    try {
+      const { new_category } = await fetcher("category", {
+        method: "POST",
+        body: JSON.stringify(newCategory),
+      });
+
+      setColumns([...columns, new_category]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (error) {
+    return <ErrorContent error={error} />;
+  }
 
   if (isLoading) {
     return <SpinningLoaderPage />;
@@ -257,23 +284,14 @@ const KanbanContent = ({ tab_id }) => {
           <div className={styles.column}>
             <StyledButton
               className={styles.addCategoryButton}
-              onClick={() => {
-                setColumns(columns.slice(0, columns.length - 1));
-              }}
+              onClick={handleAddCategory}
             >
-              Remove category
-            </StyledButton>
-
-            <br />
-            <br />
-
-            <StyledButton
-              className={styles.addCategoryButton}
-              onClick={() => {
-                setColumns([...columns, { title: "new category", cards: [] }]);
-              }}
-            >
-              Add category
+              <SimpleImage
+                disableLazyLoad
+                src={"/icons/plus.svg"}
+                width={16}
+                height={16}
+              />
             </StyledButton>
           </div>
         </div>
