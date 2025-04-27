@@ -45,10 +45,14 @@ body.overflow-hidden {
 }
 
 * {
-  font-family: Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+code {
+  font-family: var(--font-geist-mono), sans-serif;
 }
 
 a {

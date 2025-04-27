@@ -1,3 +1,5 @@
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Head from "next/head";
 
@@ -23,7 +25,10 @@ export default function RootLayout({ children }) {
         />
       </Head>
 
-      <body style={{ background: "var(--background)" }}>
+      <body
+        className={`${GeistSans.variable} ${GeistMono.variable}`}
+        style={{ background: "var(--background)" }}
+      >
         {children}
         <div id="modal-container" />
         <div id="context-menu" />

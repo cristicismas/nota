@@ -20,10 +20,6 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
 
   const { mutate } = useSWRConfig();
 
-  if (!tabs || tabs?.length === 0) {
-    return null;
-  }
-
   const handleAddedTab = async () => {
     await mutate(`pages/${page_slug}`);
     setActiveTab(tabs.length);
@@ -63,6 +59,40 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
     await mutate(`pages/${page_slug}`);
     setTabToEdit(null);
   };
+
+  console.log(tabs);
+
+  if (!tabs || tabs?.length < 1) {
+    return (
+      <div className={`${styles.container} ${styles.noTabsContainer}`}>
+        <h1 className={styles.title}>
+          You don't have any tabs added yet. Please add a new tab.
+        </h1>
+
+        <div className={styles.buttonContainer}>
+          <StyledButton
+            className={styles.bigAddTabButton}
+            onClick={() => setOpenAddTabModal(true)}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src={"/icons/plus.svg"}
+              width={22}
+              height={22}
+            />
+            <span>Add a tab</span>
+          </StyledButton>
+        </div>
+
+        <AddTabModal
+          page_id={page_id}
+          handleClose={() => setOpenAddTabModal(false)}
+          handleFinished={handleAddedTab}
+          isOpen={openAddTabModel}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>

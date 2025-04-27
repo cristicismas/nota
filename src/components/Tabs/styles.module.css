@@ -16,3 +16,30 @@
   font-size: 18px;
   width: 100%;
 }
+
+.noTabsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  max-width: min(1000px, 90%);
+  text-align: center;
+  margin: 0 auto;
+  padding: 80px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.bigAddTabButton {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  padding: 8px 22px;
+  background-color: var(--background-alt);
+  justify-content: center;
+  gap: 8px;
+}
