@@ -8,6 +8,7 @@ import SimpleImage from "../SimpleImage";
 import AddTabModal from "./AddTabModal";
 import ContextMenu from "../ContextMenu";
 import StyledButton from "../StyledButton";
+import Tab from "./Tab";
 // styles
 import styles from "./styles.module.css";
 
@@ -15,6 +16,7 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
   const [openAddTabModel, setOpenAddTabModal] = useState(false);
   const [openContextMenu, setOpenContextMenu] = useState(null);
   const [contextPosition, setContextPosition] = useState({ x: 0, y: 0 });
+  const [tabToEdit, setTabToEdit] = useState(null);
 
   const { mutate } = useSWRConfig();
 
@@ -48,20 +50,34 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
     setOpenContextMenu(null);
   };
 
-  const handleRenameTab = async (tab) => {};
+  const handleRenameTab = async (tab) => {
+    setTabToEdit(tab);
+    setOpenContextMenu(null);
+  };
+
+  const handleRenameFinish = async (newName) => {
+    await fetcher(`tabs/${tabToEdit.tab_id}/rename`, {
+      method: "PUT",
+      body: JSON.stringify({ title: newName }),
+    });
+    await mutate(`pages/${page_slug}`);
+    setTabToEdit(null);
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.tabs}>
         {tabs.map((tab) => (
-          <button
-            onContextMenu={(e) => handleContextMenu(e, tab)}
-            className={`${styles.tabButton} ${tab.tab_order === activeTab && styles.active}`}
-            onClick={() => setActiveTab(tab.tab_order)}
+          <Tab
+            isRenaming={tabToEdit?.tab_id === tab.tab_id}
+            onRenameFinish={handleRenameFinish}
+            onRenameAbort={() => setTabToEdit(null)}
             key={tab.tab_id}
-          >
-            {tab?.title}
-          </button>
+            tab={tab}
+            handleContextMenu={handleContextMenu}
+            isActive={tab.tab_order === activeTab}
+            setActiveTab={setActiveTab}
+          />
         ))}
       </div>
 

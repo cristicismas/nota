@@ -7,7 +7,8 @@
 .contextMenu {
   position: absolute;
   background-color: var(--background-alt);
-  border-radius: 8px;
+  border: 2px solid var(--background);
+  border-radius: 4px;
   padding: 16px;
   z-index: 3;
   min-width: 220px;

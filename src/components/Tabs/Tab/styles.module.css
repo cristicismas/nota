@@ -1,0 +1,43 @@
+.tabButton {
+  padding: 4px 6px;
+  color: #777;
+  border-bottom: 1px solid transparent;
+  transition: all .3s;
+}
+
+
+.tabButton.active,
+.tabButton:hover {
+  color: var(--text-color);
+  border-color: var(--text-color);
+}
+
+.form {
+  position: relative;
+  border-bottom: 1px solid var(--accent);
+}
+
+.input {
+  all: unset;
+  border: 1px solid var(--hover);
+  padding: 4px 6px;
+  min-width: 0;
+  max-width: fit-content;
+}
+
+.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: background-color .2s;
+  display: flex;
+  padding: 6px;
+
+  &:hover {
+    background-color: var(--background);
+  }
+}
+
+.button:hover {
+  background-color: var(--background-alt);
+}
