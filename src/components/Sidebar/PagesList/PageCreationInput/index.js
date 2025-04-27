@@ -55,14 +55,32 @@ const PageCreationInput = ({ abort, onFinished, currentPages }) => {
           defaultValue="New Page"
         />
 
-        <button type="button" className={styles.closeButton} onClick={abort}>
-          <SimpleImage
-            disableLazyLoad
-            src={"/icons/close.svg"}
-            width={24}
-            height={24}
-          />
-        </button>
+        <div className={styles.buttons}>
+          <button
+            type="submit"
+            className={`${styles.button} ${styles.confirmButton}`}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src={"/icons/checkmark.svg"}
+              width={24}
+              height={24}
+            />
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.button} ${styles.closeButton}`}
+            onClick={abort}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src={"/icons/close.svg"}
+              width={24}
+              height={24}
+            />
+          </button>
+        </div>
       </div>
 
       <StyledButton type="submit" className={styles.addPage}>
