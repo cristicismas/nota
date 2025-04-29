@@ -4,6 +4,7 @@ import { CSS } from "@dnd-kit/utilities";
 import styles from "./styles.module.css";
 import StyledButton from "@/components/StyledButton";
 import Card from "../Card";
+import SimpleImage from "@/components/SimpleImage";
 
 const Column = ({
   columnData,
@@ -51,8 +52,17 @@ const Column = ({
       style={sortableStyle}
       className={`${styles.contentColumn} ${className}`}
     >
-      <div {...attributes} {...listeners} className={styles.columnTitle}>
-        {columnData.title}
+      <div className={styles.topBar}>
+        <div {...attributes} {...listeners} className={styles.columnTitle}>
+          {columnData.title}
+        </div>
+
+        <button
+          className={styles.deleteColumnButton}
+          onClick={() => deleteColumn(columnData.category_id)}
+        >
+          <SimpleImage src="/icons/close.svg" width={22} height={22} />
+        </button>
       </div>
 
       <div className={styles.cards}>

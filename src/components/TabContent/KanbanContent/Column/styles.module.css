@@ -1,3 +1,15 @@
+.topBar {
+  position: relative;
+  padding: 0 40px;
+}
+
+.deleteColumnButton {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  padding: 8px;
+}
+
 .columnTitle {
   text-align: center;
   font-size: 20px;

@@ -23,7 +23,7 @@ import ErrorContent from "@/components/ErrorContent";
 import styles from "./styles.module.css";
 
 const KanbanContent = ({ tab_id }) => {
-  const { data, isLoading, error } = useSWR(`tabs/${tab_id}`);
+  const { data, isLoading, error, mutate } = useSWR(`tabs/${tab_id}`);
 
   const [columns, setColumns] = useState(data?.categories);
   const [cards, setCards] = useState(data?.cards);
@@ -199,6 +199,11 @@ const KanbanContent = ({ tab_id }) => {
     }
   };
 
+  const handleDeleteCategory = async (category_id) => {
+    await fetcher(`category/${category_id}`, { method: "DELETE" });
+    await mutate(`tabs/${tab_id}`);
+  };
+
   if (error) {
     return <ErrorContent error={error} />;
   }
@@ -226,6 +231,7 @@ const KanbanContent = ({ tab_id }) => {
                   className={styles.column}
                   addCard={addCard}
                   deleteCard={deleteCard}
+                  deleteColumn={handleDeleteCategory}
                   cards={getCategoryCards(category)}
                 />
               );
