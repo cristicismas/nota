@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import useSWR from "swr";
 import { createPortal } from "react-dom";
+import fetcher from "@/helpers/swrFetcher";
 // dnd
 import {
   DndContext,
@@ -17,69 +18,12 @@ import Column from "./Column";
 import Card from "./Card";
 import SpinningLoaderPage from "@/components/SpinningLoaderPage";
 import SimpleImage from "@/components/SimpleImage";
+import ErrorContent from "@/components/ErrorContent";
 // styles
 import styles from "./styles.module.css";
-import fetcher from "@/helpers/swrFetcher";
-import ErrorContent from "@/components/ErrorContent";
-
-const data = {
-  title: "Dev Kanban",
-  type: "kanban",
-  categories: [
-    {
-      title: "Features",
-      id: "features",
-    },
-    {
-      title: "Bugs",
-      id: "bugs",
-    },
-    {
-      title: "TODO",
-      id: "todo",
-    },
-    {
-      title: "Done",
-      id: "done",
-    },
-  ],
-  cards: [
-    {
-      id: "card1",
-      categoryId: "features",
-      title: "first card",
-      description: "first card description lorem ipsum",
-    },
-    {
-      id: "card2",
-      categoryId: "features",
-      title: "second card",
-      description: "first card description lorem ipsum",
-    },
-    {
-      id: "card3",
-      categoryId: "features",
-      title: "third card",
-      description: "first card description lorem ipsum",
-    },
-    {
-      id: "card4",
-      categoryId: "features",
-      title: "fourth card",
-      description: "first card description lorem ipsum",
-    },
-    {
-      id: "card5",
-      categoryId: "features",
-      title: "fifth card",
-      description: "first card description lorem ipsum",
-    },
-  ],
-  order: 1,
-};
 
 const KanbanContent = ({ tab_id }) => {
-  const { data, isLoading, error, mutate } = useSWR(`tabs/${tab_id}`);
+  const { data, isLoading, error } = useSWR(`tabs/${tab_id}`);
 
   const [columns, setColumns] = useState(data?.categories);
   const [cards, setCards] = useState(data?.cards);
@@ -151,9 +95,16 @@ const KanbanContent = ({ tab_id }) => {
 
     if (activeColumnIndex < 0 || overColumnIndex < 0) return;
 
-    const newColumns = arrayMove(columns, activeColumnIndex, overColumnIndex);
+    const newColumns = arrayMove(
+      columns,
+      activeColumnIndex,
+      overColumnIndex,
+    ).map((c, index) => ({ ...c, category_order: index }));
 
-    // TODO: update db order of categories here
+    fetcher("categories", {
+      method: "PUT",
+      body: JSON.stringify({ type: "order", new_categories: newColumns }),
+    });
 
     setColumns(newColumns);
   };
