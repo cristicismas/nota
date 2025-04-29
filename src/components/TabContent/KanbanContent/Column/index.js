@@ -1,9 +1,10 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { useMemo, memo } from "react";
+import { useState, useMemo, memo } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import styles from "./styles.module.css";
 import StyledButton from "@/components/StyledButton";
 import Card from "../Card";
+import DeleteConfirmation from "@/components/DeleteConfirmation";
 import SimpleImage from "@/components/SimpleImage";
 
 const Column = ({
@@ -15,6 +16,8 @@ const Column = ({
   deleteCard,
   className,
 }) => {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   const {
     setNodeRef,
     attributes,
@@ -59,7 +62,7 @@ const Column = ({
 
         <button
           className={styles.deleteColumnButton}
-          onClick={() => deleteColumn(columnData.category_id)}
+          onClick={() => setOpenDeleteModal(true)}
         >
           <SimpleImage src="/icons/close.svg" width={22} height={22} />
         </button>
@@ -78,6 +81,13 @@ const Column = ({
           Add card
         </StyledButton>
       </div>
+
+      <DeleteConfirmation
+        isOpen={openDeleteModal}
+        handleClose={() => setOpenDeleteModal(false)}
+        handleDelete={() => deleteColumn(columnData.category_id)}
+        title={`Are you sure you want to delete "${columnData?.title}"?`}
+      />
     </div>
   );
 };

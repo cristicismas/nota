@@ -9,8 +9,8 @@ import styles from "./styles.module.css";
 import StyledButton from "@/components/StyledButton";
 import SimpleImage from "@/components/SimpleImage";
 import PageCreationInput from "./PageCreationInput";
-import DeletePageModal from "./DeletePageModal";
 import PageLink from "./PageLink";
+import DeleteConfirmation from "@/components/DeleteConfirmation";
 
 const PagesList = () => {
   const [isCreatingPage, setIsCreatingPage] = useState(false);
@@ -56,11 +56,11 @@ const PagesList = () => {
           />
         ))}
 
-      <DeletePageModal
+      <DeleteConfirmation
         isOpen={pageToDelete}
         handleClose={() => setPageToDelete(null)}
         handleDelete={() => deletePage(pageToDelete.page_id)}
-        pageTitle={pageToDelete?.page_title}
+        title={`Are you sure you want to delete "${pageToDelete?.page_title}"?`}
       />
 
       {isCreatingPage ? (
