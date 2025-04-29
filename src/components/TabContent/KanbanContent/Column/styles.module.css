@@ -3,11 +3,34 @@
   padding: 0 40px;
 }
 
-.deleteColumnButton {
+.topBar.editing {
+  padding: 5px;
+}
+
+.topBar:not(.transforming):hover {
+
+  & .deleteColumnButton,
+  & .renameColumnButton {
+    opacity: 1;
+    transition: opacity 0;
+  }
+}
+
+.deleteColumnButton,
+.renameColumnButton {
   position: absolute;
   top: 5px;
-  right: 0;
   padding: 8px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.renameColumnButton {
+  right: 0;
+}
+
+.deleteColumnButton {
+  left: 0;
 }
 
 .columnTitle {

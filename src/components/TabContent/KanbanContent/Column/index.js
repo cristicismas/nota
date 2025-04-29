@@ -6,6 +6,7 @@ import StyledButton from "@/components/StyledButton";
 import Card from "../Card";
 import DeleteConfirmation from "@/components/DeleteConfirmation";
 import SimpleImage from "@/components/SimpleImage";
+import RenameInput from "@/components/Sidebar/PagesList/PageLink/RenameInput";
 
 const Column = ({
   columnData,
@@ -16,6 +17,7 @@ const Column = ({
   deleteCard,
   className,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const {
@@ -55,17 +57,46 @@ const Column = ({
       style={sortableStyle}
       className={`${styles.contentColumn} ${className}`}
     >
-      <div className={styles.topBar}>
-        <div {...attributes} {...listeners} className={styles.columnTitle}>
-          {columnData.title}
-        </div>
+      <div className={`${styles.topBar} ${isEditing && styles.editing}`}>
+        {!isEditing && (
+          <button
+            className={styles.deleteColumnButton}
+            onClick={() => setOpenDeleteModal(true)}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src="/icons/close.svg"
+              width={22}
+              height={22}
+            />
+          </button>
+        )}
 
-        <button
-          className={styles.deleteColumnButton}
-          onClick={() => setOpenDeleteModal(true)}
-        >
-          <SimpleImage src="/icons/close.svg" width={22} height={22} />
-        </button>
+        {isEditing ? (
+          <RenameInput
+            defaultValue={columnData.title}
+            onAbort={() => setIsEditing(false)}
+            onSubmit={() => {}}
+          />
+        ) : (
+          <div {...attributes} {...listeners} className={styles.columnTitle}>
+            {columnData.title}
+          </div>
+        )}
+
+        {!isEditing && (
+          <button
+            className={styles.renameColumnButton}
+            onClick={() => setIsEditing(true)}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src="/icons/rename.svg"
+              width={22}
+              height={22}
+            />
+          </button>
+        )}
       </div>
 
       <div className={styles.cards}>
