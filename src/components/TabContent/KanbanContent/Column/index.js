@@ -42,6 +42,11 @@ const Column = ({
 
   const cardIds = useMemo(() => cards.map((card) => card.card_id), [cards]);
 
+  const handleRenameColumn = (newTitle) => {
+    setIsEditing(false);
+    renameColumn({ ...columnData, title: newTitle });
+  };
+
   if (isDragging)
     return (
       <div
@@ -76,7 +81,7 @@ const Column = ({
           <RenameInput
             defaultValue={columnData.title}
             onAbort={() => setIsEditing(false)}
-            onSubmit={() => {}}
+            onSubmit={handleRenameColumn}
           />
         ) : (
           <div {...attributes} {...listeners} className={styles.columnTitle}>

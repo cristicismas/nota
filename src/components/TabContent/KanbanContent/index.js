@@ -204,6 +204,24 @@ const KanbanContent = ({ tab_id }) => {
     await mutate(`tabs/${tab_id}`);
   };
 
+  const handleRenameCategory = async (new_category) => {
+    await fetcher(`categories/${new_category?.category_id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        new_category,
+      }),
+    });
+
+    const newColumns = columns.map((col) => {
+      if (col.category_id === new_category.category_id) {
+        return new_category;
+      }
+      return col;
+    });
+
+    setColumns(newColumns);
+  };
+
   if (error) {
     return <ErrorContent error={error} />;
   }
@@ -232,6 +250,7 @@ const KanbanContent = ({ tab_id }) => {
                   addCard={addCard}
                   deleteCard={deleteCard}
                   deleteColumn={handleDeleteCategory}
+                  renameColumn={handleRenameCategory}
                   cards={getCategoryCards(category)}
                 />
               );
