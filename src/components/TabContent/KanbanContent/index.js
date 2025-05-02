@@ -244,14 +244,13 @@ const KanbanContent = ({ tab_id }) => {
   return (
     <div className={styles.container}>
       <DndContext
-        collisionDetection={pointerWithin}
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <SortableContext items={categoryIds}>
-          <div className={styles.columns}>
+        <div className={styles.columns}>
+          <SortableContext items={categoryIds}>
             {columns?.map((category) => {
               return (
                 <Column
@@ -266,8 +265,8 @@ const KanbanContent = ({ tab_id }) => {
                 />
               );
             })}
-          </div>
-        </SortableContext>
+          </SortableContext>
+        </div>
 
         <div className={styles.buttonContainer}>
           <StyledButton
