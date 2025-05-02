@@ -45,7 +45,7 @@ const KanbanContent = ({ tab_id }) => {
   }, [data]);
 
   const categoryIds = useMemo(
-    () => (columns ? columns.map((c) => c.category_id) : []),
+    () => (columns ? columns.map((c) => `column-${c.category_id}`) : []),
     [columns],
   );
 
@@ -78,8 +78,8 @@ const KanbanContent = ({ tab_id }) => {
       return;
     }
 
-    const activeColumnId = active.id;
-    const overColumnId = over.id;
+    const activeColumnId = getDragId(active.id);
+    const overColumnId = getDragId(over.id);
 
     if (activeColumnId === overColumnId) {
       return;
@@ -109,6 +109,8 @@ const KanbanContent = ({ tab_id }) => {
     setColumns(newColumns);
   };
 
+  const getDragId = (id) => Number(id?.split("-")?.[1]);
+
   const onDragOver = (e) => {
     // Stupid workaround to avoid a bug with dnd kit that causes infinite recursion
     setTimeout(() => {
@@ -118,8 +120,8 @@ const KanbanContent = ({ tab_id }) => {
         return;
       }
 
-      const activeId = active.id;
-      const overId = over.id;
+      const activeId = getDragId(active.id);
+      const overId = getDragId(over.id);
 
       if (activeId === overId) {
         return;
@@ -137,9 +139,10 @@ const KanbanContent = ({ tab_id }) => {
         const overIndex = cardsCopy.findIndex((c) => c.card_id === overId);
 
         if (
-          cardsCopy[activeIndex].categoryId !== cardsCopy[overIndex].categoryId
+          cardsCopy[activeIndex].category_id !==
+          cardsCopy[overIndex].category_id
         ) {
-          cardsCopy[activeIndex].categoryId = cardsCopy[overIndex].categoryId;
+          cardsCopy[activeIndex].category_id = cardsCopy[overIndex].category_id;
         }
 
         const newCards = arrayMove(cardsCopy, activeIndex, overIndex);
@@ -154,30 +157,38 @@ const KanbanContent = ({ tab_id }) => {
 
         const cardsCopy = structuredClone(cards);
 
-        if (cardsCopy[activeIndex].categoryId !== overId) {
-          cardsCopy[activeIndex].categoryId = overId;
+        if (cardsCopy[activeIndex].category_id !== overId) {
+          cardsCopy[activeIndex].category_id = overId;
           setCards(cardsCopy);
         }
       }
     }, 0);
   };
 
-  const addCard = () => {
-    setCards((cards) => [
-      ...cards,
-      {
-        id: Math.random().toString(),
-        categoryId: "bugs",
-        title: "eigth card",
-        description: "first card description lorem ipsum",
-      },
-    ]);
+  const addCard = async (category_id) => {
+    const newCard = {
+      tab_id,
+      category_id,
+      title: "",
+      description: "",
+      generation: 0,
+    };
+
+    const response = await fetcher(`card`, {
+      method: "POST",
+      body: JSON.stringify(newCard),
+    });
+
+    newCard.card_id = response.card_id;
+
+    setCards((cards) => [...cards, newCard]);
   };
 
   const deleteCard = () => {};
 
   const getCategoryCards = useCallback(
-    (category) => cards.filter((card) => card.categoryId === category.id),
+    (category) =>
+      cards.filter((card) => card.category_id === category.category_id),
     [cards],
   );
 
@@ -239,8 +250,8 @@ const KanbanContent = ({ tab_id }) => {
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className={styles.columns}>
-          <SortableContext items={categoryIds}>
+        <SortableContext items={categoryIds}>
+          <div className={styles.columns}>
             {columns?.map((category) => {
               return (
                 <Column
@@ -255,21 +266,21 @@ const KanbanContent = ({ tab_id }) => {
                 />
               );
             })}
-          </SortableContext>
-
-          <div className={styles.column}>
-            <StyledButton
-              className={styles.addCategoryButton}
-              onClick={handleAddCategory}
-            >
-              <SimpleImage
-                disableLazyLoad
-                src={"/icons/plus.svg"}
-                width={16}
-                height={16}
-              />
-            </StyledButton>
           </div>
+        </SortableContext>
+
+        <div className={styles.buttonContainer}>
+          <StyledButton
+            className={styles.addCategoryButton}
+            onClick={handleAddCategory}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src={"/icons/plus.svg"}
+              width={16}
+              height={16}
+            />
+          </StyledButton>
         </div>
 
         {createPortal(
@@ -278,9 +289,7 @@ const KanbanContent = ({ tab_id }) => {
               <Column
                 columnData={activeDraggingColumn}
                 className={styles.column}
-                cards={cards.filter(
-                  (card) => card.categoryId === activeDraggingColumn.id,
-                )}
+                cards={getCategoryCards(activeDraggingColumn)}
               />
             )}
             {activeDraggingCard && (

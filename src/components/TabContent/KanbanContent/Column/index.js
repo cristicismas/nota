@@ -28,7 +28,7 @@ const Column = ({
     transition,
     isDragging,
   } = useSortable({
-    id: columnData?.category_id,
+    id: `column-${columnData?.category_id}`,
     data: {
       type: "column",
       column: columnData,
@@ -40,7 +40,10 @@ const Column = ({
     transform: CSS.Transform.toString(transform),
   };
 
-  const cardIds = useMemo(() => cards.map((card) => card.card_id), [cards]);
+  const cardIds = useMemo(
+    () => cards.map((card) => `card-${card.card_id}`),
+    [cards],
+  );
 
   const handleRenameColumn = (newTitle) => {
     setIsEditing(false);
@@ -107,13 +110,16 @@ const Column = ({
       <div className={styles.cards}>
         <SortableContext items={cardIds}>
           {cards.map((card) => (
-            <Card cardData={card} deleteCard={deleteCard} key={card.id} />
+            <Card cardData={card} deleteCard={deleteCard} key={card.card_id} />
           ))}
         </SortableContext>
       </div>
 
       <div className={styles.actions}>
-        <StyledButton onClick={addCard} className={styles.addCardButton}>
+        <StyledButton
+          onClick={() => addCard(columnData.category_id)}
+          className={styles.addCardButton}
+        >
           Add card
         </StyledButton>
       </div>

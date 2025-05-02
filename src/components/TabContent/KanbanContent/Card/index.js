@@ -12,7 +12,7 @@ const Card = ({ cardData, deleteCard }) => {
     transition,
     isDragging,
   } = useSortable({
-    id: cardData?.card_id,
+    id: `card-${cardData?.card_id}`,
     data: {
       type: "card",
       card: cardData,
@@ -41,7 +41,6 @@ const Card = ({ cardData, deleteCard }) => {
       {...attributes}
       {...listeners}
       className={styles.card}
-      key={cardData.card_id}
     >
       <div className={styles.cardTitle}>{cardData.title}</div>
     </div>
