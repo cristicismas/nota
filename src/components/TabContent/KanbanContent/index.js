@@ -180,17 +180,15 @@ const KanbanContent = ({ tab_id }) => {
     });
 
     newCard.card_id = response.card_id;
+    newCard.card_order = response.card_order;
 
     setCards((cards) => [...cards, newCard]);
   };
 
   const deleteCard = () => {};
 
-  const getCategoryCards = useCallback(
-    (category) =>
-      cards.filter((card) => card.category_id === category.category_id),
-    [cards],
-  );
+  const getCategoryCards = (category) =>
+    cards.filter((card) => card.category_id === category.category_id);
 
   const handleAddCategory = async () => {
     const newCategory = {
@@ -233,6 +231,15 @@ const KanbanContent = ({ tab_id }) => {
     setColumns(newColumns);
   };
 
+  const updateCards = (updatedCard) => {
+    const updatedCardIndex = cards.findIndex(
+      (c) => c.card_id === updatedCard.card_id,
+    );
+    const cardsCopy = structuredClone(cards);
+    cardsCopy[updatedCardIndex] = updatedCard;
+    setCards(cardsCopy);
+  };
+
   if (error) {
     return <ErrorContent error={error} />;
   }
@@ -262,6 +269,7 @@ const KanbanContent = ({ tab_id }) => {
                   deleteColumn={handleDeleteCategory}
                   renameColumn={handleRenameCategory}
                   cards={getCategoryCards(category)}
+                  updateCards={updateCards}
                 />
               );
             })}

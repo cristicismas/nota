@@ -11,6 +11,7 @@ import RenameInput from "@/components/Sidebar/PagesList/PageLink/RenameInput";
 const Column = ({
   columnData,
   cards = [],
+  updateCards,
   renameColumn,
   deleteColumn,
   addCard,
@@ -110,7 +111,12 @@ const Column = ({
       <div className={styles.cards}>
         <SortableContext items={cardIds}>
           {cards.map((card) => (
-            <Card cardData={card} deleteCard={deleteCard} key={card.card_id} />
+            <Card
+              cardData={card}
+              updateCards={updateCards}
+              deleteCard={deleteCard}
+              key={card.card_id}
+            />
           ))}
         </SortableContext>
       </div>

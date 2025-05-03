@@ -3,6 +3,10 @@
   padding: 0 40px;
 }
 
+.topBar:not(.editing) {
+  user-select: none;
+}
+
 .topBar.editing {
   padding: 5px;
 }

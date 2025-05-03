@@ -73,14 +73,24 @@ const TextContent = ({ data, onContentUpdate }) => {
   );
 
   const updateTabContent = async () => {
-    await fetcher(`tabs/${data?.tab_id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        tab_type: data.tab_type,
-        text_content: upToDateEditorValue.current,
-        generation: editGeneration.current,
-      }),
-    });
+    if (editGeneration.current <= data.generation) return;
+
+    try {
+      await fetcher(`tabs/${data?.tab_id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          tab_type: data.tab_type,
+          text_content: upToDateEditorValue.current,
+          generation: editGeneration.current,
+        }),
+      });
+    } catch (err) {
+      if (err.status === 409) {
+        console.info("Got an out of order error");
+      } else {
+        console.error(err);
+      }
+    }
 
     if (upToDateEditorValue.current !== data?.text_content) {
       onContentUpdate({

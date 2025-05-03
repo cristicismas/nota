@@ -9,6 +9,15 @@
   min-height: 100px;
 }
 
+.card:not(.editing) {
+  user-select: none;
+}
+
+.card.editing {
+  padding: 0;
+  display: flex;
+}
+
 .draggingPlaceholder {
   background-color: transparent;
   background-color: var(--background);

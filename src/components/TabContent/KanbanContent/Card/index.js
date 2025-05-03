@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { memo } from "react";
 import styles from "./styles.module.css";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import EditField from "./EditField";
+import fetcher from "@/helpers/swrFetcher";
 
-const Card = ({ cardData, deleteCard }) => {
+const Card = ({ cardData, updateCards, deleteCard }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   const {
     setNodeRef,
     attributes,
@@ -24,6 +29,30 @@ const Card = ({ cardData, deleteCard }) => {
     transform: CSS.Transform.toString(transform),
   };
 
+  const handleCardTitleChange = async (newTitle, generation) => {
+    if (generation <= cardData.generation) return;
+
+    const newCard = {
+      ...cardData,
+      title: newTitle,
+      generation,
+    };
+
+    try {
+      await fetcher(`card/${cardData?.card_id}`, {
+        method: "PUT",
+        body: JSON.stringify(newCard),
+      });
+      updateCards(newCard);
+    } catch (err) {
+      if (err.status === 409) {
+        console.info("Got an out of order error");
+      } else {
+        console.error(err);
+      }
+    }
+  };
+
   if (isDragging) {
     return (
       <div
@@ -34,8 +63,22 @@ const Card = ({ cardData, deleteCard }) => {
     );
   }
 
+  if (isEditing) {
+    return (
+      <div className={`${styles.card} ${styles.editing}`}>
+        <EditField
+          generation={cardData.generation}
+          defaultValue={cardData.title}
+          onExit={() => setIsEditing(false)}
+          onUpdate={handleCardTitleChange}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
+      onClick={() => setIsEditing(true)}
       ref={setNodeRef}
       style={sortableStyle}
       {...attributes}
