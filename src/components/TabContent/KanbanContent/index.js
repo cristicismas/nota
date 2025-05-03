@@ -72,7 +72,7 @@ const KanbanContent = ({ tab_id }) => {
     }
 
     if (
-      over.data.current?.type !== "column" &&
+      over.data.current?.type !== "column" ||
       active.data.current?.type !== "column"
     ) {
       return;
