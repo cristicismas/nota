@@ -1,3 +1,12 @@
+.sidebarContainer {
+  width: 350px;
+  transition: transform .2s;
+}
+
+.sidebarContainer.closed {
+  transform: translateX(-260px);
+}
+
 .sidebar {
   position: relative;
   border-right: 1px solid #202233;
@@ -7,11 +16,16 @@
   background-color: var(--background-alt);
 }
 
-.title {
-  margin-bottom: 32px;
-  margin-left: 8px;
+.sidebarContainer .pagesList,
+.sidebarContainer .stickyBar {
+  transition: opacity .2s;
 }
 
+.sidebarContainer.closed .pagesList,
+.sidebarContainer.closed .stickyBar {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .stickyBar {
   display: flex;
@@ -41,4 +55,13 @@
 
 .logOut img {
   margin-bottom: 4px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  margin-bottom: 32px;
+  margin-left: 8px;
 }
