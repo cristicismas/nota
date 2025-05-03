@@ -47,6 +47,10 @@ const EditField = ({ onExit, onUpdate, defaultValue, generation }) => {
   return (
     <div ref={formRef} className={styles.container}>
       <textarea
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={handleInputChange}
         className={styles.textArea}
         value={editValue}
