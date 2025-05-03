@@ -9,6 +9,8 @@ import SimpleImage from "@/components/SimpleImage";
 import RenameInput from "@/components/Sidebar/PagesList/PageLink/RenameInput";
 
 const Column = ({
+  editingCard,
+  setEditingCard,
   columnData,
   cards = [],
   updateCards,
@@ -112,6 +114,8 @@ const Column = ({
         <SortableContext items={cardIds}>
           {cards.map((card) => (
             <Card
+              isEditing={editingCard === card.card_id}
+              setIsEditing={setEditingCard}
               cardData={card}
               updateCards={updateCards}
               deleteCard={deleteCard}

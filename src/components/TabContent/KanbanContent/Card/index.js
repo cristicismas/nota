@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { memo } from "react";
 import styles from "./styles.module.css";
 import { useSortable } from "@dnd-kit/sortable";
@@ -7,9 +6,13 @@ import EditField from "./EditField";
 import SimpleImage from "@/components/SimpleImage";
 import fetcher from "@/helpers/swrFetcher";
 
-const Card = ({ cardData, updateCards, deleteCard }) => {
-  const [isEditing, setIsEditing] = useState(false);
-
+const Card = ({
+  cardData,
+  isEditing,
+  setIsEditing,
+  updateCards,
+  deleteCard,
+}) => {
   const {
     setNodeRef,
     attributes,
@@ -70,7 +73,7 @@ const Card = ({ cardData, updateCards, deleteCard }) => {
         <EditField
           generation={cardData.generation}
           defaultValue={cardData.title}
-          onExit={() => setIsEditing(false)}
+          onExit={() => setIsEditing(null)}
           onUpdate={handleCardTitleChange}
         />
       </div>
@@ -79,7 +82,7 @@ const Card = ({ cardData, updateCards, deleteCard }) => {
 
   return (
     <div
-      onClick={() => setIsEditing(true)}
+      onClick={() => setIsEditing(cardData.card_id)}
       ref={setNodeRef}
       style={sortableStyle}
       {...attributes}

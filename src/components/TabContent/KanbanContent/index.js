@@ -29,6 +29,7 @@ const KanbanContent = ({ tab_id }) => {
   const [cards, setCards] = useState(data?.cards);
   const [activeDraggingColumn, setDraggingColumn] = useState(null);
   const [activeDraggingCard, setDraggingCard] = useState(null);
+  const [editingCard, setEditingCard] = useState(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -198,6 +199,7 @@ const KanbanContent = ({ tab_id }) => {
     newCard.card_order = response.card_order;
 
     setCards((cards) => [...cards, newCard]);
+    setEditingCard(response.card_id);
   };
 
   const deleteCard = async (card_id) => {
@@ -299,6 +301,8 @@ const KanbanContent = ({ tab_id }) => {
             {columns?.map((category) => {
               return (
                 <Column
+                  editingCard={editingCard}
+                  setEditingCard={setEditingCard}
                   columnData={category}
                   key={category.category_id}
                   className={styles.column}
