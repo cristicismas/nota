@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { memo } from "react";
 import styles from "./styles.module.css";
 import { useSortable } from "@dnd-kit/sortable";
@@ -5,6 +6,8 @@ import { CSS } from "@dnd-kit/utilities";
 import EditField from "./EditField";
 import SimpleImage from "@/components/SimpleImage";
 import fetcher from "@/helpers/swrFetcher";
+import Overlay from "@/components/Overlay";
+import EditOverlay from "./EditOverlay";
 
 const Card = ({
   cardData,
@@ -13,6 +16,8 @@ const Card = ({
   updateCards,
   deleteCard,
 }) => {
+  const [openModal, setOpenModal] = useState(false);
+
   const {
     setNodeRef,
     attributes,
@@ -81,31 +86,54 @@ const Card = ({
   }
 
   return (
-    <div
-      onClick={() => setIsEditing(cardData.card_id)}
-      ref={setNodeRef}
-      style={sortableStyle}
-      {...attributes}
-      {...listeners}
-      className={styles.card}
-    >
-      <div className={styles.cardTitle}>{cardData.title}</div>
-
-      <button
-        className={styles.deleteCardButton}
-        onClick={(e) => {
-          e.stopPropagation();
-          deleteCard(cardData.card_id);
-        }}
+    <>
+      <div
+        onClick={() => setIsEditing(cardData.card_id)}
+        ref={setNodeRef}
+        style={sortableStyle}
+        {...attributes}
+        {...listeners}
+        className={styles.card}
       >
-        <SimpleImage
-          disableLazyLoad
-          src="/icons/close.svg"
-          width={22}
-          height={22}
-        />
-      </button>
-    </div>
+        <div className={styles.cardTitle}>{cardData.title}</div>
+
+        <button
+          className={styles.deleteCardButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteCard(cardData.card_id);
+          }}
+        >
+          <SimpleImage
+            disableLazyLoad
+            src="/icons/close.svg"
+            width={22}
+            height={22}
+          />
+        </button>
+
+        <button
+          className={styles.openDescriptionButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenModal(true);
+          }}
+        >
+          <SimpleImage
+            disableLazyLoad
+            src="/icons/edit.svg"
+            width={14}
+            height={14}
+          />
+        </button>
+      </div>
+
+      <EditOverlay
+        cardData={cardData}
+        isOpen={openModal}
+        handleClose={() => setOpenModal(false)}
+      />
+    </>
   );
 };
 

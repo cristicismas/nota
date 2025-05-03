@@ -6,7 +6,7 @@
   border: 1px solid var(--hover);
   background-color: var(--background);
   border-radius: 12px;
-  min-height: 100px;
+  min-height: 120px;
 }
 
 .card:not(.editing) {
@@ -35,4 +35,27 @@
 
 .card:hover .deleteCardButton {
   opacity: 1;
+}
+
+.openDescriptionButton {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 4px 0;
+  transition: all .2s;
+  opacity: 0;
+  border: 1px solid var(--hover);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  background-color: var(--background-alt);
+
+  &:hover {
+    background-color: var(--hover);
+  }
+}
+
+.card:hover .openDescriptionButton {
+  opacity: 1
 }

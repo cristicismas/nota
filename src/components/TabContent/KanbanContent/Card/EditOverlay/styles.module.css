@@ -1,0 +1,41 @@
+.title {
+  font-size: 38px;
+  text-align: center;
+}
+
+.overlay {
+  min-width: 90vw;
+  min-height: 90vh;
+  flex-direction: column;
+  padding-top: 24px;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.closeModalButton {
+  position: absolute;
+  right: 0;
+  padding: 12px;
+  top: 18px;
+}
+
+.innerContainer {
+  width: 100%;
+  min-height: 100%;
+}
+
+.label {
+  color: #777;
+}
+
+.titleTextArea {
+  all: unset;
+  font-size: 28px;
+  margin-top: 16px;
+  height: 40px;
+  width: 100%;
+}
+
+.descriptionContainer {
+  margin-top: 32px;
+}
