@@ -1,7 +1,8 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import useSWR from "swr";
 import { createPortal } from "react-dom";
 import fetcher from "@/helpers/swrFetcher";
+import { getOrderedCards, findLastCardInCategory } from "@/helpers/cards";
 // dnd
 import {
   DndContext,
@@ -9,7 +10,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  pointerWithin,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 // components
@@ -71,6 +71,11 @@ const KanbanContent = ({ tab_id }) => {
       return;
     }
 
+    // Reorder cards
+    if (active.data.current?.type === "card") {
+      fetcher("cards", { method: "PUT", body: JSON.stringify({ cards }) });
+    }
+
     if (
       over.data.current?.type !== "column" ||
       active.data.current?.type !== "column"
@@ -123,7 +128,7 @@ const KanbanContent = ({ tab_id }) => {
       const activeId = getDragId(active.id);
       const overId = getDragId(over.id);
 
-      if (activeId === overId) {
+      if (active.id === over.id) {
         return;
       }
 
@@ -143,10 +148,17 @@ const KanbanContent = ({ tab_id }) => {
           cardsCopy[overIndex].category_id
         ) {
           cardsCopy[activeIndex].category_id = cardsCopy[overIndex].category_id;
-        }
 
-        const newCards = arrayMove(cardsCopy, activeIndex, overIndex);
-        setCards(newCards);
+          const newCards = arrayMove(
+            cardsCopy,
+            activeIndex,
+            Math.max(0, overIndex - 1),
+          );
+          setCards(getOrderedCards(newCards));
+        } else {
+          const newCards = arrayMove(cardsCopy, activeIndex, overIndex);
+          setCards(getOrderedCards(newCards));
+        }
       }
 
       // If dropping a card over a column
@@ -157,10 +169,13 @@ const KanbanContent = ({ tab_id }) => {
 
         const cardsCopy = structuredClone(cards);
 
-        if (cardsCopy[activeIndex].category_id !== overId) {
-          cardsCopy[activeIndex].category_id = overId;
-          setCards(cardsCopy);
-        }
+        cardsCopy[activeIndex].category_id = overId;
+        const lastColIndex = findLastCardInCategory(
+          cardsCopy,
+          cardsCopy[activeIndex].category_id,
+        );
+        const newCards = arrayMove(cardsCopy, activeIndex, lastColIndex);
+        setCards(getOrderedCards(newCards));
       }
     }, 0);
   };
