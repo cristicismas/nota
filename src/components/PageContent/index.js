@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // components
 import Tabs from "../Tabs";
 import TabContent from "../TabContent";
@@ -9,7 +9,23 @@ import SpinningLoaderPage from "../SpinningLoaderPage";
 import styles from "./styles.module.css";
 
 const PageContent = ({ data, loading, onContentUpdate }) => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(() => {
+    const cachedTab = Number(localStorage.getItem(data.slug));
+
+    if (!isNaN(cachedTab)) {
+      return cachedTab;
+    }
+
+    return 0;
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(data.slug, activeTab);
+    } catch (err) {
+      localStorage.clear();
+    }
+  }, [activeTab]);
 
   if (loading && !data) return <SpinningLoaderPage />;
 
