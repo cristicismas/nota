@@ -185,7 +185,30 @@ const KanbanContent = ({ tab_id }) => {
     setCards((cards) => [...cards, newCard]);
   };
 
-  const deleteCard = () => {};
+  const deleteCard = async (card_id) => {
+    const response = await fetcher(`cards/${card_id}`, {
+      method: "DELETE",
+    });
+
+    const remainingCardsInCategory = response.remaining_cards;
+
+    const updatedCards = cards.filter((card) => card.card_id !== card_id);
+
+    // Update order for cards
+    for (const card of remainingCardsInCategory) {
+      const cardIndex = updatedCards.findIndex(
+        (c) => c.card_id === card.card_id,
+      );
+
+      if (cardIndex >= 0) {
+        updatedCards[cardIndex] = card;
+      } else {
+        console.error("Cannot find card to update order: ", card);
+      }
+    }
+
+    setCards(updatedCards);
+  };
 
   const getCategoryCards = (category) =>
     cards.filter((card) => card.category_id === category.category_id);

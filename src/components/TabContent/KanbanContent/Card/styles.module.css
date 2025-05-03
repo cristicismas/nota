@@ -1,11 +1,11 @@
 .card {
+  position: relative;
   cursor: grab;
-  padding: 12px 16px;
+  padding: 12px 32px 12px 16px;
   font-size: 18px;
   border: 1px solid var(--hover);
   background-color: var(--background);
   border-radius: 12px;
-  /* TODO: make moving cards work properly even when removing min height */
   min-height: 100px;
 }
 
@@ -22,4 +22,17 @@
   background-color: transparent;
   background-color: var(--background);
   border: 2px solid var(--accent);
+}
+
+.deleteCardButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.card:hover .deleteCardButton {
+  opacity: 1;
 }

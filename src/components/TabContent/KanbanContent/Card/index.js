@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import EditField from "./EditField";
+import SimpleImage from "@/components/SimpleImage";
 import fetcher from "@/helpers/swrFetcher";
 
 const Card = ({ cardData, updateCards, deleteCard }) => {
@@ -86,6 +87,21 @@ const Card = ({ cardData, updateCards, deleteCard }) => {
       className={styles.card}
     >
       <div className={styles.cardTitle}>{cardData.title}</div>
+
+      <button
+        className={styles.deleteCardButton}
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteCard(cardData.card_id);
+        }}
+      >
+        <SimpleImage
+          disableLazyLoad
+          src="/icons/close.svg"
+          width={22}
+          height={22}
+        />
+      </button>
     </div>
   );
 };
