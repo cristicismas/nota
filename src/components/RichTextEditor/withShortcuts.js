@@ -8,7 +8,7 @@ import {
 } from "slate";
 
 const withShortcuts = (editor) => {
-  const { deleteBackward, insertText } = editor;
+  const { deleteBackward, insertText, insertBreak } = editor;
   editor.insertText = (text) => {
     const { selection } = editor;
     if (text.endsWith(" ") && selection && Range.isCollapsed(selection)) {
@@ -29,7 +29,6 @@ const withShortcuts = (editor) => {
         const newProperties = {
           type,
         };
-        // TODO: make the type = "paragraph" on new line as well? right now it only works on backspace
         Transforms.setNodes(editor, newProperties, {
           match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
         });
@@ -49,6 +48,32 @@ const withShortcuts = (editor) => {
       }
     }
     insertText(text);
+  };
+
+  editor.insertBreak = () => {
+    insertBreak();
+
+    const match = Editor.above(editor, {
+      match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
+    });
+
+    if (match) {
+      const [block] = match;
+      if (block.type === "list-item") {
+        Transforms.unwrapNodes(editor, {
+          match: (n) =>
+            !Editor.isEditor(n) &&
+            SlateElement.isElement(n) &&
+            n.type === "bulleted-list",
+          split: true,
+        });
+      } else {
+        const newProperties = {
+          type: "paragraph",
+        };
+        Transforms.setNodes(editor, newProperties);
+      }
+    }
   };
 
   editor.deleteBackward = (...args) => {
