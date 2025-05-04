@@ -60,7 +60,6 @@ const TextContent = ({ data, onContentUpdate }) => {
     }, 200);
 
     return () => {
-      updateTabContent();
       clearTimeout(debounce);
     };
   }, [editorValue]);
