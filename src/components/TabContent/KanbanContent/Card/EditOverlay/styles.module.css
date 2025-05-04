@@ -14,9 +14,9 @@
 
 .closeModalButton {
   position: absolute;
-  right: 0;
   padding: 12px;
   top: 18px;
+  right: 18px;
 }
 
 .innerContainer {
