@@ -1,17 +1,80 @@
 import SimpleImage from "@/components/SimpleImage";
 import Overlay from "@/components/Overlay";
 import styles from "./styles.module.css";
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
+import fetcher from "@/helpers/swrFetcher";
 
-const EditOverlay = ({ isOpen, handleClose, cardData }) => {
+const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
   const [titleValue, setTitleValue] = useState(cardData.title);
   const [descriptionValue, setDescriptionValue] = useState(
     cardData.description,
   );
 
+  const upToDateTitleValue = useRef(cardData.title);
+  const initialCardTitle = useRef(cardData.title);
+
+  const upToDateDescriptionValue = useRef(cardData.description);
+  const initialCardDescription = useRef(cardData.description);
+
+  const editGeneration = useRef(cardData.generation || 0);
+
+  const updateCard = async (newCard) => {
+    if (editGeneration.current <= cardData.generation) return;
+
+    onCardChange(newCard);
+    await fetcher(`card/${newCard.card_id}`, {
+      method: "PUT",
+      body: JSON.stringify(newCard),
+    });
+  };
+
+  useEffect(() => {
+    if (editGeneration.current <= cardData.generation) return;
+    const newCard = {
+      ...cardData,
+      title: upToDateTitleValue.current,
+      generation: editGeneration.current,
+    };
+
+    const debounce = setTimeout(() => {
+      if (initialCardTitle.current !== titleValue) {
+        updateCard(newCard);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [titleValue]);
+
+  useEffect(() => {
+    return () => {
+      if (!isOpen) {
+        if (
+          upToDateTitleValue.current !== initialCardTitle.current ||
+          upToDateDescriptionValue.current !== initialCardDescription.current
+        ) {
+          editGeneration.current += 1;
+
+          const newCard = {
+            ...cardData,
+            title: upToDateTitleValue.current,
+            description: upToDateDescriptionValue.current,
+            generation: editGeneration.current,
+          };
+
+          updateCard(newCard);
+        }
+      }
+    };
+  }, [isOpen]);
+
   const handleTitleChange = async (e) => {
     if (e.target.value.includes("\n")) return;
+
+    editGeneration.current += 1;
     setTitleValue(e.target.value);
+    upToDateTitleValue.current = e.target.value;
   };
 
   return (
@@ -28,9 +91,12 @@ const EditOverlay = ({ isOpen, handleClose, cardData }) => {
           height={28}
         />
       </button>
+
       <div className={styles.innerContainer}>
-        <div className={styles.title}>Edit Card</div>
+        <h1 className={styles.title}>Edit Card</h1>
+
         <div className={styles.label}>Title</div>
+
         <textarea
           autoComplete="off"
           autoCorrect="off"

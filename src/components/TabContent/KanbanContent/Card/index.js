@@ -6,7 +6,6 @@ import { CSS } from "@dnd-kit/utilities";
 import EditField from "./EditField";
 import SimpleImage from "@/components/SimpleImage";
 import fetcher from "@/helpers/swrFetcher";
-import Overlay from "@/components/Overlay";
 import EditOverlay from "./EditOverlay";
 
 const Card = ({
@@ -85,6 +84,10 @@ const Card = ({
     );
   }
 
+  const onCardChange = (newCard) => {
+    updateCards(newCard);
+  };
+
   return (
     <>
       <div
@@ -131,6 +134,7 @@ const Card = ({
       <EditOverlay
         cardData={cardData}
         isOpen={openModal}
+        onCardChange={onCardChange}
         handleClose={() => setOpenModal(false)}
       />
     </>

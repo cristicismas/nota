@@ -9,10 +9,15 @@ const EditField = ({ onExit, onUpdate, defaultValue, generation }) => {
   const textareaRef = useRef();
   const editGeneration = useRef(generation || 0);
 
-  useOutsideClick(formRef, async () => {
+  const handleUpdate = async () => {
+    if (editGeneration.current <= generation) return;
     await onUpdate(upToDateEditorValue.current, editGeneration.current);
+  };
+
+  useOutsideClick(formRef, async () => {
+    await handleUpdate();
     onExit();
-  });
+  }, [generation]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -23,7 +28,7 @@ const EditField = ({ onExit, onUpdate, defaultValue, generation }) => {
   useEffect(() => {
     const closeListener = async (e) => {
       if (e.key === "Escape") {
-        await onUpdate(upToDateEditorValue.current, editGeneration.current);
+        await handleUpdate();
         onExit();
       }
     };
@@ -33,11 +38,11 @@ const EditField = ({ onExit, onUpdate, defaultValue, generation }) => {
     return () => {
       document.removeEventListener("keydown", closeListener);
     };
-  }, []);
+  }, [generation]);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      onUpdate(upToDateEditorValue.current, editGeneration.current);
+      handleUpdate();
     }, 100);
 
     return () => {

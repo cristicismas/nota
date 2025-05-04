@@ -7,6 +7,7 @@ const TextContent = ({ data, onContentUpdate }) => {
   const initialEditorValue = useRef(data?.text_content);
   const upToDateEditorValue = useRef(data?.text_content);
   const [editorValue, setEditorValue] = useState(data?.text_content);
+  // TODO: try to get rid of useTransition, it doesn't really make sense here
   const [_isPending, startTransition] = useTransition();
   // Keep count of the latest generation and send it to the server, in case it
   // receives the requests out-of-order, it can know which was the last change
