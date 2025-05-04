@@ -81,7 +81,11 @@ const TextContent = ({ data, onContentUpdate }) => {
 
   return (
     <div className={styles.container}>
-      <RichTextEditor data={data} onChange={onChange} />
+      <RichTextEditor
+        className={styles.markdown}
+        data={data}
+        onChange={onChange}
+      />
     </div>
   );
 };

@@ -5,11 +5,14 @@
 
 .overlay {
   min-width: 90vw;
+  max-width: 90vw;
   min-height: 90vh;
+  max-height: 90vh;
   flex-direction: column;
   padding-top: 24px;
   justify-content: flex-start;
   position: relative;
+  overflow-y: auto;
 }
 
 .closeModalButton {
@@ -42,4 +45,5 @@
 
 .description {
   margin-top: 16px;
+  padding-bottom: 24px;
 }

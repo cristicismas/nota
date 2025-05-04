@@ -3,20 +3,7 @@
   margin-bottom: 24px;
 }
 
-.markdown h1,
-.markdown h2,
-.markdown h3,
-.markdown h4,
-.markdown h5,
-.markdown h6,
-.markdown p {
-  margin-bottom: .5em;
-}
-
-.markdown p {
-  font-size: 1.5rem;
-}
-
 .markdown {
-  padding: 24px 48px;
+  max-width: 800px;
+  margin: 0 auto;
 }

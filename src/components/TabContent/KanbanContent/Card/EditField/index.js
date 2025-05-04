@@ -51,6 +51,7 @@ const EditField = ({ onExit, onUpdate, defaultValue, generation }) => {
   }, [editValue]);
 
   const handleInputChange = (e) => {
+    if (e.target.value.includes("\n")) return;
     upToDateEditorValue.current = e.target.value;
     editGeneration.current += 1;
     setEditValue(e.target.value);
