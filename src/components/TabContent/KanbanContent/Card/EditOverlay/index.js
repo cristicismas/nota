@@ -1,7 +1,8 @@
 import SimpleImage from "@/components/SimpleImage";
+import RichTextEditor from "@/components/RichTextEditor";
 import Overlay from "@/components/Overlay";
 import styles from "./styles.module.css";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, startTransition } from "react";
 import fetcher from "@/helpers/swrFetcher";
 
 const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
@@ -48,6 +49,26 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
   }, [titleValue]);
 
   useEffect(() => {
+    if (editGeneration.current <= cardData.generation) return;
+
+    const newCard = {
+      ...cardData,
+      descriptionValue: upToDateDescriptionValue.current,
+      generation: editGeneration.current,
+    };
+
+    const debounce = setTimeout(() => {
+      if (initialCardDescription.current !== descriptionValue) {
+        updateCard(newCard);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [descriptionValue]);
+
+  useEffect(() => {
     return () => {
       if (!isOpen) {
         if (
@@ -75,6 +96,14 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
     editGeneration.current += 1;
     setTitleValue(e.target.value);
     upToDateTitleValue.current = e.target.value;
+  };
+
+  const handleDescriptionChange = async (value) => {
+    startTransition(() => {
+      editGeneration.current += 1;
+      setDescriptionValue(value);
+      upToDateDescriptionValue.current = value;
+    });
   };
 
   return (
@@ -110,9 +139,12 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
 
         <div className={styles.descriptionContainer}>
           <div className={styles.label}>Description</div>
-          {cardData.description && (
-            <div className={styles.title}>{cardData.description}</div>
-          )}
+
+          <RichTextEditor
+            className={styles.description}
+            data={{ text_content: descriptionValue }}
+            onChange={handleDescriptionChange}
+          />
         </div>
       </div>
     </Overlay>

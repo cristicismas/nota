@@ -12,7 +12,7 @@ import SHORTCUTS from "./shortcuts";
 import { Slate, ReactEditor, Editable, withReact } from "slate-react";
 import ElementRenderer from "./ElementRenderer";
 
-const RichTextEditor = ({ data, onChange }) => {
+const RichTextEditor = ({ data, onChange, className = "" }) => {
   const renderElement = useCallback(
     (props) => <ElementRenderer {...props} />,
     [],
@@ -63,7 +63,7 @@ const RichTextEditor = ({ data, onChange }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${className}`}>
       <div className={`${styles.markdown} markdown`}>
         <Slate
           onChange={(value) => {

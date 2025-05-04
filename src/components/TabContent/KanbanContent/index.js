@@ -182,11 +182,15 @@ const KanbanContent = ({ tab_id }) => {
   };
 
   const addCard = async (category_id) => {
+    const description = JSON.stringify([
+      { type: "paragraph", children: [{ text: "" }] },
+    ]);
+
     const newCard = {
       tab_id,
       category_id,
       title: "",
-      description: "",
+      description,
       generation: 0,
     };
 
