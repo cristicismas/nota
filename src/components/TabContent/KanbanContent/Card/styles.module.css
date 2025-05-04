@@ -33,7 +33,7 @@
   transition: opacity .2s;
 }
 
-.card:hover .deleteCardButton {
+.card:hover:not(.dragged) .deleteCardButton {
   opacity: 1;
 }
 
@@ -56,6 +56,25 @@
   }
 }
 
-.card:hover .openDescriptionButton {
-  opacity: 1
+.card:hover:not(.dragged) .openDescriptionButton {
+  opacity: 1;
+}
+
+.hasDescriptionIndicator {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 0;
+  transition: opacity .2s;
+  opacity: 1;
+}
+
+.card:hover .hasDescriptionIndicator,
+.card.dragged .hasDescriptionIndicator,
+.card.dragging .hasDescriptionIndicator {
+  opacity: 0;
 }

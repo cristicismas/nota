@@ -53,7 +53,7 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
 
     const newCard = {
       ...cardData,
-      descriptionValue: upToDateDescriptionValue.current,
+      description: upToDateDescriptionValue.current,
       generation: editGeneration.current,
     };
 

@@ -346,7 +346,11 @@ const KanbanContent = ({ tab_id }) => {
               />
             )}
             {activeDraggingCard && (
-              <Card cardData={activeDraggingCard} deleteCard={deleteCard} />
+              <Card
+                cardData={activeDraggingCard}
+                deleteCard={deleteCard}
+                isDragged
+              />
             )}
           </DragOverlay>,
           document.body,

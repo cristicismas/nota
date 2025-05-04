@@ -14,6 +14,7 @@ const Card = ({
   setIsEditing,
   updateCards,
   deleteCard,
+  isDragged,
 }) => {
   const [openModal, setOpenModal] = useState(false);
 
@@ -88,6 +89,10 @@ const Card = ({
     updateCards(newCard);
   };
 
+  const defaultDescription = JSON.stringify([
+    { type: "paragraph", children: [{ text: "" }] },
+  ]);
+
   return (
     <>
       <div
@@ -96,7 +101,7 @@ const Card = ({
         style={sortableStyle}
         {...attributes}
         {...listeners}
-        className={styles.card}
+        className={`${isDragged && styles.dragged} ${styles.card}`}
       >
         <div className={styles.cardTitle}>{cardData.title}</div>
 
@@ -114,6 +119,17 @@ const Card = ({
             height={22}
           />
         </button>
+
+        {defaultDescription !== cardData.description && (
+          <div className={styles.hasDescriptionIndicator}>
+            <SimpleImage
+              disableLazyLoad
+              src="/icons/description.svg"
+              width={18}
+              height={18}
+            />
+          </div>
+        )}
 
         <button
           className={styles.openDescriptionButton}
