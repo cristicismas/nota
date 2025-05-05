@@ -64,7 +64,7 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
     return (
       <div className={`${styles.container} ${styles.noTabsContainer}`}>
         <h1 className={styles.title}>
-          You don't have any tabs added yet. Please add a new tab.
+          You don&apos;t have any tabs added yet. Please add a new tab.
         </h1>
 
         <div className={styles.buttonContainer}>

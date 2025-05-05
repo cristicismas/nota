@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import fetcher from "./swrFetcher";
 
-const useCookieValidation = async () => {
+const useCookieValidation = () => {
   const router = useRouter();
 
   useEffect(() => {
