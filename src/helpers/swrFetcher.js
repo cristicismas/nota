@@ -10,13 +10,6 @@ const fetcher = async (url, options) => {
     };
   }
 
-  if (url.includes("login")) {
-    fetchOptions.headers = {
-      "Content-Type": "application/json",
-      Origin: process.env.SERVER_URL,
-    };
-  }
-
   const response = await fetch(
     `${process.env.SERVER_URL}/${url}`,
     fetchOptions,
