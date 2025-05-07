@@ -194,7 +194,7 @@ const KanbanContent = ({ tab_id }) => {
       generation: 0,
     };
 
-    const response = await fetcher(`card`, {
+    const response = await fetcher("cards", {
       method: "POST",
       body: JSON.stringify(newCard),
     });
@@ -241,7 +241,7 @@ const KanbanContent = ({ tab_id }) => {
     };
 
     try {
-      const { new_category } = await fetcher("category", {
+      const { new_category } = await fetcher("categories", {
         method: "POST",
         body: JSON.stringify(newCategory),
       });
@@ -253,7 +253,7 @@ const KanbanContent = ({ tab_id }) => {
   };
 
   const handleDeleteCategory = async (category_id) => {
-    await fetcher(`category/${category_id}`, { method: "DELETE" });
+    await fetcher(`categories/${category_id}`, { method: "DELETE" });
     await mutate(`tabs/${tab_id}`);
   };
 

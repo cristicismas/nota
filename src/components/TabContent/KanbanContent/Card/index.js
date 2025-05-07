@@ -48,7 +48,7 @@ const Card = ({
     };
 
     try {
-      await fetcher(`card/${cardData?.card_id}`, {
+      await fetcher(`cards/${cardData?.card_id}`, {
         method: "PUT",
         body: JSON.stringify(newCard),
       });

@@ -19,6 +19,7 @@ const PagesList = () => {
   const { mutate } = useSWRConfig();
 
   const { data: pages, mutate: mutatePages } = useSWR("pages");
+  console.log(pages);
 
   const deletePage = async (pageId) => {
     await fetcher(`pages/${pageId}`, { method: "DELETE" });

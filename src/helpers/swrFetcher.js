@@ -10,10 +10,7 @@ const fetcher = async (url, options) => {
     };
   }
 
-  const response = await fetch(
-    `${process.env.SERVER_URL}/${url}`,
-    fetchOptions,
-  );
+  const response = await fetch(`api/${url}`, fetchOptions);
 
   if (!response.ok) {
     const error = await response.json();

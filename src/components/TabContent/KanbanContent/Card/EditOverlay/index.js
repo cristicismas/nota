@@ -23,7 +23,7 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
     if (editGeneration.current <= cardData.generation) return;
 
     onCardChange(newCard);
-    await fetcher(`card/${newCard.card_id}`, {
+    await fetcher(`cards/${newCard.card_id}`, {
       method: "PUT",
       body: JSON.stringify(newCard),
     });

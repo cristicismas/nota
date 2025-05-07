@@ -1,4 +1,3 @@
-import Modal from "@/components/Modal";
 import fetcher from "@/helpers/swrFetcher";
 import styles from "./styles.module.css";
 import { useState, useRef, useEffect } from "react";
@@ -22,7 +21,7 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
       const title = formData.get("tab-title");
       setIsLoading(true);
 
-      await fetcher("tab", {
+      await fetcher("tabs", {
         method: "POST",
         body: JSON.stringify({ page_id, title, tab_type: activeType }),
       });

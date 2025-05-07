@@ -13,7 +13,7 @@ const PageCreationInput = ({ abort, onFinished, currentPages }) => {
   const formRef = useRef();
 
   const addPage = async (pageTitle) => {
-    const newPage = await fetcher("page", {
+    const newPage = await fetcher("pages", {
       method: "POST",
       body: JSON.stringify({ pageTitle }),
     });
