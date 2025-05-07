@@ -13,13 +13,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <Head>
         <link
-          rel="preconnect"
-          href={`${process.env.SERVER_URL}`}
-          crossOrigin="use-credentials"
-        />
-        <link
           rel="preload"
-          href={`${process.env.SERVER_URL}/validate`}
+          href="api/validate"
           as="fetch"
           crossOrigin="use-credentials"
         />

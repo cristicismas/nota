@@ -7,7 +7,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-user": "node src/scripts/generateUser.js",
+    "generate-db": "node src/scripts/generateDB.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@flydotio/dockerfile": "^0.7.10",
     "eslint": "^9",
     "eslint-config-next": "15.3.0"
   }

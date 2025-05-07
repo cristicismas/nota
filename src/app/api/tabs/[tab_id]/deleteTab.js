@@ -2,7 +2,7 @@ import db from "@/helpers/server/db";
 import res from "@/helpers/server/res";
 
 const deleteTab = async (params) => {
-  const tab_id = await params.tab_id;
+  const { tab_id } = await params;
 
   if (!tab_id) {
     return res(400, { message: "No tab_id is given in the parameters" });

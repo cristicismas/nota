@@ -2,7 +2,7 @@ import db from "@/helpers/server/db";
 import res from "@/helpers/server/res";
 
 const deleteCard = async (params) => {
-  const card_id = await params.card_id;
+  const { card_id } = await params;
 
   if (!card_id)
     return res(400, {

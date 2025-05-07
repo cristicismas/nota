@@ -6,7 +6,7 @@ const updateCategory = async (req, params) => {
 
   if (!body) return res(400, { message: "No body present in the request" });
 
-  const category_id = await params.category_id;
+  const { category_id } = await params;
 
   if (!category_id) {
     return res(400, { message: "No category_id is given in the parameters" });

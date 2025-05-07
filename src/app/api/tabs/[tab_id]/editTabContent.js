@@ -2,7 +2,7 @@ import db from "@/helpers/server/db.js";
 import res from "@/helpers/server/res.js";
 
 const editTabContent = async (req, params) => {
-  const tab_id = await params.tab_id;
+  const { tab_id } = await params;
 
   if (!tab_id) {
     return res(400, {

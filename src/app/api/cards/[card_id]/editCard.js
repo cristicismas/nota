@@ -3,7 +3,7 @@ import res from "@/helpers/server/res";
 
 const editCard = async (req, params) => {
   const body = await req.json();
-  const card_id = await params.card_id;
+  const { card_id } = await params;
 
   if (!card_id)
     return res(400, {

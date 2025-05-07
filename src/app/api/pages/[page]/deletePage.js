@@ -2,7 +2,7 @@ import db from "@/helpers/server/db.js";
 import res from "@/helpers/server/res";
 
 const deletePage = async (params) => {
-  const page_id = await params.page;
+  const page_id = (await params).page;
 
   if (!page_id) {
     return res(400, { message: "No page_id given in the parameters" });

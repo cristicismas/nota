@@ -2,7 +2,7 @@ import db from "@/helpers/server/db";
 import res from "@/helpers/server/res";
 
 const deleteCategory = async (params) => {
-  const category_id = await params.category_id;
+  const { category_id } = await params;
 
   if (!category_id) {
     return res(400, { message: "No category_id is given in the parameters" });

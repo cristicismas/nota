@@ -2,7 +2,7 @@ import db from "@/helpers/server/db";
 import res from "@/helpers/server/res";
 
 const getPage = async (params) => {
-  const page_slug = await params.page;
+  const page_slug = (await params).page;
 
   const page = db.prepare("SELECT * FROM pages WHERE slug = ?").get(page_slug);
 

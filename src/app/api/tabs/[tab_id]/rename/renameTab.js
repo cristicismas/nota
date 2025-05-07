@@ -2,7 +2,7 @@ import db from "@/helpers/server/db";
 import res from "@/helpers/server/res";
 
 const renameTab = async (req, params) => {
-  const tab_id = await params.tab_id;
+  const { tab_id } = await params;
 
   const body = await req.json();
 

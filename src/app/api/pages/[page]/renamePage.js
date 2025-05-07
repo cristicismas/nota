@@ -5,7 +5,7 @@ import res from "@/helpers/server/res";
 
 const renamePage = async (req, params) => {
   const body = await req.json();
-  const page_id = await params.page;
+  const page_id = (await params).page;
 
   if (!page_id) {
     return res(400, { message: "No page_id given in the parameters" });
