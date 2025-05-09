@@ -13,7 +13,7 @@ const deleteOldSessions = () => {
       "DELETE FROM sessions WHERE datetime(created_at) <= datetime('now', '-3 months')",
     ).run();
 
-    console.log("\n ---------------- DELETED OLD SESSIONS ---------------- \n");
+    console.info("\n ---------------- DELETED OLD SESSIONS ---------------- \n");
   } catch (err) {
     console.error(
       "\n ---------------- ERROR DELETING OLD SESSIONS: ---------------- \n",
@@ -25,7 +25,7 @@ const deleteOldSessions = () => {
 const backupDatabase = () => {
   db.backup(process.env.BACKUP_DB_URL)
     .then(() => {
-      console.log("\n ---------------- DATABASE BACKED UP ---------------- \n");
+      console.info("\n ---------------- DATABASE BACKED UP ---------------- \n");
     })
     .catch((err) => {
       console.error(

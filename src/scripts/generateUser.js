@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import db from "../helpers/server/db.js";
 
 if (process.argv.length - 2 !== 2) {
-  console.log(
+  console.info(
     "ERROR: generateUsers requires 2 arguments: [username] [password]",
   );
   process.exit();
@@ -11,7 +11,7 @@ if (process.argv.length - 2 !== 2) {
 const username = process.argv[2];
 const password = process.argv[3];
 
-console.log("Hashing and salting password...");
+console.info("Hashing and salting password...");
 
 const saltRounds = 10;
 
@@ -27,5 +27,5 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
 
   addUserQuery.run(username, hash);
 
-  console.log("Added user to the database.");
+  console.info("Added user to the database.");
 });
