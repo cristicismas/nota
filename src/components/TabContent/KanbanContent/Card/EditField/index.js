@@ -27,7 +27,7 @@ const EditField = ({ onExit, onUpdate, defaultValue, generation }) => {
 
   useEffect(() => {
     const closeListener = async (e) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" || e.key === "Enter") {
         await handleUpdate();
         onExit();
       }

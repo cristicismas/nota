@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 // components
 import SimpleImage from "@/components/SimpleImage";
 // styles
@@ -13,6 +13,7 @@ const Tab = ({
   onRenameAbort,
   tab,
 }) => {
+  const [renameValue, setRenameValue] = useState(tab.title);
   const inputRef = useRef();
 
   const handleRename = (formData) => {
@@ -45,7 +46,8 @@ const Tab = ({
     return (
       <form className={styles.form} action={handleRename}>
         <input
-          defaultValue={tab.title}
+          value={renameValue}
+          onChange={(e) => setRenameValue(e.target.value)}
           ref={inputRef}
           name="rename-input"
           title="Empty strings are not allowed in this input"

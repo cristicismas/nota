@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 // components
 import SimpleImage from "@/components/SimpleImage";
 // styles
 import styles from "./styles.module.css";
 
-const RenameInput = ({ onSubmit, onAbort, defaultValue }) => {
+const RenameInput = ({ onSubmit, onAbort, defaultValue = "" }) => {
+  const [inputValue, setInputValue] = useState(defaultValue);
   const inputRef = useRef();
 
   const handleSubmit = (formData) => {
@@ -35,8 +36,9 @@ const RenameInput = ({ onSubmit, onAbort, defaultValue }) => {
   return (
     <form className={styles.form} action={handleSubmit}>
       <input
-        defaultValue={defaultValue}
         ref={inputRef}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         name="rename-input"
         title="Empty strings are not allowed in this input"
         autoComplete="off"

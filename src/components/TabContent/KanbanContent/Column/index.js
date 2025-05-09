@@ -21,6 +21,7 @@ const Column = ({
   className,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(columnData.title);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const {
@@ -50,6 +51,7 @@ const Column = ({
 
   const handleRenameColumn = (newTitle) => {
     setIsEditing(false);
+    setTitle(newTitle);
     renameColumn({ ...columnData, title: newTitle });
   };
 
@@ -91,7 +93,7 @@ const Column = ({
           />
         ) : (
           <div {...attributes} {...listeners} className={styles.columnTitle}>
-            {columnData.title}
+            {title}
           </div>
         )}
 

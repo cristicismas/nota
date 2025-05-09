@@ -9,6 +9,10 @@
   padding-right: 76px;
 }
 
+.placeholder {
+  height: 36px;
+}
+
 .pageLinkContainer:hover {
   transition: background-color .2s;
 
