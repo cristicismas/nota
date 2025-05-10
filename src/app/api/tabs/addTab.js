@@ -14,11 +14,11 @@ const addTab = async (req) => {
     });
 
   const addTextTabQuery = db.prepare(
-    "INSERT INTO tabs (title, page_id, tab_type, text_content, generation, tab_order) VALUES (@title, @page_id, @tab_type, @text_content, @generation, @tab_order)",
+    "INSERT INTO tabs (title, page_id, tab_type, text_content, generation, tab_order, deleted_cards_count) VALUES (@title, @page_id, @tab_type, @text_content, @generation, @tab_order, @deleted_cards_count)",
   );
 
   const addKanbanTabQuery = db.prepare(
-    "INSERT INTO tabs (title, page_id, tab_type, generation, tab_order) VALUES (@title, @page_id, @tab_type, @generation, @tab_order)",
+    "INSERT INTO tabs (title, page_id, tab_type, generation, tab_order, deleted_cards_count) VALUES (@title, @page_id, @tab_type, @generation, @tab_order, @deleted_cards_count)",
   );
 
   const highestOrderTab = db
@@ -33,6 +33,7 @@ const addTab = async (req) => {
     tab_type,
     tab_order: highestOrderTab ? highestOrderTab.tab_order + 1 : 0,
     generation: 0,
+    deleted_cards_count: 0,
   };
 
   if (tab_type === "text") {
@@ -53,13 +54,14 @@ const addTab = async (req) => {
       .get(current_tab_id);
 
     db.prepare(
-      "INSERT INTO kanban_categories (title, tab_id, category_order) VALUES (@title, @tab_id, @category_order)",
+      "INSERT INTO kanban_categories (title, tab_id, category_order, compact) VALUES (@title, @tab_id, @category_order, @compact)",
     ).run({
       title: "Kanban Column",
       tab_id: current_tab_id,
       category_order: highestOrderCategory
         ? highestOrderCategory.category_order + 1
         : 0,
+      compact: 0,
     });
   }
 

@@ -21,15 +21,17 @@ import SimpleImage from "@/components/SimpleImage";
 import ErrorContent from "@/components/ErrorContent";
 // styles
 import styles from "./styles.module.css";
+import AddColumnModal from "./AddColumnModal";
 
 const KanbanContent = ({ tab_id }) => {
   const { data, isLoading, error, mutate } = useSWR(`tabs/${tab_id}`);
 
-  const [columns, setColumns] = useState(data?.categories);
+  const [columns, setColumns] = useState(data?.normalCategories);
   const [cards, setCards] = useState(data?.cards);
   const [activeDraggingColumn, setDraggingColumn] = useState(null);
   const [activeDraggingCard, setDraggingCard] = useState(null);
   const [editingCard, setEditingCard] = useState(null);
+  const [openAddColumnModal, setOpenAddColumnModal] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -41,7 +43,7 @@ const KanbanContent = ({ tab_id }) => {
   );
 
   useEffect(() => {
-    setColumns(data?.categories);
+    setColumns(data?.normalCategories);
     setCards(data?.cards);
   }, [data]);
 
@@ -234,24 +236,6 @@ const KanbanContent = ({ tab_id }) => {
   const getCategoryCards = (category) =>
     cards.filter((card) => card.category_id === category.category_id);
 
-  const handleAddCategory = async () => {
-    const newCategory = {
-      tab_id,
-      title: "Category Title",
-    };
-
-    try {
-      const { new_category } = await fetcher("categories", {
-        method: "POST",
-        body: JSON.stringify(newCategory),
-      });
-
-      setColumns([...columns, new_category]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const handleDeleteCategory = async (category_id) => {
     await fetcher(`categories/${category_id}`, { method: "DELETE" });
     await mutate(`tabs/${tab_id}`);
@@ -292,6 +276,11 @@ const KanbanContent = ({ tab_id }) => {
     return <SpinningLoaderPage />;
   }
 
+  // TODO: add styling and rendering for compact categories
+  // TODO: improve revalidation UI when deleting a category
+  // TODO: improve revalidation UI when adding a category
+  // TODO: add the tab page title up above the tabs on each tab
+
   return (
     <div className={styles.container}>
       <DndContext
@@ -325,7 +314,7 @@ const KanbanContent = ({ tab_id }) => {
         <div className={styles.buttonContainer}>
           <StyledButton
             className={styles.addCategoryButton}
-            onClick={handleAddCategory}
+            onClick={() => setOpenAddColumnModal(true)}
           >
             <SimpleImage
               disableLazyLoad
@@ -335,6 +324,15 @@ const KanbanContent = ({ tab_id }) => {
             />
           </StyledButton>
         </div>
+
+        <AddColumnModal
+          tab_id={tab_id}
+          handleClose={() => setOpenAddColumnModal(false)}
+          handleFinished={(newCategory) =>
+            setColumns([...columns, newCategory])
+          }
+          isOpen={openAddColumnModal}
+        />
 
         {createPortal(
           <DragOverlay>

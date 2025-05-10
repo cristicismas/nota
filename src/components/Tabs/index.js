@@ -13,7 +13,7 @@ import Tab from "./Tab";
 import styles from "./styles.module.css";
 
 const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
-  const [openAddTabModel, setOpenAddTabModal] = useState(false);
+  const [openAddTabModal, setOpenAddTabModal] = useState(false);
   const [openContextMenu, setOpenContextMenu] = useState(null);
   const [contextPosition, setContextPosition] = useState({ x: 0, y: 0 });
   const [tabToEdit, setTabToEdit] = useState(null);
@@ -86,7 +86,7 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
           page_id={page_id}
           handleClose={() => setOpenAddTabModal(false)}
           handleFinished={handleAddedTab}
-          isOpen={openAddTabModel}
+          isOpen={openAddTabModal}
         />
       </div>
     );
@@ -125,7 +125,7 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
         page_id={page_id}
         handleClose={() => setOpenAddTabModal(false)}
         handleFinished={handleAddedTab}
-        isOpen={openAddTabModel}
+        isOpen={openAddTabModal}
       />
 
       <ContextMenu

@@ -28,9 +28,9 @@ const addCard = async (req) => {
 
   const new_card = db
     .prepare(
-      "INSERT INTO kanban_cards ( category_id, tab_id, title, description, generation, card_order ) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO kanban_cards ( category_id, tab_id, title, description, generation, card_order, deleted ) VALUES (?, ?, ?, ?, ?, ?, ?)",
     )
-    .run(category_id, tab_id, "", description, 0, card_order);
+    .run(category_id, tab_id, "", description, 0, card_order, 0);
 
   return res(200, {
     message: "Successfully added card",

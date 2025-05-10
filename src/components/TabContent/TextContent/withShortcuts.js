@@ -29,7 +29,6 @@ const withShortcuts = (editor) => {
         const newProperties = {
           type,
         };
-        // TODO: make the type = "paragraph" on new line as well? right now it only works on backspace
         Transforms.setNodes(editor, newProperties, {
           match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
         });

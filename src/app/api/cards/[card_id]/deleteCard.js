@@ -11,7 +11,7 @@ const deleteCard = async (params) => {
 
   const card_to_delete = db
     .prepare(
-      "SELECT card_order, category_id FROM kanban_cards WHERE card_id = ?",
+      "SELECT card_order, category_id, tab_id FROM kanban_cards WHERE card_id = ?",
     )
     .get(card_id);
 
@@ -21,11 +21,30 @@ const deleteCard = async (params) => {
     });
   }
 
-  db.prepare("DELETE FROM kanban_cards WHERE card_id = ?").run(card_id);
+  const deleteResponse = db
+    .prepare(
+      "UPDATE kanban_cards SET deleted = 1, deleted_at = datetime('now') WHERE card_id = ?",
+    )
+    .run(card_id);
+
+  if (deleteResponse.changes > 0) {
+    db.prepare(
+      "UPDATE tabs SET deleted_cards_count = deleted_cards_count + 1 WHERE tab_id = ?",
+    ).run(card_to_delete.tab_id);
+  }
+
+  db.prepare(
+    `DELETE FROM kanban_cards
+     WHERE tab_id = ?
+     AND deleted_at IS NOT NULL
+     AND datetime(deleted_at) < datetime('now', '-14 days')
+     ORDER BY deleted_at ASC
+     LIMIT 1`,
+  ).run(card_to_delete.tab_id);
 
   const all_cards = db
     .prepare(
-      "SELECT * FROM kanban_cards WHERE category_id = ? ORDER BY card_order ASC",
+      "SELECT * FROM kanban_cards WHERE category_id = ? AND deleted != 1 ORDER BY card_order ASC",
     )
     .all(card_to_delete.category_id);
 

@@ -37,7 +37,7 @@
   transition: all .2s;
 }
 
-.typeSelectContainer[data-selected-type="kanban"] .selectedIndicator {
+.typeSelectContainer[data-selected-type="compact"] .selectedIndicator {
   right: 0;
   left: auto;
 }

@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import SpinningLoader from "@/components/SpinningLoader";
 import Overlay from "@/components/Overlay";
 
-const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
-  const [activeType, setActiveType] = useState("text");
+const AddColumnModal = ({ isOpen, handleClose, tab_id, handleFinished }) => {
+  const [activeType, setActiveType] = useState("normal");
   const [isLoading, setIsLoading] = useState(false);
 
   const inputRef = useRef();
@@ -17,20 +17,30 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
   }, [isOpen]);
 
   const handleSubmit = async (formData) => {
+    const title = formData.get("category-title");
+
+    const newCategory = {
+      tab_id,
+      title,
+      compact: activeType === "compact" ? true : false,
+    };
+
     try {
-      const title = formData.get("tab-title");
       setIsLoading(true);
 
-      await fetcher("tabs", {
+      const res = await fetcher("categories", {
         method: "POST",
-        body: JSON.stringify({ page_id, title, tab_type: activeType }),
+        body: JSON.stringify(newCategory),
       });
+
+      handleFinished(res.new_category);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
 
     setIsLoading(false);
-    handleFinished();
     handleClose();
   };
 
@@ -41,13 +51,13 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
           <SpinningLoader className={styles.loader} />
         ) : (
           <form action={handleSubmit}>
-            <div className={styles.modalTitle}>Add a new tab:</div>
+            <div className={styles.modalTitle}>Add a new category:</div>
 
             <div className={styles.inputs}>
               <input
                 ref={inputRef}
                 className={styles.input}
-                name="tab-title"
+                name="category-title"
                 type="text"
                 autoFocus
                 title="Empty strings are not allowed in this input"
@@ -56,7 +66,7 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
                 required
                 minLength={1}
                 maxLength={100}
-                defaultValue="New Tab"
+                defaultValue="New Category"
               />
 
               <div
@@ -67,17 +77,17 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
                 <button
                   type="button"
                   className={styles.typeSelect}
-                  onClick={() => setActiveType("text")}
+                  onClick={() => setActiveType("normal")}
                 >
-                  Text
+                  Normal
                 </button>
 
                 <button
                   type="button"
                   className={styles.typeSelect}
-                  onClick={() => setActiveType("kanban")}
+                  onClick={() => setActiveType("compact")}
                 >
-                  Kanban
+                  Compact
                 </button>
               </div>
             </div>
@@ -102,4 +112,4 @@ const AddTabModal = ({ isOpen, handleClose, page_id, handleFinished }) => {
   );
 };
 
-export default AddTabModal;
+export default AddColumnModal;
