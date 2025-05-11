@@ -32,7 +32,7 @@ const reorderCards = async (req) => {
     return res(400, { message: "No cards present in the request body" });
 
   const updateQuery = db.prepare(
-    "UPDATE kanban_cards SET card_order = ?, category_id = ? WHERE card_id = ?",
+    "UPDATE kanban_cards SET card_order = ?, category_id = ?, updated_at = datetime('now') WHERE card_id = ?",
   );
 
   const updateTransaction = db.transaction(() => {

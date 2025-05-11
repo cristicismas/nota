@@ -7,6 +7,7 @@ import DeleteConfirmation from "@/components/DeleteConfirmation";
 import SimpleImage from "@/components/SimpleImage";
 import Card from "../Card";
 import styles from "./styles.module.css";
+import CategoryPreview from "./CategoryPreview";
 
 const CompactCategory = ({
   categoryData,
@@ -16,6 +17,7 @@ const CompactCategory = ({
   handleDeleteCategory,
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openCategoryPreview, setOpenCategoryPreview] = useState(null);
   const { data, isLoading } = useSWR(`categories/${categoryId}/cards_count`);
 
   const {
@@ -38,7 +40,7 @@ const CompactCategory = ({
     transform: CSS.Transform.toString(transform),
   };
 
-  if (isDragging)
+  if (isDragging && !trash)
     return (
       <div
         className={styles.draggingPlaceholder}
@@ -60,7 +62,7 @@ const CompactCategory = ({
       {trash ? (
         <StyledButton
           className={`${styles.button} ${styles.trash}`}
-          onClick={() => {}}
+          onClick={() => setOpenCategoryPreview("trash")}
         >
           <SimpleImage
             disableLazyLoad
@@ -76,7 +78,10 @@ const CompactCategory = ({
           </div>
         </StyledButton>
       ) : (
-        <StyledButton className={styles.button} onClick={() => {}}>
+        <StyledButton
+          className={styles.button}
+          onClick={() => setOpenCategoryPreview(categoryId)}
+        >
           <div className={styles.title}>{categoryData.title}</div>
           <div className={styles.count}>
             {isLoading ? "?" : data?.cards_count}
@@ -107,6 +112,13 @@ const CompactCategory = ({
         handleClose={() => setOpenDeleteModal(false)}
         handleDelete={() => handleDeleteCategory(categoryId)}
         title={`Are you sure you want to delete "${categoryData?.title}"?`}
+      />
+
+      <CategoryPreview
+        title={trash ? "Trash" : categoryData?.title}
+        categoryId={openCategoryPreview}
+        isOpen={openCategoryPreview !== null}
+        handleClose={() => setOpenCategoryPreview(null)}
       />
     </div>
   );

@@ -112,8 +112,10 @@ const KanbanContent = ({ tab_id }) => {
     }
 
     if (over.data.current?.type === "compact") {
+      const activeId = getDragId(active.id);
       const overId = getDragId(over.id);
       globalMutate(`categories/${overId}/cards_count`);
+      setCards(cards.filter((card) => card.card_id !== activeId));
     }
 
     if (
@@ -225,7 +227,7 @@ const KanbanContent = ({ tab_id }) => {
 
         const cardsCopy = structuredClone(cards);
         cardsCopy[activeIndex].category_id = overId;
-        setCards(cardsCopy);
+        setCards(getOrderedCards(cardsCopy));
       }
     }, 0);
   };

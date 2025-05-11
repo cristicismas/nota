@@ -8,9 +8,23 @@ const getCategoryData = async (params) => {
     return res(400, { message: "No category_id is given in the parameters" });
   }
 
-  // TODO: get cards here for compact category
+  let cards = [];
 
-  return res(200, { cards: [] });
+  if (category_id === "trash") {
+    cards = db
+      .prepare(
+        "SELECT * FROM kanban_cards WHERE deleted = 1 ORDER BY deleted_at DESC",
+      )
+      .all();
+  } else {
+    cards = db
+      .prepare(
+        "SELECT * FROM kanban_cards WHERE category_id = ? AND deleted != 1 ORDER BY updated_at DESC",
+      )
+      .all(category_id);
+  }
+
+  return res(200, { cards });
 };
 
 export default getCategoryData;
