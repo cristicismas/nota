@@ -95,7 +95,35 @@ const KanbanContent = ({ tab_id }) => {
       return;
     }
 
-    // TODO: handle reordering compact columns
+    if (
+      active.data.current?.type === "compact" &&
+      over.data.current?.type === "compact"
+    ) {
+      const activeCompactId = getDragId(active.id);
+      const overCompactId = getDragId(over.id);
+      const activeCompactIndex = compactCategories.findIndex(
+        (compact) => compact.category_id === activeCompactId,
+      );
+
+      const overCompactIndex = compactCategories.findIndex(
+        (compact) => compact.category_id === overCompactId,
+      );
+
+      if (activeCompactIndex < 0 || overCompactIndex < 0) return;
+
+      const newCompacts = arrayMove(
+        compactCategories,
+        activeCompactIndex,
+        overCompactIndex,
+      ).map((c, index) => ({ ...c, category_order: index }));
+
+      fetcher("categories", {
+        method: "PUT",
+        body: JSON.stringify({ type: "order", new_categories: newCompacts }),
+      });
+
+      setCompactCategories(newCompacts);
+    }
 
     // Reorder cards
     if (active.data.current?.type === "card") {
