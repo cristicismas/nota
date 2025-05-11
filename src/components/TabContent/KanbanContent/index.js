@@ -324,7 +324,6 @@ const KanbanContent = ({ tab_id }) => {
     return <SpinningLoaderPage />;
   }
 
-  // TODO: add the tab page title up above the tabs on each tab
   // TODO: add styling and rendering for compact categories
   // TODO: improve revalidation UI when deleting a category
   // TODO: improve revalidation UI when adding a category

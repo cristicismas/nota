@@ -34,6 +34,8 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
       <div className={styles.container}>
         {data ? (
           <div className={styles.innerPage}>
+            <div className={styles.title}>{data?.page_title}</div>
+
             <Tabs
               page_id={data?.page_id}
               page_slug={data?.slug}
