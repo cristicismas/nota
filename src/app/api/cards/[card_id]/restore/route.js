@@ -11,11 +11,12 @@ const restoreCardToFirstCategory = (card) => {
   if (!first_category_id) {
     return false;
   } else {
-    const last_category_card = db
-      .prepare(
-        "SELECT card_order FROM kanban_cards WHERE category_id = ? AND deleted != 1 ORDER BY card_order DESC",
-      )
-      .get(first_category_id).card_order;
+    const last_category_card =
+      db
+        .prepare(
+          "SELECT card_order FROM kanban_cards WHERE category_id = ? AND deleted != 1 ORDER BY card_order DESC",
+        )
+        .get(first_category_id)?.card_order || -1;
 
     db.prepare(
       "UPDATE kanban_cards SET category_id = ?, card_order = ? WHERE card_id = ?",
