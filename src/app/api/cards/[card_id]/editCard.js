@@ -12,7 +12,8 @@ const editCard = async (req, params) => {
 
   if (!body) return res(400, { message: "No body present in the request" });
 
-  const { category_id, title, description, card_order, generation } = body;
+  const { category_id, title, description, card_order, generation, deleted } =
+    body;
 
   if (isNaN(card_order)) {
     return res(400, {
@@ -50,8 +51,8 @@ const editCard = async (req, params) => {
   }
 
   db.prepare(
-    "UPDATE kanban_cards SET title = ?, description = ?, card_order = ?, generation = ? WHERE card_id = ?",
-  ).run(title, description, card_order, generation, card_id);
+    "UPDATE kanban_cards SET title = ?, description = ?, card_order = ?, generation = ?, deleted = ? WHERE card_id = ?",
+  ).run(title, description, card_order, generation, deleted, card_id);
 
   return res(200, {
     message: "Successfully updated card",

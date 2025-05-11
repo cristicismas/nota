@@ -5,6 +5,7 @@ import SimpleImage from "@/components/SimpleImage";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import fetcher from "@/helpers/swrFetcher";
+import useToast from "@/components/Toast/useToast";
 
 const CategoryPreview = ({
   title,
@@ -16,6 +17,7 @@ const CategoryPreview = ({
 }) => {
   const fetchUrl = trash ? `tabs/${tabId}/deleted` : `categories/${categoryId}`;
   const { data, isLoading } = useSWR(isOpen ? fetchUrl : null);
+  const pushMessage = useToast();
 
   const [cards, setCards] = useState([]);
 
@@ -30,12 +32,22 @@ const CategoryPreview = ({
         body: JSON.stringify({ card }),
       });
 
-      mutate(`tabs/${card.tab_id}`);
+      await mutate(`tabs/${card.tab_id}`);
+
+      if (trash) {
+        await mutate(`tabs/${card.tab_id}/cards_count`);
+      } else {
+        await mutate(`categories/${card.category_id}/cards_count`);
+      }
 
       setCards(cards.filter((c) => c.card_id !== card.card_id));
     } catch (err) {
-      // TODO: display a message that we can't restore the card since there is no non-compact category
-      console.log(err);
+      if (err.status === 400) {
+        pushMessage(
+          "Cannot restore this card because there are no normal categories to restore to.",
+          "error",
+        );
+      }
     }
   };
 

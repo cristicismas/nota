@@ -5,17 +5,20 @@ import useCookieValidation from "@/helpers/useCookieValidation";
 import fetcher from "@/helpers/swrFetcher";
 // components
 import DynamicPage from "@/page-components/DynamicPage";
+import ToastProvider from "@/components/Toast/Provider";
 
 export default function Page() {
   useCookieValidation();
 
   return (
-    <SWRConfig
-      value={{
-        fetcher,
-      }}
-    >
-      <DynamicPage />
-    </SWRConfig>
+    <ToastProvider>
+      <SWRConfig
+        value={{
+          fetcher,
+        }}
+      >
+        <DynamicPage />
+      </SWRConfig>
+    </ToastProvider>
   );
 }

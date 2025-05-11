@@ -95,6 +95,8 @@ const KanbanContent = ({ tab_id }) => {
       return;
     }
 
+    // TODO: handle reordering compact columns
+
     // Reorder cards
     if (active.data.current?.type === "card") {
       const activeId = getDragId(active.id);
@@ -326,7 +328,7 @@ const KanbanContent = ({ tab_id }) => {
     return <SpinningLoaderPage />;
   }
 
-  // TODO: add styling and rendering for compact categories
+  // TODO: improve animation when dropping a card in a compact category (maybe fade it out)
   // TODO: improve revalidation UI when deleting a category
   // TODO: improve revalidation UI when adding a category
 

@@ -35,6 +35,7 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
       ...cardData,
       title: upToDateTitleValue.current,
       generation: editGeneration.current,
+      deleted: 0,
     };
 
     const debounce = setTimeout(() => {
