@@ -4,8 +4,11 @@ import StyledButton from "@/components/StyledButton";
 import SimpleImage from "@/components/SimpleImage";
 import styles from "./styles.module.css";
 import Card from "../Card";
+import useSWR from "swr";
 
-const CompactCategory = ({ categoryData, trash, count, draggingCard }) => {
+const CompactCategory = ({ categoryData, categoryId, trash, draggingCard }) => {
+  const { data, isLoading } = useSWR(`categories/${categoryId}/cards_count`);
+
   const {
     setNodeRef,
     attributes,
@@ -14,7 +17,7 @@ const CompactCategory = ({ categoryData, trash, count, draggingCard }) => {
     transition,
     isDragging,
   } = useSortable({
-    id: `compact-${trash ? "trash" : categoryData?.category_id}`,
+    id: `compact-${trash ? "trash" : categoryId}`,
     data: {
       type: "compact",
       compact: categoryData,
@@ -58,12 +61,17 @@ const CompactCategory = ({ categoryData, trash, count, draggingCard }) => {
           />
 
           <div className={styles.title}>Trash</div>
-          <div className={styles.deletedCount}>{count}</div>
+
+          <div className={styles.deletedCount}>
+            {isLoading ? "?" : data?.cards_count}
+          </div>
         </StyledButton>
       ) : (
         <StyledButton className={styles.button} onClick={() => {}}>
           <div className={styles.title}>{categoryData.title}</div>
-          <div className={styles.deletedCount}>{categoryData?.count}</div>
+          <div className={styles.deletedCount}>
+            {isLoading ? "?" : data?.cards_count}
+          </div>
         </StyledButton>
       )}
     </div>

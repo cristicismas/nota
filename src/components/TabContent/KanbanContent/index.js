@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import useSWR from "swr";
+import useSWR, { mutate as globalMutate } from "swr";
 import { createPortal } from "react-dom";
 import fetcher from "@/helpers/swrFetcher";
 import { getOrderedCards, findLastCardInCategory } from "@/helpers/cards";
@@ -27,10 +27,6 @@ import styles from "./styles.module.css";
 const KanbanContent = ({ tab_id }) => {
   const { data, isLoading, error, mutate } = useSWR(`tabs/${tab_id}`);
 
-  const [deletedCardsCount, setDeletedCardsCount] = useState(
-    data?.deletedCardsCount,
-  );
-
   const [columns, setColumns] = useState(data?.normalCategories);
   const [compactCategories, setCompactCategories] = useState(
     data?.compactCategories,
@@ -53,7 +49,6 @@ const KanbanContent = ({ tab_id }) => {
   );
 
   useEffect(() => {
-    setDeletedCardsCount(data?.deletedCardsCount);
     setCompactCategories(data?.compactCategories);
     setColumns(data?.normalCategories);
     setCards(data?.cards);
@@ -89,7 +84,7 @@ const KanbanContent = ({ tab_id }) => {
     }
   };
 
-  const onDragEnd = (e) => {
+  const onDragEnd = async (e) => {
     setDraggingCompact(null);
     setDraggingColumn(null);
     setDraggingCard(null);
@@ -102,7 +97,23 @@ const KanbanContent = ({ tab_id }) => {
 
     // Reorder cards
     if (active.data.current?.type === "card") {
-      fetcher("cards", { method: "PUT", body: JSON.stringify({ cards }) });
+      const activeId = getDragId(active.id);
+      const overId = getDragId(over.id);
+
+      if (overId === "trash") {
+        await deleteCard(activeId);
+        return;
+      } else {
+        await fetcher("cards", {
+          method: "PUT",
+          body: JSON.stringify({ cards }),
+        });
+      }
+    }
+
+    if (over.data.current?.type === "compact") {
+      const overId = getDragId(over.id);
+      globalMutate(`categories/${overId}/cards_count`);
     }
 
     if (
@@ -143,7 +154,7 @@ const KanbanContent = ({ tab_id }) => {
     setColumns(newColumns);
   };
 
-  const getDragId = (id) => Number(id?.split("-")?.[1]);
+  const getDragId = (id) => Number(id?.split("-")?.[1]) || id?.split("-")?.[1];
 
   const onDragOver = (e) => {
     // Stupid workaround to avoid a bug with dnd kit that causes infinite recursion
@@ -213,7 +224,7 @@ const KanbanContent = ({ tab_id }) => {
         const activeIndex = cards.findIndex((c) => c.card_id === activeId);
 
         const cardsCopy = structuredClone(cards);
-        cardsCopy[activeIndex].category_id = overId ? overId : "trash";
+        cardsCopy[activeIndex].category_id = overId;
         setCards(cardsCopy);
       }
     }, 0);
@@ -267,7 +278,7 @@ const KanbanContent = ({ tab_id }) => {
     }
 
     setCards(updatedCards);
-    setDeletedCardsCount(deletedCardsCount + 1);
+    globalMutate("categories/trash/cards_count");
   };
 
   const getCategoryCards = (category) =>
@@ -368,6 +379,7 @@ const KanbanContent = ({ tab_id }) => {
               <CompactCategory
                 key={category.category_id}
                 categoryData={category}
+                categoryId={category.category_id}
                 // need to keep current dragging card in the dom so dnd-kit doesn't lose track of it
                 draggingCard={cards?.find(
                   (card) => card.category_id === category.category_id,
@@ -377,7 +389,7 @@ const KanbanContent = ({ tab_id }) => {
 
             <CompactCategory
               trash
-              count={deletedCardsCount}
+              categoryId="trash"
               draggingCard={cards?.find((card) => card.category_id === "trash")}
             />
           </SortableContext>

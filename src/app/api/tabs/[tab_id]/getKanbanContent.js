@@ -16,14 +16,6 @@ const getSplitCategories = (categories) => {
   return [normalCategories, compactCategories];
 };
 
-const getCardsPerCategory = (category_id) => {
-  return db
-    .prepare(
-      "SELECT COUNT(*) as card_count FROM kanban_cards WHERE category_id = ?",
-    )
-    .get(category_id).card_count;
-};
-
 const getKanbanContent = async (params) => {
   const { tab_id } = await params;
 
@@ -55,7 +47,6 @@ const getKanbanContent = async (params) => {
 
   const compactCategoriesWithCount = compactCategories.map((category) => ({
     ...category,
-    count: getCardsPerCategory(category.category_id),
   }));
 
   return res(200, {
