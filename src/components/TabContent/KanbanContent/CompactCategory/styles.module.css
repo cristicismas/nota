@@ -5,6 +5,10 @@
   height: 39px;
 }
 
+.container {
+  position: relative;
+}
+
 .container,
 .draggingPlaceholder {
   width: 240px;
@@ -42,10 +46,33 @@
 
 }
 
-.deletedCount {
+.count {
   margin-left: auto;
   background-color: rgba(0, 0, 0, .3);
   padding: 4px 8px;
   font-size: 12px;
   border-radius: 4px;
+  opacity: 1;
+  transition: opacity .2s;
+}
+
+.deleteButton {
+  pointer-events: none;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 8px 8px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.container:not(.trash):hover {
+  & .count {
+    opacity: 0;
+  }
+
+  & .deleteButton {
+    opacity: 1;
+    pointer-events: all;
+  }
 }

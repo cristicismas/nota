@@ -380,6 +380,7 @@ const KanbanContent = ({ tab_id }) => {
                 key={category.category_id}
                 categoryData={category}
                 categoryId={category.category_id}
+                handleDeleteCategory={handleDeleteCategory}
                 // need to keep current dragging card in the dom so dnd-kit doesn't lose track of it
                 draggingCard={cards?.find(
                   (card) => card.category_id === category.category_id,
