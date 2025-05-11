@@ -6,11 +6,16 @@ import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import fetcher from "@/helpers/swrFetcher";
 
-const CategoryPreview = ({ title, categoryId, isOpen, handleClose }) => {
-  // TODO: trash shows trash for all projects but it shouldnt
-  const { data, isLoading } = useSWR(
-    isOpen ? `categories/${categoryId}` : null,
-  );
+const CategoryPreview = ({
+  title,
+  categoryId,
+  tabId,
+  trash,
+  isOpen,
+  handleClose,
+}) => {
+  const fetchUrl = trash ? `tabs/${tabId}/deleted` : `categories/${categoryId}`;
+  const { data, isLoading } = useSWR(isOpen ? fetchUrl : null);
 
   const [cards, setCards] = useState([]);
 
@@ -34,7 +39,7 @@ const CategoryPreview = ({ title, categoryId, isOpen, handleClose }) => {
     }
   };
 
-  if (!data) return null;
+  if (!data || !isOpen) return null;
 
   return (
     <Overlay

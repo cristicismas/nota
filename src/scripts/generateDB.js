@@ -28,7 +28,7 @@ db.prepare(
 console.info("Created kanban_categories table");
 
 db.prepare(
-  "CREATE TABLE kanban_cards ( card_id integer primary key, category_id integer not null, tab_id integer not null, title text not null, description text not null, generation integer not null, card_order integer not null, deleted INTEGER NOT NULL, deleted_at TIMESTAMP, foreign key(category_id) references kanban_categories(category_id) on delete cascade, foreign key(tab_id) references tabs(tab_id) on delete cascade );",
+  "CREATE TABLE kanban_cards ( card_id integer primary key, category_id integer not null, tab_id integer not null, title text not null, description text not null, generation integer not null, card_order integer not null, deleted INTEGER NOT NULL, deleted_at TIMESTAMP, updated_at TIMESTAMP, foreign key(category_id) references kanban_categories(category_id) on delete cascade, foreign key(tab_id) references tabs(tab_id) on delete cascade );",
 ).run();
 console.info("Created kanban_cards table");
 

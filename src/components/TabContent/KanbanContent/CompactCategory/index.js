@@ -12,13 +12,19 @@ import CategoryPreview from "./CategoryPreview";
 const CompactCategory = ({
   categoryData,
   categoryId,
+  tabId,
   trash,
   draggingCard,
   handleDeleteCategory,
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openCategoryPreview, setOpenCategoryPreview] = useState(null);
-  const { data, isLoading } = useSWR(`categories/${categoryId}/cards_count`);
+
+  const fetchUrl = trash
+    ? `tabs/${tabId}/cards_count`
+    : `categories/${categoryId}/cards_count`;
+
+  const { data, isLoading } = useSWR(fetchUrl);
 
   const {
     setNodeRef,
@@ -74,7 +80,7 @@ const CompactCategory = ({
           <div className={styles.title}>Trash</div>
 
           <div className={styles.count}>
-            {isLoading ? "?" : data?.cards_count}
+            {isLoading ? "?" : data?.deleted_cards_count}
           </div>
         </StyledButton>
       ) : (
@@ -117,6 +123,8 @@ const CompactCategory = ({
       <CategoryPreview
         title={trash ? "Trash" : categoryData?.title}
         categoryId={openCategoryPreview}
+        trash={trash}
+        tabId={tabId}
         isOpen={openCategoryPreview !== null}
         handleClose={() => setOpenCategoryPreview(null)}
       />

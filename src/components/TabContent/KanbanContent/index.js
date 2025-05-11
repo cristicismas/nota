@@ -280,7 +280,7 @@ const KanbanContent = ({ tab_id }) => {
     }
 
     setCards(updatedCards);
-    globalMutate("categories/trash/cards_count");
+    globalMutate(`tabs/${tab_id}/cards_count`);
   };
 
   const getCategoryCards = (category) =>
@@ -391,6 +391,7 @@ const KanbanContent = ({ tab_id }) => {
 
             <CompactCategory
               trash
+              tabId={tab_id}
               categoryId="trash"
               draggingCard={cards?.find((card) => card.category_id === "trash")}
             />
