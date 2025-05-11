@@ -19,15 +19,25 @@ import Card from "./Card";
 import SpinningLoaderPage from "@/components/SpinningLoaderPage";
 import SimpleImage from "@/components/SimpleImage";
 import ErrorContent from "@/components/ErrorContent";
+import AddColumnModal from "./AddColumnModal";
+import CompactCategory from "./CompactCategory";
 // styles
 import styles from "./styles.module.css";
-import AddColumnModal from "./AddColumnModal";
 
 const KanbanContent = ({ tab_id }) => {
   const { data, isLoading, error, mutate } = useSWR(`tabs/${tab_id}`);
 
+  const [deletedCardsCount, setDeletedCardsCount] = useState(
+    data?.deletedCardsCount,
+  );
+
   const [columns, setColumns] = useState(data?.normalCategories);
+  const [compactCategories, setCompactCategories] = useState(
+    data?.compactCategories,
+  );
+
   const [cards, setCards] = useState(data?.cards);
+  const [activeDraggingCompact, setDraggingCompact] = useState(null);
   const [activeDraggingColumn, setDraggingColumn] = useState(null);
   const [activeDraggingCard, setDraggingCard] = useState(null);
   const [editingCard, setEditingCard] = useState(null);
@@ -43,6 +53,8 @@ const KanbanContent = ({ tab_id }) => {
   );
 
   useEffect(() => {
+    setDeletedCardsCount(data?.deletedCardsCount);
+    setCompactCategories(data?.compactCategories);
     setColumns(data?.normalCategories);
     setCards(data?.cards);
   }, [data]);
@@ -52,7 +64,20 @@ const KanbanContent = ({ tab_id }) => {
     [columns],
   );
 
+  const compactCategoryIds = useMemo(
+    () =>
+      compactCategories
+        ? compactCategories.map((c) => `compact-${c.category_id}`)
+        : [],
+    [compactCategories],
+  );
+
   const onDragStart = (e) => {
+    if (e.active.data.current?.type === "compact") {
+      setDraggingCompact(e.active.data.current.compact);
+      return;
+    }
+
     if (e.active.data.current?.type === "column") {
       setDraggingColumn(e.active.data.current.column);
       return;
@@ -65,6 +90,7 @@ const KanbanContent = ({ tab_id }) => {
   };
 
   const onDragEnd = (e) => {
+    setDraggingCompact(null);
     setDraggingColumn(null);
     setDraggingCard(null);
 
@@ -180,6 +206,16 @@ const KanbanContent = ({ tab_id }) => {
         const newCards = arrayMove(cardsCopy, activeIndex, lastColIndex);
         setCards(getOrderedCards(newCards));
       }
+
+      const isOverCompact = over.data.current.type === "compact";
+
+      if (isActiveCard && isOverCompact) {
+        const activeIndex = cards.findIndex((c) => c.card_id === activeId);
+
+        const cardsCopy = structuredClone(cards);
+        cardsCopy[activeIndex].category_id = overId ? overId : "trash";
+        setCards(cardsCopy);
+      }
     }, 0);
   };
 
@@ -231,6 +267,7 @@ const KanbanContent = ({ tab_id }) => {
     }
 
     setCards(updatedCards);
+    setDeletedCardsCount(deletedCardsCount + 1);
   };
 
   const getCategoryCards = (category) =>
@@ -276,10 +313,10 @@ const KanbanContent = ({ tab_id }) => {
     return <SpinningLoaderPage />;
   }
 
+  // TODO: add the tab page title up above the tabs on each tab
   // TODO: add styling and rendering for compact categories
   // TODO: improve revalidation UI when deleting a category
   // TODO: improve revalidation UI when adding a category
-  // TODO: add the tab page title up above the tabs on each tab
 
   return (
     <div className={styles.container}>
@@ -325,12 +362,37 @@ const KanbanContent = ({ tab_id }) => {
           </StyledButton>
         </div>
 
+        <div className={styles.compactCategories}>
+          <SortableContext items={compactCategoryIds}>
+            {compactCategories?.map((category) => (
+              <CompactCategory
+                key={category.category_id}
+                categoryData={category}
+                // need to keep current dragging card in the dom so dnd-kit doesn't lose track of it
+                draggingCard={cards?.find(
+                  (card) => card.category_id === category.category_id,
+                )}
+              />
+            ))}
+
+            <CompactCategory
+              trash
+              count={deletedCardsCount}
+              draggingCard={cards?.find((card) => card.category_id === "trash")}
+            />
+          </SortableContext>
+        </div>
+
         <AddColumnModal
           tab_id={tab_id}
           handleClose={() => setOpenAddColumnModal(false)}
-          handleFinished={(newCategory) =>
-            setColumns([...columns, newCategory])
-          }
+          handleFinished={(newCategory) => {
+            if (newCategory.compact) {
+              setCompactCategories([...compactCategories, newCategory]);
+            } else {
+              setColumns([...columns, newCategory]);
+            }
+          }}
           isOpen={openAddColumnModal}
         />
 
@@ -342,6 +404,9 @@ const KanbanContent = ({ tab_id }) => {
                 className={styles.column}
                 cards={getCategoryCards(activeDraggingColumn)}
               />
+            )}
+            {activeDraggingCompact && (
+              <CompactCategory categoryData={activeDraggingCompact} />
             )}
             {activeDraggingCard && (
               <Card

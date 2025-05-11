@@ -15,6 +15,7 @@ const Card = ({
   updateCards,
   deleteCard,
   isDragged,
+  hidden,
 }) => {
   const [openModal, setOpenModal] = useState(false);
 
@@ -61,6 +62,16 @@ const Card = ({
       }
     }
   };
+
+  if (hidden) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={sortableStyle}
+        className={`${styles.card} ${styles.hidden} ${styles.draggingPlaceholder}`}
+      />
+    );
+  }
 
   if (isDragging) {
     return (

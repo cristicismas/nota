@@ -16,6 +16,14 @@ const getSplitCategories = (categories) => {
   return [normalCategories, compactCategories];
 };
 
+const getCardsPerCategory = (category_id) => {
+  return db
+    .prepare(
+      "SELECT COUNT(*) as card_count FROM kanban_cards WHERE category_id = ?",
+    )
+    .get(category_id).card_count;
+};
+
 const getKanbanContent = async (params) => {
   const { tab_id } = await params;
 
@@ -32,17 +40,30 @@ const getKanbanContent = async (params) => {
       )
       .all(tab_id) || [];
 
-  // TODO: don't bring the cards for compact categories, make a separate endpoint with pagination for this
   const [normalCategories, compactCategories] = getSplitCategories(categories);
 
   const cards =
     db
       .prepare(
-        "SELECT * FROM kanban_cards WHERE tab_id = ? AND deleted != 1 ORDER BY card_order ASC",
+        `SELECT * FROM kanban_cards WHERE tab_id = ? AND deleted != 1 AND category_id NOT IN (${compactCategories.map(() => "?").join(",")}) ORDER BY card_order ASC`,
       )
-      .all(tab_id) || [];
+      .all(tab_id, ...compactCategories.map((c) => c.category_id)) || [];
 
-  return res(200, { normalCategories, compactCategories, cards });
+  const deletedCardsCount = db
+    .prepare("SELECT deleted_cards_count FROM tabs WHERE tab_id = ?")
+    .get(tab_id)?.deleted_cards_count;
+
+  const compactCategoriesWithCount = compactCategories.map((category) => ({
+    ...category,
+    count: getCardsPerCategory(category.category_id),
+  }));
+
+  return res(200, {
+    normalCategories,
+    compactCategories: compactCategoriesWithCount,
+    cards,
+    deletedCardsCount,
+  });
 };
 
 export default getKanbanContent;

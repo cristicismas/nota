@@ -24,6 +24,14 @@
   border: 2px solid var(--accent);
 }
 
+.draggingPlaceholder.hidden {
+  min-height: 0;
+  max-height: 0;
+  min-width: 0;
+  padding: 0;
+  border: none;
+}
+
 .deleteCardButton {
   position: absolute;
   top: 0;
