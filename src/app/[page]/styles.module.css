@@ -1,4 +1,5 @@
 .page {
+  position: relative;
   display: grid;
   transition: all .2s;
   grid-template-columns: var(--sidebar-width, 350px) auto;

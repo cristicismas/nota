@@ -1,4 +1,7 @@
 .sidebarContainer {
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 350px;
   transition: transform .2s;
 }

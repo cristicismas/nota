@@ -33,51 +33,54 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      className={`${styles.sidebarContainer} ${isOpen ? styles.open : styles.closed}`}
-    >
-      <aside className={styles.sidebar}>
-        <div className={styles.topBar}>
-          <h1 className={styles.title}>
-            <Link href="/">Nota</Link>
-          </h1>
+    <>
+      <div
+        className={`${styles.sidebarContainer} ${isOpen ? styles.open : styles.closed}`}
+      >
+        <aside className={styles.sidebar}>
+          <div className={styles.topBar}>
+            <h1 className={styles.title}>
+              <Link href="/">Nota</Link>
+            </h1>
 
-          <button className={styles.toggleSidebar} onClick={toggleSidebar}>
-            {isOpen ? (
+            <button className={styles.toggleSidebar} onClick={toggleSidebar}>
+              {isOpen ? (
+                <SimpleImage
+                  disableLazyLoad
+                  src={"/icons/sidebar_close.svg"}
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <SimpleImage
+                  disableLazyLoad
+                  src={"/icons/sidebar_open.svg"}
+                  width={32}
+                  height={32}
+                />
+              )}
+            </button>
+          </div>
+
+          <div className={styles.pagesList}>
+            <PagesList />
+          </div>
+
+          <div className={styles.stickyBar}>
+            <button onClick={logOut} className={styles.logOut}>
               <SimpleImage
                 disableLazyLoad
-                src={"/icons/sidebar_close.svg"}
-                width={32}
-                height={32}
+                src={"/icons/log-out.svg"}
+                width={24}
+                height={24}
               />
-            ) : (
-              <SimpleImage
-                disableLazyLoad
-                src={"/icons/sidebar_open.svg"}
-                width={32}
-                height={32}
-              />
-            )}
-          </button>
-        </div>
-
-        <div className={styles.pagesList}>
-          <PagesList />
-        </div>
-
-        <div className={styles.stickyBar}>
-          <button onClick={logOut} className={styles.logOut}>
-            <SimpleImage
-              disableLazyLoad
-              src={"/icons/log-out.svg"}
-              width={24}
-              height={24}
-            />
-            <span>Log out</span>
-          </button>
-        </div>
-      </aside>
-    </div>
+              <span>Log out</span>
+            </button>
+          </div>
+        </aside>
+      </div>
+      <div className={styles.sidebarWidthPlaceholder} />
+    </>
   );
 };
 
