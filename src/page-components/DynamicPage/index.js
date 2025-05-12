@@ -8,9 +8,9 @@ import Sidebar from "@/components/Sidebar";
 import PageContent from "@/components/PageContent";
 import ErrorContent from "@/components/ErrorContent";
 import SpinningLoaderPage from "@/components/SpinningLoaderPage";
+import TabsProvider from "@/components/TabsContext/Provider";
 // styles
 import styles from "./styles.module.css";
-import TabsProvider from "@/components/TabsContext/Provider";
 
 const DynamicPage = () => {
   const params = useParams();

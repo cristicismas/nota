@@ -35,7 +35,7 @@ const Search = ({ open, setOpen }) => {
   useEffect(() => {
     if (!open) return;
     const submitListener = async (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && results?.[0]) {
         goToResult(results[0]);
       }
     };
@@ -65,10 +65,12 @@ const Search = ({ open, setOpen }) => {
   const goToResult = async (result) => {
     if (result.type === "page") {
       router.push(result.slug);
+      setActiveTab(0, result.slug);
     } else {
       const { slug, tab_order } = await fetcher(`tabs/${result.tab_id}/slug`);
+      console.log("setting ", tab_order, slug);
       router.push(slug);
-      setActiveTab(tab_order);
+      setActiveTab(tab_order, slug);
     }
 
     setOpen(false);

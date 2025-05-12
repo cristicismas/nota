@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { TabsContext } from "./Context";
 
 const getCachedActiveTab = (slug) => {
-  if (typeof localStorage === "undefined" || !slug) return 0;
+  if (typeof localStorage === "undefined" || !slug) return null;
 
   const cachedTab = Number(localStorage.getItem(slug));
 
@@ -14,22 +14,28 @@ const getCachedActiveTab = (slug) => {
 };
 
 const TabsProvider = ({ children, tabs, slug }) => {
-  const [activeTab, setActiveTab] = useState(() => getCachedActiveTab(slug));
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(slug, activeTab);
-    } catch (err) {
-      localStorage.clear();
-    }
-  }, [activeTab]);
+  const [activeTab, setActiveTab] = useState(null);
 
   useEffect(() => {
     setActiveTab(getCachedActiveTab(slug));
   }, [slug]);
 
+  const handleSetTab = (newActiveTab, pageSlug = slug) => {
+    try {
+      localStorage.setItem(pageSlug, newActiveTab);
+    } catch (err) {
+      localStorage.clear();
+    }
+
+    if (pageSlug === slug) {
+      setActiveTab(newActiveTab);
+    }
+  };
+
   return (
-    <TabsContext.Provider value={{ tabs, activeTab, setActiveTab }}>
+    <TabsContext.Provider
+      value={{ tabs, activeTab, setActiveTab: handleSetTab }}
+    >
       {children}
     </TabsContext.Provider>
   );
