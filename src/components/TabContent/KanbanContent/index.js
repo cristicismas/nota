@@ -356,6 +356,7 @@ const KanbanContent = ({ tab_id }) => {
     return <SpinningLoaderPage />;
   }
 
+  // TODO: add reordering pages
   // TODO: improve revalidation UI when deleting a category
   // TODO: improve revalidation UI when adding a category
 

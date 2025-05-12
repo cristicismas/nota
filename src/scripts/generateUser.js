@@ -28,4 +28,6 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
   addUserQuery.run(username, hash);
 
   console.info("Added user to the database.");
+
+  process.exit();
 });

@@ -44,3 +44,5 @@ db.prepare(
   "CREATE INDEX idx_cards ON kanban_cards(card_id, card_order);",
 ).run();
 console.info("Created idx_cards index");
+
+process.exit();
