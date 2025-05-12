@@ -27,6 +27,7 @@ const PagesList = () => {
     mutate((key) => {
       if (!key) return true;
       if (key === "pages") return true;
+      if (key === "search") return true;
       if (key?.startsWith("pages/")) return true;
 
       return false;

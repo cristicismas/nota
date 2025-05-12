@@ -1,42 +1,24 @@
-"use client";
-
-import { useEffect, useState } from "react";
 // components
 import Tabs from "../Tabs";
 import TabContent from "../TabContent";
 import SpinningLoaderPage from "../SpinningLoaderPage";
 // styles
 import styles from "./styles.module.css";
+import useTabs from "../TabsContext";
 
 const PageContent = ({ data, loading, onContentUpdate }) => {
-  const [activeTab, setActiveTab] = useState(() => {
-    const cachedTab = Number(localStorage.getItem(data.slug));
-
-    if (!isNaN(cachedTab)) {
-      return cachedTab;
-    }
-
-    return 0;
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(data.slug, activeTab);
-    } catch (err) {
-      localStorage.clear();
-    }
-  }, [activeTab]);
+  const { tabs, activeTab, setActiveTab } = useTabs();
 
   const onTabDelete = (tab_id) => {
     let deleted_tab_index = 0;
 
-    data?.tabs?.forEach((tab, index) => {
+    tabs?.forEach((tab, index) => {
       if (tab.tab_id === tab_id) {
         deleted_tab_index = index;
       }
     });
 
-    if (data?.tabs?.length > 0) {
+    if (tabs?.length > 0) {
       setActiveTab(Math.min(0, deleted_tab_index - 1));
     }
   };
@@ -54,13 +36,14 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
               <Tabs
                 page_id={data?.page_id}
                 page_slug={data?.slug}
-                tabs={data?.tabs}
+                tabs={tabs}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
               />
 
               <TabContent
-                data={data?.tabs?.[activeTab]}
+                key={activeTab}
+                data={tabs?.[activeTab]}
                 onTabDelete={onTabDelete}
                 onContentUpdate={onContentUpdate}
               />

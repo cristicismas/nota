@@ -21,6 +21,7 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
   const { mutate } = useSWRConfig();
 
   const handleAddedTab = async () => {
+    mutate("search");
     await mutate(`pages/${page_slug}`);
     setActiveTab(tabs.length);
   };
@@ -35,6 +36,7 @@ const Tabs = ({ page_id, page_slug, tabs, activeTab, setActiveTab }) => {
     try {
       await fetcher(`tabs/${tab.tab_id}`, { method: "DELETE" });
 
+      mutate("search");
       await mutate(`pages/${page_slug}`);
 
       if (tabs?.length > 0) {

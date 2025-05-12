@@ -1,0 +1,29 @@
+.searchButton {
+  position: relative;
+  padding: 8px 24px 8px 48px;
+  font-size: 20px;
+  border: 1px solid var(--hover);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--background);
+  border-radius: 22px;
+  opacity: .7;
+  transition: opacity .2s;
+}
+
+.hint {
+  font-size: 14px;
+  color: var(--secondary-color);
+}
+
+.searchButton:hover {
+  opacity: 1;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 20px;
+  top: 11px;
+}

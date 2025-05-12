@@ -2,8 +2,10 @@
   --background: #13141D;
   --background-alt: #1A1B26;
   --hover: #232538;
+  --border-light: #aaa;
   --border-active: #ddd;
   --text-color: #eee;
+  --secondary-color: #41435b;
   --error: #e24a4a;
   --accent: #16E6C3;
   --trash-bg: #681e1e45;
@@ -66,7 +68,7 @@ body.overflow-hidden {
 
 * {
   font-family: var(--font-geist-sans), sans-serif;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   padding: 0;
   margin: 0;
 }

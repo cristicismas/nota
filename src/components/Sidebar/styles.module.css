@@ -25,6 +25,7 @@
 }
 
 .sidebarContainer.closed .pagesList,
+.sidebarContainer.closed .searchButton,
 .sidebarContainer.closed .stickyBar {
   opacity: 0;
   pointer-events: none;
@@ -67,4 +68,8 @@
   align-content: center;
   margin-bottom: 32px;
   margin-left: 8px;
+}
+
+.searchButton {
+  margin-bottom: 24px;
 }

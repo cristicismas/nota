@@ -18,6 +18,7 @@ const PageCreationInput = ({ abort, onFinished, currentPages }) => {
       body: JSON.stringify({ pageTitle }),
     });
 
+    mutate("search");
     await mutate("pages", currentPages, {
       revalidate: true,
       optimisticData: false,

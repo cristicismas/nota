@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
       >
         {children}
         <div id="modal-container" />
+        <div id="search-container" />
         <div id="toast-container" />
         <div id="context-menu" />
       </body>

@@ -1,15 +1,18 @@
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import fetcher from "@/helpers/swrFetcher";
 // components
 import Link from "next/link";
 import PagesList from "./PagesList";
 import SimpleImage from "@/components/SimpleImage";
+import Search from "../Search";
+import SearchButton from "../SearchButton";
 // styles
 import styles from "./styles.module.css";
-import { useState } from "react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const router = useRouter();
 
@@ -62,6 +65,11 @@ const Sidebar = () => {
             </button>
           </div>
 
+          <SearchButton
+            setOpenSearch={() => setIsSearchOpen(true)}
+            className={styles.searchButton}
+          />
+
           <div className={styles.pagesList}>
             <PagesList />
           </div>
@@ -79,7 +87,10 @@ const Sidebar = () => {
           </div>
         </aside>
       </div>
+
       <div className={styles.sidebarWidthPlaceholder} />
+
+      <Search open={isSearchOpen} setOpen={setIsSearchOpen} />
     </>
   );
 };

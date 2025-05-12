@@ -10,6 +10,7 @@ import ErrorContent from "@/components/ErrorContent";
 import SpinningLoaderPage from "@/components/SpinningLoaderPage";
 // styles
 import styles from "./styles.module.css";
+import TabsProvider from "@/components/TabsContext/Provider";
 
 const DynamicPage = () => {
   const params = useParams();
@@ -41,25 +42,27 @@ const DynamicPage = () => {
   };
 
   return (
-    <div className={styles.page}>
-      <Sidebar />
+    <TabsProvider tabs={pageData?.tabs} slug={pageData?.slug}>
+      <div className={styles.page}>
+        <Sidebar />
 
-      {error?.status === 404 ? (
-        <SpinningLoaderPage />
-      ) : (
-        <>
-          {error && <ErrorContent error={error} />}
+        {error?.status === 404 ? (
+          <SpinningLoaderPage />
+        ) : (
+          <>
+            {error && <ErrorContent error={error} />}
 
-          {!error && pageData && (
-            <PageContent
-              data={pageData}
-              loading={isLoading}
-              onContentUpdate={onContentUpdate}
-            />
-          )}
-        </>
-      )}
-    </div>
+            {!error && pageData && (
+              <PageContent
+                data={pageData}
+                loading={isLoading}
+                onContentUpdate={onContentUpdate}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </TabsProvider>
   );
 };
 

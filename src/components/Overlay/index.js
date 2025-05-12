@@ -6,19 +6,21 @@ const Overlay = ({
   isOpen,
   handleClose,
   modalProps = {},
+  containerClassName = "",
   className = "",
+  mountPoint = "modal-container",
 }) => {
   return (
     <Modal
       isOpen={isOpen}
       setIsOpen={handleClose}
       overlayClassName={styles.overlay}
-      className={styles.innerOverlay}
+      className={`${styles.innerOverlay} ${containerClassName}`}
       shouldCloseOnEsc
       shouldCloseOnOverlayClick
       disableScroll
       {...modalProps}
-      container="modal-container"
+      container={mountPoint}
     >
       <div className={`${styles.mainContainer} ${className}`}>{children}</div>
     </Modal>
