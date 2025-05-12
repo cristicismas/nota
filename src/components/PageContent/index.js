@@ -36,18 +36,20 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
           <div className={styles.innerPage}>
             <div className={styles.title}>{data?.page_title}</div>
 
-            <Tabs
-              page_id={data?.page_id}
-              page_slug={data?.slug}
-              tabs={data?.tabs}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
+            <div className={styles.flexContainer}>
+              <Tabs
+                page_id={data?.page_id}
+                page_slug={data?.slug}
+                tabs={data?.tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
 
-            <TabContent
-              data={data?.tabs?.[activeTab]}
-              onContentUpdate={onContentUpdate}
-            />
+              <TabContent
+                data={data?.tabs?.[activeTab]}
+                onContentUpdate={onContentUpdate}
+              />
+            </div>
           </div>
         ) : (
           <h1>Not found</h1>
