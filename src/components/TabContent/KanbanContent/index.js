@@ -356,6 +356,7 @@ const KanbanContent = ({ tab_id }) => {
     return <SpinningLoaderPage />;
   }
 
+  // TODO: scale down the card when dragged
   // TODO: improve animation when dropping a card in a compact category (maybe fade it out)
   // TODO: improve revalidation UI when deleting a category
   // TODO: improve revalidation UI when adding a category

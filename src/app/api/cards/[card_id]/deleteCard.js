@@ -23,7 +23,7 @@ const deleteCard = async (params) => {
 
   const deleteResponse = db
     .prepare(
-      "UPDATE kanban_cards SET deleted = 1, deleted_at = datetime('now') WHERE card_id = ?",
+      "UPDATE kanban_cards SET deleted = 1, deleted_at = datetime('now'), category_id = NULL WHERE card_id = ?",
     )
     .run(card_id);
 

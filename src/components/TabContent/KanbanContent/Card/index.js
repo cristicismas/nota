@@ -46,6 +46,7 @@ const Card = ({
       ...cardData,
       title: newTitle,
       generation,
+      deleted: 0,
     };
 
     try {
