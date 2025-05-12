@@ -27,6 +27,20 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
     }
   }, [activeTab]);
 
+  const onTabDelete = (tab_id) => {
+    let deleted_tab_index = 0;
+
+    data?.tabs?.forEach((tab, index) => {
+      if (tab.tab_id === tab_id) {
+        deleted_tab_index = index;
+      }
+    });
+
+    if (data?.tabs?.length > 0) {
+      setActiveTab(Math.min(0, deleted_tab_index - 1));
+    }
+  };
+
   if (loading && !data) return <SpinningLoaderPage />;
 
   return (
@@ -47,6 +61,7 @@ const PageContent = ({ data, loading, onContentUpdate }) => {
 
               <TabContent
                 data={data?.tabs?.[activeTab]}
+                onTabDelete={onTabDelete}
                 onContentUpdate={onContentUpdate}
               />
             </div>
