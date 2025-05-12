@@ -88,16 +88,6 @@
 }
 
 .card.dragged {
-  transition: transform .2s;
-  animation: scale .2s forwards ease-in-out;
-}
-
-@keyframes scale {
-  0% {
-    transform: scale(1);
-  }
-
-  100% {
-    transform: scale(.7);
-  }
+  transition: opacity .2s;
+  opacity: .7;
 }
