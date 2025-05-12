@@ -2,6 +2,7 @@ import { useState } from "react";
 // helpers
 import useSWR from "swr";
 import { useSWRConfig } from "swr";
+import { useRouter } from "next/navigation";
 import fetcher from "@/helpers/swrFetcher";
 // styles
 import styles from "./styles.module.css";
@@ -15,6 +16,7 @@ import DeleteConfirmation from "@/components/DeleteConfirmation";
 const PagesList = () => {
   const [isCreatingPage, setIsCreatingPage] = useState(false);
   const [pageToDelete, setPageToDelete] = useState(null);
+  const router = useRouter();
 
   const { mutate } = useSWRConfig();
 
@@ -43,6 +45,7 @@ const PagesList = () => {
     });
 
     await mutatePages(updatedPages, { optimisticData: updatedPages });
+    router.push(newSlug);
   };
 
   return (

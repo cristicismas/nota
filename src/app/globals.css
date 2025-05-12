@@ -24,10 +24,6 @@
   border: none;
 }
 
-.markdown h1:first-child {
-  text-align: center;
-}
-
 .markdown li {
   margin-left: 20px;
 }
