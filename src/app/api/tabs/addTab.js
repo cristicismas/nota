@@ -63,6 +63,19 @@ const addTab = async (req) => {
         : 0,
       compact: 0,
     });
+
+    const done_category = {
+      title: "Done",
+      tab_id: current_tab_id,
+      compact: 1,
+      category_order: highestOrderCategory
+        ? highestOrderCategory.category_order + 2
+        : 1,
+    };
+
+    db.prepare(
+      "INSERT INTO kanban_categories (title, tab_id, category_order, compact) VALUES (@title, @tab_id, @category_order, @compact)",
+    ).run(done_category);
   }
 
   return res(200, { message: "Tab successfully added" });
