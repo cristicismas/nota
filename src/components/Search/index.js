@@ -68,7 +68,6 @@ const Search = ({ open, setOpen }) => {
       setActiveTab(0, result.slug);
     } else {
       const { slug, tab_order } = await fetcher(`tabs/${result.tab_id}/slug`);
-      console.log("setting ", tab_order, slug);
       router.push(slug);
       setActiveTab(tab_order, slug);
     }
@@ -109,7 +108,14 @@ const Search = ({ open, setOpen }) => {
                 className={styles.result}
                 onClick={() => goToResult(result)}
               >
-                <span className={styles.title}>{result.text}</span>
+                <div className={styles.title}>
+                  <span>{result.text}</span>
+                  {result?.page_title && (
+                    <span className={styles.pageTitle}>
+                      {result?.page_title}
+                    </span>
+                  )}
+                </div>
                 <span className={styles.type}>{result?.type}</span>
               </button>
             </div>

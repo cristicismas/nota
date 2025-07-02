@@ -66,6 +66,15 @@
 
 .result .title {
   font-size: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result .title .pageTitle {
+  font-size: 14px;
+  color: var(--secondary-color);
 }
 
 .result .type {
