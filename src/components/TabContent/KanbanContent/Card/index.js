@@ -118,7 +118,7 @@ const Card = ({
         <div className={styles.cardTitle}>{cardData.title}</div>
 
         <button
-          className={styles.deleteCardButton}
+          className={styles.actionButton}
           onClick={(e) => {
             e.stopPropagation();
             deleteCard(cardData.card_id);
@@ -126,7 +126,7 @@ const Card = ({
         >
           <SimpleImage
             disableLazyLoad
-            src="/icons/close.svg"
+            src="/icons/checkmark.svg"
             width={22}
             height={22}
           />

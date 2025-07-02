@@ -32,7 +32,7 @@
   border: none;
 }
 
-.deleteCardButton {
+.actionButton {
   position: absolute;
   top: 0;
   right: 0;
@@ -41,7 +41,7 @@
   transition: opacity .2s;
 }
 
-.card:hover:not(.dragged) .deleteCardButton {
+.card:hover:not(.dragged) .actionButton {
   opacity: 1;
 }
 
