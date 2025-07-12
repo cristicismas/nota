@@ -37,13 +37,19 @@
 .card {
   position: relative;
   cursor: pointer;
-  padding: 12px 32px 12px 16px;
+  padding: 12px 48px 12px 16px;
   font-size: 18px;
   border: 1px solid var(--hover);
   border-radius: 12px;
   background-color: var(--background-alt);
   min-height: 120px;
   transition: all .2s;
+}
+
+.restoreIcon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
 .hoverOverlay {

@@ -82,7 +82,12 @@ const CategoryPreview = ({
                 onClick={() => restoreCard(card)}
               >
                 <div className={styles.hoverOverlay}>
-                  <SimpleImage src="/icons/back.svg" width={64} height={64} />
+                  <SimpleImage
+                    className={styles.restoreIcon}
+                    src="/icons/back.svg"
+                    width={24}
+                    height={24}
+                  />
                 </div>
 
                 <div className={styles.cardTitle}>{card.title}</div>
