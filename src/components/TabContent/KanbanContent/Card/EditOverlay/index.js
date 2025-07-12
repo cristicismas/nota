@@ -11,6 +11,8 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
     cardData.description,
   );
 
+  const titleContainerRef = useRef(null);
+
   const upToDateTitleValue = useRef(cardData.title);
   const initialCardTitle = useRef(cardData.title);
 
@@ -28,6 +30,16 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
       body: JSON.stringify(newCard),
     });
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleTitleResize(titleContainerRef);
+    }, 50);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (editGeneration.current <= cardData.generation) return;
@@ -91,6 +103,16 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
     };
   }, [isOpen]);
 
+  const handleTitleResize = (e) => {
+    const elem = e?.target || e?.current;
+
+    if (!elem) {
+      return;
+    }
+
+    elem.style.height = `${elem.scrollHeight}px`;
+  };
+
   const handleTitleChange = async (e) => {
     if (e.target.value.includes("\n")) return;
 
@@ -128,6 +150,8 @@ const EditOverlay = ({ isOpen, handleClose, onCardChange, cardData }) => {
         <div className={styles.label}>Title</div>
 
         <textarea
+          ref={titleContainerRef}
+          onInput={handleTitleResize}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"

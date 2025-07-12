@@ -36,6 +36,7 @@
   font-size: 28px;
   margin-top: 16px;
   height: 40px;
+  field-sizing: content;
   width: 100%;
 }
 
