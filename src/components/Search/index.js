@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import SimpleImage from "../SimpleImage";
 import useSWR from "swr";
 import fetcher from "@/helpers/swrFetcher";
-import useTabs from "../TabsContext";
+import useTabs from "@/context/TabsContext";
 
 const isInQuery = (query, value) => {
   if (query?.trim() === "") return true;

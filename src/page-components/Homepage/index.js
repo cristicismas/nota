@@ -4,7 +4,7 @@ import useSWR from "swr";
 // components
 import Sidebar from "@/components/Sidebar";
 import HomepageContent from "@/components/HomepageContent";
-import TabsProvider from "@/components/TabsContext/Provider";
+import TabsProvider from "@/context/TabsContext/Provider";
 // styles
 import styles from "./styles.module.css";
 

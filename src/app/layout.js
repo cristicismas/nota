@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Head from "next/head";
+import GlobalProvider from "@/context/GlobalContext/Provider";
 
 export const metadata = {
   title: "Nota",
@@ -20,16 +21,18 @@ export default function RootLayout({ children }) {
         />
       </Head>
 
-      <body
-        className={`${GeistSans.variable} ${GeistMono.variable}`}
-        style={{ background: "var(--background)" }}
-      >
-        {children}
-        <div id="modal-container" />
-        <div id="search-container" />
-        <div id="toast-container" />
-        <div id="context-menu" />
-      </body>
+      <GlobalProvider>
+        <body
+          className={`${GeistSans.variable} ${GeistMono.variable}`}
+          style={{ background: "var(--background)" }}
+        >
+          {children}
+          <div id="modal-container" />
+          <div id="search-container" />
+          <div id="toast-container" />
+          <div id="context-menu" />
+        </body>
+      </GlobalProvider>
     </html>
   );
 }

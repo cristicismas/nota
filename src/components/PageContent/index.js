@@ -4,7 +4,7 @@ import TabContent from "../TabContent";
 import SpinningLoaderPage from "../SpinningLoaderPage";
 // styles
 import styles from "./styles.module.css";
-import useTabs from "../TabsContext";
+import useTabs from "../../context/TabsContext";
 
 const PageContent = ({ data, loading, onContentUpdate }) => {
   const { tabs, activeTab, setActiveTab } = useTabs();

@@ -1,7 +1,9 @@
-import { useState } from "react";
+"use client";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import fetcher from "@/helpers/swrFetcher";
 // components
+import { GlobalContext } from "@/context/GlobalContext/Context";
 import Link from "next/link";
 import PagesList from "./PagesList";
 import SimpleImage from "@/components/SimpleImage";
@@ -11,7 +13,7 @@ import SearchButton from "../SearchButton";
 import styles from "./styles.module.css";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const { sidebarOpen, toggleSidebar } = useContext(GlobalContext);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const router = useRouter();
@@ -25,20 +27,10 @@ const Sidebar = () => {
     }
   };
 
-  const toggleSidebar = () => {
-    if (isOpen) {
-      document.body.style.setProperty("--sidebar-width", "80px");
-    } else {
-      document.body.style.setProperty("--sidebar-width", "350px");
-    }
-
-    setIsOpen(!isOpen);
-  };
-
   return (
     <>
       <div
-        className={`${styles.sidebarContainer} ${isOpen ? styles.open : styles.closed}`}
+        className={`${styles.sidebarContainer} ${sidebarOpen ? styles.open : styles.closed}`}
       >
         <aside className={styles.sidebar}>
           <div className={styles.topBar}>
@@ -47,7 +39,7 @@ const Sidebar = () => {
             </h1>
 
             <button className={styles.toggleSidebar} onClick={toggleSidebar}>
-              {isOpen ? (
+              {sidebarOpen ? (
                 <SimpleImage
                   disableLazyLoad
                   src={"/icons/sidebar_close.svg"}
