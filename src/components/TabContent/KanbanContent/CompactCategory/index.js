@@ -65,53 +65,55 @@ const CompactCategory = ({
     >
       {draggingCard && <Card hidden cardData={draggingCard} />}
 
-      {trash ? (
-        <StyledButton
-          className={`${styles.button} ${styles.trash}`}
-          onClick={() => setOpenCategoryPreview("trash")}
-        >
-          <SimpleImage
-            disableLazyLoad
-            src={"/icons/trash.svg"}
-            width={22}
-            height={22}
-          />
+      <div className={styles.buttonContainer}>
+        {trash ? (
+          <StyledButton
+            className={`${styles.button} ${styles.trash}`}
+            onClick={() => setOpenCategoryPreview("trash")}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src={"/icons/trash.svg"}
+              width={22}
+              height={22}
+            />
 
-          <div className={styles.title}>Trash</div>
+            <div className={styles.title}>Trash</div>
 
-          <div className={styles.count}>
-            {isLoading ? "?" : data?.deleted_cards_count}
-          </div>
-        </StyledButton>
-      ) : (
-        <StyledButton
-          className={styles.button}
-          onClick={() => setOpenCategoryPreview(categoryId)}
-        >
-          <div className={styles.title}>{categoryData.title}</div>
-          <div className={styles.count}>
-            {isLoading ? "?" : data?.cards_count}
-          </div>
-        </StyledButton>
-      )}
+            <div className={styles.count}>
+              {isLoading ? "?" : data?.deleted_cards_count}
+            </div>
+          </StyledButton>
+        ) : (
+          <StyledButton
+            className={styles.button}
+            onClick={() => setOpenCategoryPreview(categoryId)}
+          >
+            <div className={styles.title}>{categoryData.title}</div>
+            <div className={styles.count}>
+              {isLoading ? "?" : data?.cards_count}
+            </div>
+          </StyledButton>
+        )}
 
-      {!trash && (
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setOpenDeleteModal(true);
-          }}
-          className={styles.deleteButton}
-        >
-          <SimpleImage
-            disableLazyLoad
-            src={"/icons/close.svg"}
-            width={20}
-            height={20}
-          />
-        </button>
-      )}
+        {!trash && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpenDeleteModal(true);
+            }}
+            className={styles.deleteButton}
+          >
+            <SimpleImage
+              disableLazyLoad
+              src={"/icons/close.svg"}
+              width={20}
+              height={20}
+            />
+          </button>
+        )}
+      </div>
 
       <DeleteConfirmation
         isOpen={openDeleteModal}

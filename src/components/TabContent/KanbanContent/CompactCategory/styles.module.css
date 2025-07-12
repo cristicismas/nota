@@ -9,6 +9,15 @@
   position: relative;
 }
 
+.buttonContainer {
+  position: relative;
+}
+
+.buttonContainer,
+.buttonContainer>button:first-child {
+  min-height: 80px;
+}
+
 .container,
 .draggingPlaceholder {
   width: 240px;
@@ -47,6 +56,9 @@
 }
 
 .count {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
   margin-left: auto;
   background-color: rgba(0, 0, 0, .3);
   padding: 4px 8px;
@@ -59,7 +71,7 @@
 .deleteButton {
   pointer-events: none;
   position: absolute;
-  top: 6px;
+  bottom: 2px;
   right: 6px;
   padding: 8px 8px;
   opacity: 0;
