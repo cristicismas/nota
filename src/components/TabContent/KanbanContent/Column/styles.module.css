@@ -46,7 +46,6 @@
 
 .contentColumn,
 .draggingPlaceholder {
-  max-width: 400px;
   min-height: 100%;
   background-color: var(--background-alt);
   border-radius: 8px;
