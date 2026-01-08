@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
     BACKUP_DB_URL: process.env.BACKUP_DB_URL,

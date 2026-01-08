@@ -4,8 +4,6 @@
 ARG NODE_VERSION=22.14.0
 FROM node:${NODE_VERSION}-slim AS base
 
-LABEL fly_launch_runtime="Next.js"
-
 # Next.js app lives here
 WORKDIR /app
 
@@ -28,7 +26,7 @@ RUN npm ci --include=dev
 COPY . .
 
 # Build application
-RUN npx next build --experimental-build-mode compile
+RUN npx next build
 
 # Remove development dependencies
 RUN npm prune --omit=dev
@@ -44,10 +42,11 @@ COPY --from=build /app /app
 RUN mkdir -p /data
 VOLUME /data
 
-# Entrypoint sets up the container.
-ENTRYPOINT [ "/app/docker-entrypoint.js" ]
-
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 ENV DATABASE_URL="file:///data/sqlite.db"
-CMD [ "npm", "run", "start" ]
+ENV BACKUP_DB_URL="file:///data/sqlite_backup.db"
+ENV HOSTNAME="0.0.0.0"
+ENV PORT="3000"
+
+CMD [ "node", "node_modules/.bin/next", "start" ]
